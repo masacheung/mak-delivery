@@ -61,10 +61,14 @@ const RestaurantList = () => {
     setOrderState((prev) => ({ ...prev, [field]: value }));
   };
 
-  const updateTotal = (newTotal) => {
+  const updateTotal = (orderDetails) => {
+    const newTotal = Object.values(orderDetails).flat().reduce((sum, dish) => {
+      return sum + (dish.price === "SP" ? 0 : dish.price * dish.quantity);
+    }, 0);
+
     setOrderState((prevState) => ({
       ...prevState,
-      total: newTotal,
+      total: newTotal, // Only sum up valid prices
     }));
   };
 

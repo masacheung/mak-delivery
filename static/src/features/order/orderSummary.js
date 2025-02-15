@@ -27,7 +27,11 @@ const OrderSummary = ({ addedDishes = {}, updateTotal }) => {
   // Calculate subtotal
   const subtotal = Object.values(addedDishes)
     .flat()
-    .reduce((acc, dish) => acc + (dish.price ?? 0) * (dish.quantity ?? 0), 0);
+    .reduce((acc, dish) => {
+      // Ensure price is a number, ignore "SP" prices
+      const price = isNaN(dish.price) ? 0 : Number(dish.price);
+      return acc + price * (dish.quantity ?? 0);
+    }, 0);
 
   const tax = subtotal * TAX_RATE;
   const total = subtotal + tax + deliveryFee;
@@ -53,8 +57,12 @@ const OrderSummary = ({ addedDishes = {}, updateTotal }) => {
               <Typography variant="h6">{RESTAURANT_NAME[restaurantId]}</Typography>
               {dishes.map((dish) => (
                 <Typography key={dish.id} variant="body1">
-                  {dish.name || "Unknown"} x{dish.quantity || 0}: $
-                  {((dish.price ?? 0) * (dish.quantity ?? 0)).toFixed(2)}
+                  {dish.name} x {dish.quantity} -
+                  {dish.price === "SP" ? (
+                    <Typography color="error" variant="caption">
+                      SP (Check with restaurant)
+                    </Typography>
+                  ) : `$${Number(dish.price).toFixed(2) * Number(dish.quantity)}`}
                 </Typography>
               ))}
             </Box>

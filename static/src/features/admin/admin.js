@@ -1,5 +1,8 @@
 import React, { useState } from "react";
-import { Box, TextField, Button, Typography, Card, CardContent, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from "@mui/material";
+import {
+  Box, TextField, Button, Typography, Card, CardContent,
+  Select, MenuItem, FormControl, InputLabel
+} from "@mui/material";
 
 const pickupLocations = [
   "Fort Lee 540 Main St",
@@ -14,19 +17,23 @@ const pickupLocations = [
   "JSQ (Overlook Flat)",
 ];
 
+const RESTAURANT_NAME = {
+    1: "Tasty Moment",
+    2: "Restaurant B",
+    3: "Restaurant C"
+};
+
 const Admin = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [error, setError] = useState("");
-
   const [pickUpLocation, setPickUpLocation] = useState("");
   const [pickUpDate, setPickUpDate] = useState("");
-  const [orders, setOrders] = useState([]); // Store fetched orders
+  const [orders, setOrders] = useState([]);
 
   const handleLogin = (e) => {
     e.preventDefault();
-
     const adminUser = "admin";
     const adminPass = "aDm1n";
 
@@ -52,107 +59,121 @@ const Admin = () => {
     }
   };
 
-  if (isAuthenticated) {
+  if (!isAuthenticated) {
     return (
-      <Box display="flex" flexDirection="column" alignItems="center" mt={4}>
-        <Typography variant="h4" gutterBottom>
-          Admin Panel
-        </Typography>
-
-        {/* Input Fields for Query */}
-        <Box display="flex" gap={2} mb={2}>
-          <TextField
-            label="Pickup Location"
-            variant="outlined"
-            value={pickUpLocation}
-            onChange={(e) => setPickUpLocation(e.target.value)}
-          />
-          <TextField
-            label="Pickup Date"
-            type="date"
-            variant="outlined"
-            InputLabelProps={{ shrink: true }}
-            value={pickUpDate}
-            onChange={(e) => setPickUpDate(e.target.value)}
-          />
-          <Button variant="contained" color="primary" onClick={handleSearch}>
-            Search
-          </Button>
-        </Box>
-
-        {/* Display Orders */}
-        {orders.length > 0 ? (
-          <TableContainer component={Paper} sx={{ maxWidth: 800, mt: 2 }}>
-            <Table>
-              <TableHead>
-                <TableRow>
-                  <TableCell><strong>ID</strong></TableCell>
-                  <TableCell><strong>WeChat ID</strong></TableCell>
-                  <TableCell><strong>Order Details</strong></TableCell>
-                  <TableCell><strong>Total ($)</strong></TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {orders.map((order) => (
-                  <TableRow key={order.id}>
-                    <TableCell>{order.id}</TableCell>
-                    <TableCell>{order.wechat_id}</TableCell>
-                    <TableCell>
-                      {typeof order.order_details === "string"
-                        ? JSON.parse(order.order_details).map(dish => `${dish.name} x${dish.quantity}`).join(", ")
-                        : "N/A"}
-                    </TableCell>
-                    <TableCell>${order.total.toFixed(2)}</TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
-        ) : (
-          <Typography variant="body1" mt={2} color="textSecondary">
-            No orders found for the given criteria.
-          </Typography>
-        )}
+      <Box display="flex" justifyContent="center" alignItems="center" height="100vh">
+        <Card sx={{ width: 350, padding: 3, boxShadow: 3 }}>
+          <CardContent>
+            <Typography variant="h5" align="center" gutterBottom>
+              Admin Login
+            </Typography>
+            <form onSubmit={handleLogin}>
+              <TextField
+                label="Username"
+                variant="outlined"
+                fullWidth
+                margin="normal"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+              />
+              <TextField
+                label="Password"
+                type="password"
+                variant="outlined"
+                fullWidth
+                margin="normal"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+              {error && (
+                <Typography color="error" variant="body2" align="center">
+                  {error}
+                </Typography>
+              )}
+              <Button type="submit" variant="contained" color="primary" fullWidth sx={{ marginTop: 2 }}>
+                Login
+              </Button>
+            </form>
+          </CardContent>
+        </Card>
       </Box>
     );
   }
 
   return (
-    <Box display="flex" justifyContent="center" alignItems="center" height="100vh">
-      <Card sx={{ width: 350, padding: 3, boxShadow: 3 }}>
-        <CardContent>
-          <Typography variant="h5" align="center" gutterBottom>
-            Admin Login
-          </Typography>
-          <form onSubmit={handleLogin}>
-            <TextField
-              label="Username"
-              variant="outlined"
-              fullWidth
-              margin="normal"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-            />
-            <TextField
-              label="Password"
-              type="password"
-              variant="outlined"
-              fullWidth
-              margin="normal"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-            {error && (
-              <Typography color="error" variant="body2" align="center">
-                {error}
-              </Typography>
-            )}
-            <Button type="submit" variant="contained" color="primary" fullWidth sx={{ marginTop: 2 }}>
-              Login
-            </Button>
-          </form>
-        </CardContent>
-      </Card>
+    <Box display="flex" flexDirection="column" alignItems="center" mt={5}>
+      <Typography variant="h4" gutterBottom>Admin Panel</Typography>
+
+      {/* Pickup Location Dropdown */}
+      <FormControl sx={{ minWidth: 300, mb: 2 }}>
+        <InputLabel>Pickup Location</InputLabel>
+        <Select
+          value={pickUpLocation}
+          onChange={(e) => setPickUpLocation(e.target.value)}
+          displayEmpty
+        >
+          <MenuItem value="" disabled></MenuItem>
+          {pickupLocations.map((location, index) => (
+            <MenuItem key={index} value={location}>{location}</MenuItem>
+          ))}
+        </Select>
+      </FormControl>
+
+      {/* Pickup Date Input */}
+      <TextField
+        type="date"
+        label="Pickup Date"
+        InputLabelProps={{ shrink: true }}
+        sx={{ minWidth: 300, mb: 2 }}
+        value={pickUpDate}
+        onChange={(e) => setPickUpDate(e.target.value)}
+      />
+
+      <Button variant="contained" color="primary" onClick={handleSearch}>
+        Search Orders
+      </Button>
+
+      {/* Display Search Results */}
+      {orders.length > 0 && (
+        <Box mt={4} width="80%">
+          <Typography variant="h6">Search Results:</Typography>
+          <Typography><strong>Total Orders:</strong> {orders.length}</Typography>
+          <Typography><strong>Location:</strong> {pickUpLocation}</Typography>
+          {orders.map((order) => (
+            <Card key={order.id} sx={{ mt: 2, p: 2 }}>
+              <Typography><strong>Order ID:</strong> {order.id}</Typography>
+              <Typography><strong>WeChat ID:</strong> {order.wechat_id}</Typography>
+              <Typography><strong>Total:</strong> ${isNaN(Number(order.total)) ? "N/A" : Number(order.total).toFixed(2)}</Typography>
+
+              <Typography variant="h6" mt={2}><strong>Order Details:</strong></Typography>
+              {order.order_details && Object.keys(order.order_details).length > 0 ? (
+                Object.entries(order.order_details).map(([restaurantId, dishes]) => (
+                  <Box key={restaurantId} sx={{ mt: 2 }}>
+                    <Typography variant="h6" color="primary">
+                      {RESTAURANT_NAME[restaurantId]}
+                    </Typography>
+                    <Typography><strong>Order:</strong></Typography>
+                    <ul style={{ paddingLeft: "20px" }}>
+                      {dishes.map((dish) => (
+                        <li key={dish.id}>
+                          {dish.name} x {dish.quantity} -
+                          {dish.price === "SP" ? (
+                            <Typography color="error" variant="caption">
+                              SP (Check with restaurant)
+                            </Typography>
+                          ) : `$${dish.price.toFixed(2)}`}
+                        </li>
+                      ))}
+                    </ul>
+                  </Box>
+                ))
+              ) : (
+                <Typography color="error">No order details available.</Typography>
+              )}
+            </Card>
+          ))}
+        </Box>
+      )}
     </Box>
   );
 };

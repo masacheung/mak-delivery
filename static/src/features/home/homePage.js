@@ -79,7 +79,7 @@ const HomePage = () => {
         <Typography variant="body1">Pick-up Locations</Typography>
         <Typography variant="body2" color="textSecondary">
           {pickupLocations.map((location, index) => (
-            <div key={index}>{location}</div>
+            <span key={index} style={{ display: "block" }}>{location}</span>
           ))}
         </Typography>
       </Box>
