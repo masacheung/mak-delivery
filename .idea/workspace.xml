@@ -6,7 +6,9 @@
   <component name="ChangeListManager">
     <list default="true" id="f1fd87b3-22bf-4469-bc34-46a90dadddb5" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/src/api/orders.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/src/api/orders.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/static/src/db/connection.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/src/db/connection.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/src/features/admin/admin.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/src/features/admin/admin.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/static/src/features/order/orderSummary.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/src/features/order/orderSummary.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/static/src/features/ordered/orderedPage.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/src/features/ordered/orderedPage.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/static/src/features/restaurants/tastyMoment.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/src/features/restaurants/tastyMoment.js" afterDir="false" />
