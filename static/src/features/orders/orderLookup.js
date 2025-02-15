@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Container, TextField, Button, Typography, Box } from "@mui/material";
+import { Container, TextField, Button, Typography, Box, Grid } from "@mui/material";
 
 const OrderLookup = () => {
   const [wechatId, setWechatId] = useState("");
@@ -8,7 +8,6 @@ const OrderLookup = () => {
   const [error, setError] = useState("");
 
   const handleLookup = async () => {
-    // Simulating the database query for now
     if (!wechatId || !orderId) {
       setError("Please enter both WeChat ID and Order ID.");
       return;
@@ -16,7 +15,6 @@ const OrderLookup = () => {
     setError("");
 
     try {
-      // In the future, this would be a real API call to your backend
       const response = await fetch(`/api/orders?wechatId=${wechatId}&orderId=${orderId}`);
       if (!response.ok) throw new Error("Order not found");
 
@@ -53,13 +51,62 @@ const OrderLookup = () => {
         <Button variant="contained" color="primary" fullWidth sx={{ mt: 2 }} onClick={handleLookup}>
           Submit
         </Button>
+
         {error && <Typography color="error" sx={{ mt: 2 }}>{error}</Typography>}
+
         {orderData && (
-          <Box sx={{ mt: 3, p: 2, border: "1px solid #ccc", borderRadius: 2 }}>
-            <Typography variant="h6">Order Details</Typography>
-            <Typography>Order ID: {orderData.id}</Typography>
-            <Typography>Status: {orderData.status}</Typography>
-            <Typography>Total: ${orderData.total}</Typography>
+          <Box sx={{ mt: 3, p: 3, border: "1px solid #ccc", borderRadius: 2, backgroundColor: "#f9f9f9" }}>
+            {/* Order Details Header */}
+            <Typography variant="h5" sx={{ textAlign: "center", mb: 2, fontWeight: "bold" }}>
+              Order Details
+            </Typography>
+
+            {/* Order Summary - Flexbox for Alignment */}
+            <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
+              <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                <Typography sx={{ fontWeight: "bold", minWidth: "150px", textAlign: "left" }}>WeChat ID:</Typography>
+                <Typography sx={{ textAlign: "right" }}>{orderData.wechat_id}</Typography>
+              </Box>
+
+              <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                <Typography sx={{ fontWeight: "bold", minWidth: "150px", textAlign: "left" }}>Order ID:</Typography>
+                <Typography sx={{ textAlign: "right" }}>{orderData.id}</Typography>
+              </Box>
+
+              <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                <Typography sx={{ fontWeight: "bold", minWidth: "150px", textAlign: "left" }}>Pickup Location:</Typography>
+                <Typography sx={{ textAlign: "right" }}>{orderData.pick_up_location}</Typography>
+              </Box>
+
+              <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                <Typography sx={{ fontWeight: "bold", minWidth: "150px", textAlign: "left" }}>Total:</Typography>
+                <Typography sx={{ textAlign: "right" }}>${Number(orderData?.total || 0).toFixed(2)}</Typography>
+              </Box>
+            </Box>
+
+            {/* Ordered Dishes */}
+            <Box sx={{ mt: 3 }}>
+              <Typography variant="h6" sx={{ textAlign: "center", fontWeight: "bold", mb: 1 }}>
+                Ordered Dishes
+              </Typography>
+
+              {orderData.order_details &&
+                Object.entries(orderData.order_details).map(([restaurantId, dishes]) => (
+                  <Box key={restaurantId} sx={{ mt: 2 }}>
+                    {/* Restaurant Name */}
+                    <Typography variant="h6" sx={{ fontWeight: "bold", textDecoration: "underline" }}>
+                      {dishes[0]?.restaurantName}
+                    </Typography>
+
+                    {/* Dish List */}
+                    {dishes.map((dish, index) => (
+                      <Typography key={dish.id} sx={{ ml: 2 }}>
+                        {index + 1}. {dish.name} - ${dish.price} x {dish.quantity}
+                      </Typography>
+                    ))}
+                  </Box>
+                ))}
+            </Box>
           </Box>
         )}
       </Box>

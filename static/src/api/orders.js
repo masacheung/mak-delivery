@@ -18,4 +18,36 @@ router.post("/", async (req, res) => {
   }
 });
 
+// GET: Fetch order by wechat_id and order_id
+router.get("/", async (req, res) => {
+  const { wechatId, orderId } = req.query;
+
+  if (!wechatId || !orderId) {
+    return res.status(400).json({ error: "WeChat ID and Order ID are required." });
+  }
+
+  try {
+    const result = await pool.query(
+      "SELECT * FROM orders WHERE wechat_id = $1 AND id = $2",
+      [wechatId, orderId]
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ error: "Order not found." });
+    }
+
+    const order = result.rows[0];
+
+    // Ensure order_details is parsed correctly if stored as JSON
+    if (typeof order.order_details === "string") {
+      order.order_details = JSON.parse(order.order_details);
+    }
+
+    res.json(order);
+  } catch (error) {
+    console.error("Error fetching order:", error);
+    res.status(500).json({ error: "Database error" });
+  }
+});
+
 module.exports = router;

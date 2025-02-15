@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   Box,
   Typography,
@@ -12,6 +13,7 @@ import {
 } from "@mui/material";
 import DishForm from "../dishes/dishForm";
 import OrderSummary from "../order/orderSummary";
+import TASTY_MOMENT from "./tastyMoment";
 
 const pickupLocations = [
   "Fort Lee 540 Main St",
@@ -27,15 +29,10 @@ const pickupLocations = [
 ];
 
 const RestaurantList = () => {
+  const navigate = useNavigate();
+
   const restaurants = [
-    {
-      id: 1,
-      name: "Restaurant A",
-      dishes: [
-        { id: 1, name: "Pizza", price: 10 },
-        { id: 22, name: "Pizza B", price: 20 },
-      ],
-    },
+    TASTY_MOMENT,
     {
       id: 2,
       name: "Restaurant B",
@@ -102,24 +99,29 @@ const RestaurantList = () => {
 
   const handleQuantityChange = (dishId, action) => {
     setOrderState((prev) => {
-      const updatedQuantities = { ...prev.quantities[prev.selectedRestaurant.id] };
+      // Ensure selectedRestaurant exists before proceeding
+      if (!prev.selectedRestaurant?.id) return prev;
 
-      if (action === "increase" && updatedQuantities[dishId] < 10) {
-        updatedQuantities[dishId] += 1;
-      } else if (action === "decrease" && updatedQuantities[dishId] > 0) {
+      const restaurantId = prev.selectedRestaurant.id;
+      const updatedQuantities = { ...prev.quantities[restaurantId] } || {};
+
+      if (action === "increase" && (updatedQuantities[dishId] || 0) < 10) {
+        updatedQuantities[dishId] = (updatedQuantities[dishId] || 0) + 1;
+      } else if (action === "decrease" && (updatedQuantities[dishId] || 0) > 0) {
         updatedQuantities[dishId] -= 1;
       } else if (action === "reset") {
         updatedQuantities[dishId] = 0;
       }
 
+      // Ensure addedDishes is updated correctly
       const updatedDishes = { ...prev.addedDishes };
       if (updatedQuantities[dishId] === 0) {
-        updatedDishes[prev.selectedRestaurant.id] = updatedDishes[prev.selectedRestaurant.id]?.filter(dish => dish.id !== dishId) || [];
+        updatedDishes[restaurantId] = updatedDishes[restaurantId]?.filter(dish => dish.id !== dishId) || [];
       }
 
       return {
         ...prev,
-        quantities: { ...prev.quantities, [prev.selectedRestaurant.id]: updatedQuantities },
+        quantities: { ...prev.quantities, [restaurantId]: updatedQuantities },
         addedDishes: updatedDishes,
       };
     });
@@ -163,12 +165,21 @@ const RestaurantList = () => {
     if (Object.values(newErrors).some((error) => error)) return;
 
     const orderData = {
-      wechatId: orderState.wechatId,
-      pickupLocation: orderState.pickupLocation,
-      date: orderState.date,
-      orderDetails: JSON.stringify(orderState.addedDishes), // Store JSON data
-      total: orderState.total
-    };
+        wechatId: orderState.wechatId,
+        pickupLocation: orderState.pickupLocation,
+        date: orderState.date,
+        orderDetails: JSON.stringify(
+          Object.entries(orderState.addedDishes).reduce((acc, [restaurantId, dishes]) => {
+            const restaurant = restaurants.find((r) => r.id === Number(restaurantId)); // Get restaurant name
+            acc[restaurantId] = dishes.map((dish) => ({
+              ...dish,
+              restaurantName: restaurant ? restaurant.name : `Restaurant ${restaurantId}`, // Assign restaurant name
+            }));
+            return acc;
+          }, {})
+        ),
+        total: orderState.total,
+      };
 
     try {
       const response = await fetch("/api/orders", {
@@ -179,7 +190,14 @@ const RestaurantList = () => {
 
       if (!response.ok) throw new Error("Failed to submit order");
 
+      const result = await response.json(); // FIXED: Define result before using it
+
       console.log("Order submitted successfully");
+
+      console.log(result.order);
+
+      // Redirect to the ordered page with order details
+      navigate("/ordered", { state: { order: result.order } });
 
       setOrderState({
         selectedRestaurant: null,
@@ -246,7 +264,22 @@ const RestaurantList = () => {
               )}
 
               {orderState.isDishFormVisible && orderState.selectedRestaurant?.id === restaurant.id && (
-                <Box sx={{ width: "100%", padding: 2, borderTop: "1px solid #ccc", marginTop: 2 }}>
+                <Box sx={{ width: "100%", maxHeight: "300px", overflowY: "auto", padding: 2, borderTop: "1px solid #ccc", marginTop: 2,
+                 "&::-webkit-scrollbar": {
+                       width: "8px",
+                     },
+                     "&::-webkit-scrollbar-track": {
+                       background: "#f1f1f1",
+                       borderRadius: "10px",
+                     },
+                     "&::-webkit-scrollbar-thumb": {
+                       background: "#888",
+                       borderRadius: "10px",
+                     },
+                     "&::-webkit-scrollbar-thumb:hover": {
+                       background: "#555",
+                     },
+                  }}>
                   <DishForm
                     restaurant={orderState.selectedRestaurant}
                     quantities={orderState.quantities[orderState.selectedRestaurant.id]}
