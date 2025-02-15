@@ -57,7 +57,10 @@ const OrderSummary = ({ addedDishes = {}, updateTotal }) => {
               <Typography variant="h6">{RESTAURANT_NAME[restaurantId]}</Typography>
               {dishes.map((dish) => (
                 <Typography key={dish.id} variant="body1">
-                  {dish.name} x {dish.quantity} -
+                  {`${dish.name} ${
+                  dish.selectedOptions && dish.selectedOptions.length > 0
+                  ? ` (${dish.selectedOptions.join(", ")})` // ✅ Display selected options
+                  : ""} x${dish.quantity}`} -
                   {dish.price === "SP" ? (
                     <Typography color="error" variant="caption">
                       SP (Check with restaurant)

@@ -2,6 +2,14 @@ const TASTY_MOMENT = {
   id: 1,
   name: "Tasty Moment",
   dishes: [
+      {
+        id: 111111,
+        name: '排骨年糕',
+        price: 16.95,
+        options: ["Beef", "Chicken", "Lamb", "Shrimp"],  // Available choices as strings
+        selectedOptions: [],  // Starts empty
+        limit: 2  // User can select up to 2 options
+      },
     { id: 11, name: '排骨年糕', price:16.95  },
     { id: 12, name: '鲜肉小笼包', price:9.50  },
     { id: 13, name: '丝瓜小笼包', price:10.50  },

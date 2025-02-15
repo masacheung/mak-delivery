@@ -143,6 +143,7 @@ const RestaurantList = () => {
             name: newDish.name || "Unknown",
             price: newDish.price === "SP" ? "SP" : newDish.price ?? 0, // 🔹 Ensure "SP" is preserved
             quantity: newDish.quantity ?? 0,
+            selectedOptions: newDish.selectedOptions || [],
           });
         }
       });
@@ -257,7 +258,15 @@ const RestaurantList = () => {
                   </Typography>
                   <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1, alignItems: "center" }}>
                     {orderState.addedDishes[restaurant.id].map((dish) => (
-                      <Chip key={dish.id} label={`${dish.name} x${dish.quantity}`} sx={{ margin: "2px" }} />
+                      <Chip
+                        key={dish.id}
+                        label={`${dish.name} ${
+                          dish.selectedOptions && dish.selectedOptions.length > 0
+                            ? ` (${dish.selectedOptions.join(", ")})` // ✅ Display selected options
+                            : ""
+                        } x${dish.quantity}`}
+                        sx={{ margin: "2px" }}
+                      />
                     ))}
                   </Box>
                 </Box>

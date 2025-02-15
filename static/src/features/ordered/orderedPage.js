@@ -48,7 +48,9 @@ const OrderedPage = () => {
                   {dishes.map((dish) => (
                     <ListItem key={`${restaurantId}-${dish.id}`}>
                       <ListItemText
-                        primary={`${dish.name} x${dish.quantity}`}
+                        primary={`${dish.name} ${dish.selectedOptions && dish.selectedOptions.length > 0
+                        ? ` (${dish.selectedOptions.join(", ")})` // ✅ Display selected options
+                        : ""} x${dish.quantity}`}
                         secondary={isNaN(dish.price) ? "SP (Check with restaurant)" : `$${Number(dish.price).toFixed(2)} each`}
                       />
                     </ListItem>
@@ -77,7 +79,7 @@ const OrderedPage = () => {
             <Button variant="contained" color="primary" onClick={() => navigate("/")}>
               Go to Home
             </Button>
-            <Button variant="contained" color="secondary" onClick={() => navigate("/lookup")}>
+            <Button variant="contained" color="secondary" onClick={() => navigate("/lookup-order")}>
               Look Up Another Order
             </Button>
           </Box>

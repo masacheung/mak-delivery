@@ -103,7 +103,9 @@ const OrderLookup = () => {
                     {/* Dish List */}
                     {dishes.map((dish, index) => (
                       <Typography key={dish.id} sx={{ ml: 2 }}>
-                        {index + 1}. {dish.name} - ${dish.price} x {dish.quantity}
+                        {index + 1}. {`${dish.name} ${dish.selectedOptions && dish.selectedOptions.length > 0
+                        ? ` (${dish.selectedOptions.join(", ")})` // ✅ Display selected options
+                        : ""}`} x {dish.quantity}
                       </Typography>
                     ))}
                   </Box>
