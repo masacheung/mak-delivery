@@ -49,7 +49,7 @@ const OrderedPage = () => {
                     <ListItem key={`${restaurantId}-${dish.id}`}>
                       <ListItemText
                         primary={`${dish.name} x${dish.quantity}`}
-                        secondary={`$${dish.price.toFixed(2)} each`}
+                        secondary={isNaN(dish.price) ? "SP (Check with restaurant)" : `$${Number(dish.price).toFixed(2)} each`}
                       />
                     </ListItem>
                   ))}

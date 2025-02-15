@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   Box,
@@ -62,15 +62,23 @@ const RestaurantList = () => {
   };
 
   const updateTotal = (orderDetails) => {
-    const newTotal = Object.values(orderDetails).flat().reduce((sum, dish) => {
-      return sum + (dish.price === "SP" ? 0 : dish.price * dish.quantity);
-    }, 0);
+    const newTotal = Object.values(orderDetails)
+      .flat()
+      .reduce((sum, dish) => {
+        return sum + (typeof dish.price === "number" ? dish.price * dish.quantity : 0);
+      }, 0);
 
     setOrderState((prevState) => ({
       ...prevState,
-      total: newTotal, // Only sum up valid prices
+      total: newTotal,
     }));
   };
+
+  useEffect(() => {
+    if (orderState.addedDishes && Object.keys(orderState.addedDishes).length > 0) {
+      updateTotal(orderState.addedDishes);
+    }
+  }, [orderState.addedDishes]); // 🔹 Trigger updateTotal when addedDishes changes
 
   const handleSelectRestaurant = (restaurant) => {
     if (orderState.selectedRestaurant?.id === restaurant.id) {
@@ -137,17 +145,15 @@ const RestaurantList = () => {
       if (!updatedDishes[restaurantId]) updatedDishes[restaurantId] = [];
 
       selectedDishes.forEach((newDish) => {
-        // Find the existing dish and update quantity instead of adding
         const existingDishIndex = updatedDishes[restaurantId].findIndex((d) => d.id === newDish.id);
 
         if (existingDishIndex !== -1) {
-          // ✅ Update quantity to the latest selection
           updatedDishes[restaurantId][existingDishIndex].quantity = newDish.quantity;
         } else {
           updatedDishes[restaurantId].push({
             id: newDish.id,
             name: newDish.name || "Unknown",
-            price: newDish.price ?? 0,
+            price: newDish.price === "SP" ? "SP" : newDish.price ?? 0, // 🔹 Ensure "SP" is preserved
             quantity: newDish.quantity ?? 0,
           });
         }
@@ -167,6 +173,8 @@ const RestaurantList = () => {
     updateOrderState("errors", newErrors);
 
     if (Object.values(newErrors).some((error) => error)) return;
+
+    console.log(orderState.total);
 
     const orderData = {
         wechatId: orderState.wechatId,

@@ -11,6 +11,7 @@
       <change beforePath="$PROJECT_DIR$/static/src/features/admin/admin.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/src/features/admin/admin.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/static/src/features/home/homePage.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/src/features/home/homePage.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/static/src/features/order/orderSummary.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/src/features/order/orderSummary.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/src/features/ordered/orderedPage.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/src/features/ordered/orderedPage.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/static/src/features/restaurants/restaurantList.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/src/features/restaurants/restaurantList.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/static/src/features/restaurants/tastyMoment.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/src/features/restaurants/tastyMoment.js" afterDir="false" />
     </list>
