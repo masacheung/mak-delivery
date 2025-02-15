@@ -306,7 +306,7 @@ const RestaurantList = () => {
           ))}
         </TextField>
         <TextField fullWidth label="Date" type="date" value={orderState.date} onChange={(e) => updateOrderState("date", e.target.value)} margin="normal" required InputLabelProps={{ shrink: true }} />
-        <Button variant="contained" color="primary" onClick={handleSubmit} sx={{ marginTop: 2 }}>
+        <Button variant="contained" color="primary" fullWidth sx={{ mt: 2 }} color="primary" onClick={handleSubmit} sx={{ marginTop: 2 }}>
           Submit Order
         </Button>
       </Box>

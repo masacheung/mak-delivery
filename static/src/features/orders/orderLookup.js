@@ -115,7 +115,7 @@ const OrderLookup = () => {
 
       {/* Navigation Buttons */}
       <Box display="flex" gap={2} mt={2}>
-        <Button variant="contained" color="primary" onClick={() => navigate("/")}>
+        <Button variant="contained" color="primary" fullWidth sx={{ mt: 2 }} color="primary" onClick={() => navigate("/")}>
           Go to Home
         </Button>
       </Box>
