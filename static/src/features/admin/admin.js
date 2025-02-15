@@ -156,7 +156,9 @@ const Admin = () => {
                     <ul style={{ paddingLeft: "20px" }}>
                       {dishes.map((dish) => (
                         <li key={dish.id}>
-                          {dish.name} x {dish.quantity} -
+                          {`${dish.name} ${dish.selectedOptions && dish.selectedOptions.length > 0
+                          ? ` (${dish.selectedOptions.join(", ")})` // ✅ Display selected options
+                          : ""} x${dish.quantity}`} -
                           {dish.price === "SP" ? (
                             <Typography color="error" variant="caption">
                               SP (Check with restaurant)
