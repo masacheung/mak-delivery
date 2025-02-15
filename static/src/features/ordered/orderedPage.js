@@ -1,8 +1,9 @@
-import { useLocation } from "react-router-dom";
-import { Box, Card, CardContent, Typography, Divider, List, ListItem, ListItemText } from "@mui/material";
+import { useLocation, useNavigate } from "react-router-dom";
+import { Box, Card, CardContent, Typography, Divider, List, ListItem, ListItemText, Button } from "@mui/material";
 
 const OrderedPage = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const order = location.state?.order;
 
   if (!order) {
@@ -72,6 +73,16 @@ const OrderedPage = () => {
           </Typography>
         </CardContent>
       </Card>
+
+      {/* Navigation Buttons */}
+      <Box display="flex" gap={2} mt={2}>
+        <Button variant="contained" color="primary" onClick={() => navigate("/")}>
+          Go to Home
+        </Button>
+        <Button variant="contained" color="secondary" onClick={() => navigate("/lookup")}>
+          Look Up Another Order
+        </Button>
+      </Box>
     </Box>
   );
 };

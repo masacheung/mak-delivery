@@ -16,7 +16,6 @@
       <change afterPath="$PROJECT_DIR$/static/src/features/orders/orderLookup.js" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/static/src/features/restaurants/tastyMoment.js" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/static/src/server.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/static/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/static/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/static/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/static/package-lock.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/static/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/static/package.json" afterDir="false" />

@@ -1,7 +1,9 @@
 import React, { useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import { Container, TextField, Button, Typography, Box, Grid } from "@mui/material";
 
 const OrderLookup = () => {
+  const navigate = useNavigate();
   const [wechatId, setWechatId] = useState("");
   const [orderId, setOrderId] = useState("");
   const [orderData, setOrderData] = useState(null);
@@ -109,6 +111,13 @@ const OrderLookup = () => {
             </Box>
           </Box>
         )}
+      </Box>
+
+      {/* Navigation Buttons */}
+      <Box display="flex" gap={2} mt={2}>
+        <Button variant="contained" color="primary" onClick={() => navigate("/")}>
+          Go to Home
+        </Button>
       </Box>
     </Container>
   );
