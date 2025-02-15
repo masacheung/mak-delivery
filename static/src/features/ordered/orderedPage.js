@@ -71,18 +71,18 @@ const OrderedPage = () => {
           <Typography variant="body1">
             <strong>Pickup Location:</strong> {order.pick_up_location || "N/A"}
           </Typography>
+
+          {/* Navigation Buttons */}
+          <Box display="flex" gap={2} mt={2}>
+            <Button variant="contained" color="primary" onClick={() => navigate("/")}>
+              Go to Home
+            </Button>
+            <Button variant="contained" color="secondary" onClick={() => navigate("/lookup")}>
+              Look Up Another Order
+            </Button>
+          </Box>
         </CardContent>
       </Card>
-
-      {/* Navigation Buttons */}
-      <Box display="flex" gap={2} mt={2}>
-        <Button variant="contained" color="primary" onClick={() => navigate("/")}>
-          Go to Home
-        </Button>
-        <Button variant="contained" color="secondary" onClick={() => navigate("/lookup")}>
-          Look Up Another Order
-        </Button>
-      </Box>
     </Box>
   );
 };

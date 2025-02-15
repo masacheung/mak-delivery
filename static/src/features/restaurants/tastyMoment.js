@@ -10,7 +10,7 @@ const TASTY_MOMENT = {
     { id: 16, name: '三拼小笼包', price:12.50 },
     { id: 17, name: '生煎包', price:8.50  },
     { id: 18, name: '锅贴', price:8.95  },
-    { id: 19, name: '  油条', price:2.95  },
+    { id: 19, name: '油条', price:2.95  },
     { id: 110, name: '甜豆浆', price:3.95  },
     { id: 111, name: '咸豆浆', price:4.95  },
     { id: 112, name: '葱油饼', price:5.95  },

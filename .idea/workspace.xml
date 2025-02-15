@@ -5,27 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f1fd87b3-22bf-4469-bc34-46a90dadddb5" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/static/.env" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/static/public/delivery-truck.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/static/src/api/orders.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/static/src/db/connection.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/static/src/db/init.sql" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/static/src/db/queries.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/static/src/features/admin/admin.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/static/src/features/ordered/orderedPage.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/static/src/features/orders/orderLookup.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/static/src/features/restaurants/tastyMoment.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/static/src/server.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/static/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/static/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/static/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/static/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/static/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/static/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/static/public/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/static/public/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/static/public/manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/static/public/manifest.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/static/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/src/App.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/static/src/features/dishes/dishForm.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/src/features/dishes/dishForm.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/static/src/features/home/homePage.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/src/features/home/homePage.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/src/db/connection.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/src/db/connection.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/static/src/features/order/orderSummary.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/src/features/order/orderSummary.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/static/src/features/restaurants/restaurantList.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/src/features/restaurants/restaurantList.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/src/features/ordered/orderedPage.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/src/features/ordered/orderedPage.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/src/features/restaurants/tastyMoment.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/src/features/restaurants/tastyMoment.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -56,14 +40,15 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/cheun/Documents/Projects/mak-delivery/static/public&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "master",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/cheun/Documents/Projects/mak-delivery/static/public",
+    "settings.editor.selected.configurable": "preferences.pluginManager"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\cheun\Documents\Projects\mak-delivery\static\public" />
@@ -102,5 +87,16 @@
       <updated>1739571896828</updated>
     </task>
     <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
 </project>

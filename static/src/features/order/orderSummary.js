@@ -4,6 +4,12 @@ import { Box, Typography } from "@mui/material";
 
 const TAX_RATE = 0.07;
 
+const RESTAURANT_NAME = {
+    1: "Tasty Moment",
+    2: "Restaurant B",
+    3: "Restaurant C"
+};
+
 const OrderSummary = ({ addedDishes = {}, updateTotal }) => {
   // Count the number of restaurants with at least one dish
   const restaurantCount = Object.values(addedDishes).filter(dishes => dishes.length > 0).length;
@@ -44,7 +50,7 @@ const OrderSummary = ({ addedDishes = {}, updateTotal }) => {
           .filter(([_, dishes]) => dishes.length > 0) // Only include restaurants with orders
           .map(([restaurantId, dishes]) => (
             <Box key={restaurantId} sx={{ marginBottom: 2 }}>
-              <Typography variant="h6">Restaurant {restaurantId}</Typography>
+              <Typography variant="h6">{RESTAURANT_NAME[restaurantId]}</Typography>
               {dishes.map((dish) => (
                 <Typography key={dish.id} variant="body1">
                   {dish.name || "Unknown"} x{dish.quantity || 0}: $
