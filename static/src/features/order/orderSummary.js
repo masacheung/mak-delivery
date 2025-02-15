@@ -32,17 +32,19 @@ const OrderSummary = ({ addedDishes = {} }) => {
       </Typography>
 
       <Box>
-        {Object.entries(addedDishes).map(([restaurantId, dishes]) => (
-          <Box key={restaurantId} sx={{ marginBottom: 2 }}>
-            <Typography variant="h6">Restaurant {restaurantId}</Typography>
-            {(dishes ?? []).map((dish) => (
-              <Typography key={dish.id} variant="body1">
-                {dish.name || "Unknown"} x{dish.quantity || 0}: $
-                {((dish.price ?? 0) * (dish.quantity ?? 0)).toFixed(2)}
-              </Typography>
-            ))}
-          </Box>
-        ))}
+        {Object.entries(addedDishes)
+          .filter(([_, dishes]) => dishes.length > 0) // Only include restaurants with orders
+          .map(([restaurantId, dishes]) => (
+            <Box key={restaurantId} sx={{ marginBottom: 2 }}>
+              <Typography variant="h6">Restaurant {restaurantId}</Typography>
+              {dishes.map((dish) => (
+                <Typography key={dish.id} variant="body1">
+                  {dish.name || "Unknown"} x{dish.quantity || 0}: $
+                  {((dish.price ?? 0) * (dish.quantity ?? 0)).toFixed(2)}
+                </Typography>
+              ))}
+            </Box>
+          ))}
       </Box>
 
       <Box sx={{ marginTop: 2, borderTop: "1px solid #ccc", paddingTop: 2 }}>

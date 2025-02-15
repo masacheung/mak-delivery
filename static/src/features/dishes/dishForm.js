@@ -2,6 +2,7 @@ import React from 'react';
 import { Box, Typography, TextField, IconButton, Button, Card, CardContent, CardActions } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
+import ClearIcon from '@mui/icons-material/Clear';
 
 const DishForm = ({ restaurant, quantities, onQuantityChange, onClose, onAddDish }) => {
   const handleSubmit = () => {
@@ -16,15 +17,9 @@ const DishForm = ({ restaurant, quantities, onQuantityChange, onClose, onAddDish
 
     console.log("Submitting dishes:", selectedDishes); // Debugging log
 
-    if (selectedDishes.length === 0) {
-      alert("Please select at least one dish before submitting.");
-      return;
-    }
-
     onAddDish(restaurant.id, selectedDishes);
     onClose();
   };
-
 
   return (
     <Box>
@@ -54,12 +49,15 @@ const DishForm = ({ restaurant, quantities, onQuantityChange, onClose, onAddDish
             <IconButton onClick={() => onQuantityChange(dish.id, 'increase')} disabled={quantities[dish.id] === 10}>
               <AddIcon />
             </IconButton>
+            <IconButton onClick={() => onQuantityChange(dish.id, 'reset')}>
+              <ClearIcon />
+            </IconButton>
           </CardActions>
         </Card>
       ))}
 
       <Button variant="contained" color="primary" onClick={handleSubmit} sx={{ marginTop: 2 }}>
-        Submit
+        Add
       </Button>
       <Button variant="contained" color="secondary" onClick={onClose} sx={{ marginTop: 2, marginLeft: 1 }}>
         Cancel

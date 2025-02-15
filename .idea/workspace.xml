@@ -15,6 +15,10 @@
       <change beforePath="$PROJECT_DIR$/static/public/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/static/public/index.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/static/public/manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/static/public/manifest.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/static/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/src/App.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/src/features/dishes/dishForm.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/src/features/dishes/dishForm.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/src/features/home/homePage.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/src/features/home/homePage.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/src/features/order/orderSummary.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/src/features/order/orderSummary.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/src/features/restaurants/restaurantList.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/src/features/restaurants/restaurantList.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
