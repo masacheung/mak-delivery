@@ -1,9 +1,10 @@
 import React from "react";
+import { useEffect } from "react";
 import { Box, Typography } from "@mui/material";
 
 const TAX_RATE = 0.07;
 
-const OrderSummary = ({ addedDishes = {} }) => {
+const OrderSummary = ({ addedDishes = {}, updateTotal }) => {
   // Count the number of restaurants with at least one dish
   const restaurantCount = Object.values(addedDishes).filter(dishes => dishes.length > 0).length;
 
@@ -24,6 +25,13 @@ const OrderSummary = ({ addedDishes = {} }) => {
 
   const tax = subtotal * TAX_RATE;
   const total = subtotal + tax + deliveryFee;
+
+  // Update the total in the parent component
+  useEffect(() => {
+    if (total !== undefined) {
+      updateTotal(total);
+    }
+  }, [total]); // Remove updateTotal from dependencies unless it's memoized
 
   return (
     <Box sx={{ marginTop: 4, padding: 2, borderTop: "1px solid #ccc" }}>

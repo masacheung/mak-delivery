@@ -5,11 +5,18 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f1fd87b3-22bf-4469-bc34-46a90dadddb5" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/static/.env" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/static/public/delivery-truck.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/src/api/orders.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/src/db/connection.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/src/db/init.sql" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/src/db/queries.js" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/static/src/features/admin/admin.js" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/static/src/features/orders/orderLookup.js" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/static/src/server.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.env" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/static/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/static/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/static/package-lock.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/static/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/static/package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/static/public/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/static/public/index.html" afterDir="false" />
@@ -63,10 +70,11 @@
       <recent name="C:\Users\cheun\Documents\Projects\mak-delivery\server" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\cheun\Documents\Projects\mak-delivery\static" />
+      <recent name="C:\Users\cheun\Documents\Projects\mak-delivery\static\src" />
       <recent name="C:\Users\cheun\Documents\Projects\mak-delivery\static\src\features\restaurant" />
       <recent name="C:\Users\cheun\Documents\Projects\mak-delivery\static\src\features\dishes" />
       <recent name="C:\Users\cheun\Documents\Projects\mak-delivery" />
-      <recent name="C:\Users\cheun\Documents\Projects\mak-delivery\static" />
     </key>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />

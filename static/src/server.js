@@ -1,5 +1,8 @@
 const express = require("express");
 const path = require("path");
+const cors = require("cors");
+const bodyParser = require("body-parser");
+const ordersRoute = require("./api/orders.js");
 require("dotenv").config();
 
 const app = express();
@@ -7,6 +10,8 @@ const PORT = process.env.PORT || 3000;
 
 // Middleware to parse JSON requests
 app.use(express.json());
+app.use(cors());
+app.use(bodyParser.json());
 
 // Serve static files from the correct build directory
 app.use(express.static(path.join(__dirname, "..", "build")));
@@ -24,6 +29,9 @@ app.post("/api/admin/login", (req, res) => {
     res.status(401).json({ success: false, message: "Invalid credentials" });
   }
 });
+
+// Orders API
+app.use("/api/orders", ordersRoute);
 
 // Serve the admin page
 app.get("/admin", (req, res) => {

@@ -57,10 +57,18 @@ const RestaurantList = () => {
     pickupLocation: "",
     date: "",
     errors: {},
+    total: 0,
   });
 
   const updateOrderState = (field, value) => {
     setOrderState((prev) => ({ ...prev, [field]: value }));
+  };
+
+  const updateTotal = (newTotal) => {
+    setOrderState((prevState) => ({
+      ...prevState,
+      total: newTotal,
+    }));
   };
 
   const handleSelectRestaurant = (restaurant) => {
@@ -158,7 +166,8 @@ const RestaurantList = () => {
       wechatId: orderState.wechatId,
       pickupLocation: orderState.pickupLocation,
       date: orderState.date,
-      dishes: orderState.addedDishes,
+      orderDetails: JSON.stringify(orderState.addedDishes), // Store JSON data
+      total: orderState.total
     };
 
     try {
@@ -181,6 +190,7 @@ const RestaurantList = () => {
         pickupLocation: "",
         date: "",
         errors: {},
+        total: 0,
       });
     } catch (error) {
       console.error("Error submitting order:", error);
@@ -251,7 +261,7 @@ const RestaurantList = () => {
         </List>
       </Box>
 
-      <OrderSummary addedDishes={orderState.addedDishes} />
+      <OrderSummary addedDishes={orderState.addedDishes} updateTotal={updateTotal}/>
 
       <Box sx={{ padding: 2 }}>
         <TextField fullWidth label="WeChat ID" value={orderState.wechatId} onChange={(e) => updateOrderState("wechatId", e.target.value)} margin="normal" required />
