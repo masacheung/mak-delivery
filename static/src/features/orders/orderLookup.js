@@ -81,6 +81,11 @@ const OrderLookup = () => {
               </Box>
 
               <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                <Typography sx={{ fontWeight: "bold", minWidth: "150px", textAlign: "left" }}>Pickup Location:</Typography>
+                <Typography sx={{ textAlign: "right" }}>{orderData.pick_up_date}</Typography>
+              </Box>
+
+              <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                 <Typography sx={{ fontWeight: "bold", minWidth: "150px", textAlign: "left" }}>Total:</Typography>
                 <Typography sx={{ textAlign: "right" }}>${Number(orderData?.total || 0).toFixed(2)}</Typography>
               </Box>

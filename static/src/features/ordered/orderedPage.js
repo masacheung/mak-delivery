@@ -73,6 +73,9 @@ const OrderedPage = () => {
           <Typography variant="body1">
             <strong>Pickup Location:</strong> {order.pick_up_location || "N/A"}
           </Typography>
+          <Typography variant="body1">
+            <strong>Pickup Location:</strong> {order.pick_up_date || "N/A"}
+          </Typography>
 
           {/* Navigation Buttons */}
           <Box display="flex" gap={2} mt={2}>
