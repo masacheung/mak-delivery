@@ -61,24 +61,12 @@ const RestaurantList = () => {
     setOrderState((prev) => ({ ...prev, [field]: value }));
   };
 
-  const updateTotal = (orderDetails) => {
-    const newTotal = Object.values(orderDetails)
-      .flat()
-      .reduce((sum, dish) => {
-        return sum + (typeof dish.price === "number" ? dish.price * dish.quantity : 0);
-      }, 0);
-
-    setOrderState((prevState) => ({
-      ...prevState,
-      total: newTotal,
-    }));
-  };
-
-  useEffect(() => {
-    if (orderState.addedDishes && Object.keys(orderState.addedDishes).length > 0) {
-      updateTotal(orderState.addedDishes);
-    }
-  }, [orderState.addedDishes]); // 🔹 Trigger updateTotal when addedDishes changes
+  const updateTotal = (total) => {
+      setOrderState((prevState) => ({
+        ...prevState,
+        total,
+      }));
+    };
 
   const handleSelectRestaurant = (restaurant) => {
     if (orderState.selectedRestaurant?.id === restaurant.id) {
