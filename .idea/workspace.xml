@@ -5,9 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f1fd87b3-22bf-4469-bc34-46a90dadddb5" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/.env" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/src/features/admin/admin.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/src/features/orders/orderLookup.js" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/static/src/server.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/static/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/static/package-lock.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/static/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/static/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/src/App.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
