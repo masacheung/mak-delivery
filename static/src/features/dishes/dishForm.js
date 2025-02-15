@@ -62,7 +62,7 @@ const DishForm = ({ restaurant, quantities, onQuantityChange, onAddDish }) => {
             {/* Display options if available */}
               {dish.options && dish.options.length > 0 && (
                 <Box sx={{ marginTop: 1 }}>
-                  <Typography variant="body2">Select {dish.limit} options:</Typography>
+                  <Typography variant="body2">Select {dish.limit} option(s):</Typography>
                   <Box>
                     {dish.options.map((option) => (
                       <FormControlLabel

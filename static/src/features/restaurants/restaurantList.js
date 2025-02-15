@@ -153,6 +153,11 @@ const RestaurantList = () => {
       date: !orderState.date,
     };
 
+    const hasOrders = Object.values(orderState.addedDishes).some((dishes) => dishes.length > 0);
+    if (!hasOrders) {
+      newErrors.noOrders = true; // ✅ Add an error flag for no orders
+    }
+
     updateOrderState("errors", newErrors);
 
     if (Object.values(newErrors).some((error) => error)) return;
@@ -300,18 +305,24 @@ const RestaurantList = () => {
       <OrderSummary addedDishes={orderState.addedDishes} updateTotal={updateTotal}/>
 
       <Box sx={{ padding: 2 }}>
-        <TextField fullWidth label="WeChat ID" value={orderState.wechatId} onChange={(e) => updateOrderState("wechatId", e.target.value)} margin="normal" required />
-        <TextField select fullWidth label="Pick-up Location" value={orderState.pickupLocation} onChange={(e) => updateOrderState("pickupLocation", e.target.value)} margin="normal" required>
+        <TextField fullWidth label="WeChat ID" value={orderState.wechatId} onChange={(e) => updateOrderState("wechatId", e.target.value)} margin="normal" required error={orderState.errors?.wechatId} helperText={orderState.errors?.wechatId ? "WeChat ID is required" : ""}/>
+        <TextField select fullWidth label="Pick-up Location" value={orderState.pickupLocation} onChange={(e) => updateOrderState("pickupLocation", e.target.value)} margin="normal" required error={orderState.errors?.pickupLocation} helperText={orderState.errors?.pickupLocation ? "Pick-up Location is required" : ""}>
           {pickupLocations.map((location, index) => (
             <MenuItem key={index} value={location}>
               {location}
             </MenuItem>
           ))}
         </TextField>
-        <TextField fullWidth label="Date" type="date" value={orderState.date} onChange={(e) => updateOrderState("date", e.target.value)} margin="normal" required InputLabelProps={{ shrink: true }} />
+        <TextField fullWidth label="Date" type="date" value={orderState.date} onChange={(e) => updateOrderState("date", e.target.value)} margin="normal" required InputLabelProps={{ shrink: true }} error={orderState.errors?.date} helperText={orderState.errors?.date ? "Date is required" : ""}/>
         <Button variant="contained" color="primary" fullWidth sx={{ mt: 2 }} color="primary" onClick={handleSubmit} sx={{ marginTop: 2 }}>
           Submit Order
         </Button>
+
+        {orderState.errors?.noOrders && (
+          <Typography color="error" sx={{ mt: 2 }}>
+            Please add at least one dish before submitting your order.
+          </Typography>
+        )}
       </Box>
     </Box>
   );
