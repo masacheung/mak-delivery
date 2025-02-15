@@ -5,16 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f1fd87b3-22bf-4469-bc34-46a90dadddb5" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/static/src/features/dishes/dishActions.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/static/src/features/dishes/dishForm.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/static/src/features/dishes/dishSlice.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/static/src/features/home/homePage.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/static/src/features/order/orderSummary.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/static/src/features/restaurants/restaurantActions.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/static/src/features/restaurants/restaurantList.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/static/src/features/restaurants/restaurantSlice.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/static/src/redux/rootReducer.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/static/src/redux/store.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -22,8 +13,20 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/static" />
   </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;masacheung&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/masacheung/mak-delivery.git&quot;,
+    &quot;accountId&quot;: &quot;5ee9f4bf-5953-4283-8d8b-157a11d27fe1&quot;
+  }
+}</component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 7
 }</component>
