@@ -14,6 +14,8 @@ import {
 import DishForm from "../dishes/dishForm";
 import OrderSummary from "../order/orderSummary";
 import TASTY_MOMENT from "./tastyMoment";
+import HK_ALLEY from "./hkAlley";
+import WONTON_GUY from "./wontonGuy";
 
 const pickupLocations = [
   "Fort Lee 540 Main St",
@@ -33,16 +35,8 @@ const RestaurantList = () => {
 
   const restaurants = [
     TASTY_MOMENT,
-    {
-      id: 2,
-      name: "Restaurant B",
-      dishes: [{ id: 7, name: "Burger", price: 5 }],
-    },
-    {
-      id: 3,
-      name: "Restaurant C",
-      dishes: [{ id: 5, name: "Pasta", price: 8 }],
-    },
+    WONTON_GUY,
+    HK_ALLEY,
   ];
 
   const [orderState, setOrderState] = useState({

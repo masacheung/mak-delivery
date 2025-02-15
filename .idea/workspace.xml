@@ -5,9 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f1fd87b3-22bf-4469-bc34-46a90dadddb5" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/static/src/features/restaurants/hkAlley.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/src/features/restaurants/wontonGuy.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/static/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/static/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/static/src/db/connection.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/src/db/connection.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/static/src/features/admin/admin.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/src/features/admin/admin.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/static/src/features/dishes/dishForm.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/src/features/dishes/dishForm.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/static/src/features/home/homePage.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/src/features/home/homePage.js" afterDir="false" />

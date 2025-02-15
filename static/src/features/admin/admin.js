@@ -19,8 +19,8 @@ const pickupLocations = [
 
 const RESTAURANT_NAME = {
     1: "Tasty Moment",
-    2: "Restaurant B",
-    3: "Restaurant C"
+    2: "港茶巷 HK ALLEY",
+    3: "雲吞佳"
 };
 
 const Admin = () => {

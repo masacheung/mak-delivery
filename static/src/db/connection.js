@@ -3,9 +3,9 @@ require('dotenv').config();
 
 const pool = new Pool({
     user: "mak_delivery_database_user",
-    host: "cuo10arqf0us738q68sg-a.oregon-postgres.render.com",
+    host: process.env.DB_HOST,
     database: "mak_delivery_database",
-    password: "ly8vsRHtMfW1E3I4azSVGbistOKRF9y5",
+    password: process.env.DB_PASSWORD,
     port: 5432,
     ssl: { rejectUnauthorized: false },
 });
