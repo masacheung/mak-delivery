@@ -51,6 +51,7 @@ const RestaurantList = () => {
     wechatId: "",
     pickupLocation: "",
     date: "",
+    notes: "",
     errors: {},
     total: 0,
   });
@@ -183,6 +184,7 @@ const RestaurantList = () => {
           }, {})
         ),
         total: orderState.total,
+        notes: orderState.notes
       };
 
     try {
@@ -306,6 +308,16 @@ const RestaurantList = () => {
             </ListItem>
           ))}
         </List>
+        <TextField
+          label="Additional Notes"
+          variant="outlined"
+          multiline
+          rows={3}
+          fullWidth
+          value={orderState.notes}
+          onChange={(e) => setOrderState({ ...orderState, notes: e.target.value })}
+          sx={{ marginTop: 2 }}
+        />
       </Box>
 
       <OrderSummary addedDishes={orderState.addedDishes} updateTotal={updateTotal}/>

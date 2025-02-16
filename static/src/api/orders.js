@@ -3,12 +3,12 @@ const router = express.Router();
 const pool = require("../db/connection.js"); // PostgreSQL connection
 
 router.post("/", async (req, res) => {
-  const { wechatId, pickupLocation, date, orderDetails, total } = req.body;
+  const { wechatId, pickupLocation, date, orderDetails, total, notes } = req.body;
 
   try {
     const result = await pool.query(
-      "INSERT INTO orders (wechat_id, pick_up_location, pick_up_date, order_details, total) VALUES ($1, $2, $3, $4, $5) RETURNING *",
-      [wechatId, pickupLocation, date, orderDetails, total]
+      "INSERT INTO orders (wechat_id, pick_up_location, pick_up_date, order_details, total, notes) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *",
+      [wechatId, pickupLocation, date, orderDetails, total, notes]
     );
 
     res.status(201).json({ message: "Order submitted", order: result.rows[0] });
@@ -73,6 +73,7 @@ router.get("/search", async (req, res) => {
       wechat_id: order.wechat_id,
       order_details: typeof order.order_details === "string" ? JSON.parse(order.order_details) : order.order_details,
       total: order.total,
+      notes: order.notes
     }));
 
     res.json(orders);

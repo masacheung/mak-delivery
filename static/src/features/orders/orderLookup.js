@@ -97,6 +97,10 @@ const OrderLookup = () => {
                   (Please note that the total shown is for reference only and may vary at the time of delivery.)
                 </Typography>
               </Box>
+
+              <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                <Typography><strong>Notes:</strong>{orderData.notes}</Typography>
+              </Box>
             </Box>
 
             {/* Ordered Dishes */}

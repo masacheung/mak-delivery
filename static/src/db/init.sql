@@ -5,5 +5,6 @@ CREATE TABLE orders (
     pick_up_date TIMESTAMP NOT NULL,
     pick_up_location VARCHAR(255) NOT NULL,
     total DECIMAL(10,2) NOT NULL,
-    order_details JSONB NOT NULL
+    order_details JSONB NOT NULL,
+    notes TEXT
 );

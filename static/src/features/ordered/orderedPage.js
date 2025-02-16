@@ -66,6 +66,8 @@ const OrderedPage = () => {
             <Typography color="error">No order details available.</Typography>
           )}
 
+          <Typography><strong>Notes:</strong>{order.notes}</Typography>
+
           <Divider sx={{ my: 2 }} />
 
           <Typography variant="body1">

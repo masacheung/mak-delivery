@@ -178,6 +178,7 @@ const Admin = () => {
               ) : (
                 <Typography color="error">No order details available.</Typography>
               )}
+              <Typography><strong>Notes:</strong>{order.notes}</Typography>
             </Card>
           ))}
         </Box>
