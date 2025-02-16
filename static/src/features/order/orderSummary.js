@@ -7,7 +7,9 @@ const TAX_RATE = 0.07;
 const RESTAURANT_NAME = {
     1: "Tasty Moment",
     2: "港茶巷 HK ALLEY",
-    3: "雲吞佳"
+    3: "雲吞佳",
+    4: "S&Y Mini HotPot 蜀世冒菜",
+    5: "98K"
 };
 
 const OrderSummary = ({ addedDishes = {}, updateTotal }) => {
@@ -58,14 +60,17 @@ const OrderSummary = ({ addedDishes = {}, updateTotal }) => {
               {dishes.map((dish) => (
                 <Typography key={dish.id} variant="body1">
                   {`${dish.name} ${
-                  dish.selectedOptions && dish.selectedOptions.length > 0
-                  ? ` (${dish.selectedOptions.join(", ")})` // ✅ Display selected options
-                  : ""} x${dish.quantity}`} -
+                    dish.selectedOptions && Object.keys(dish.selectedOptions).length > 0
+                      ? ` (${Object.entries(dish.selectedOptions)
+                          .map(([optionKey, selected]) => selected.join(", "))
+                          .join("; ")})` // ✅ Display selected options for all option groups
+                      : ""
+                  } x${dish.quantity}`} -
                   {dish.price === "SP" ? (
                     <Typography color="error" variant="caption">
                       SP (Check with restaurant)
                     </Typography>
-                  ) : `$${Number(dish.price).toFixed(2) * Number(dish.quantity)}`}
+                  ) : `$${(Number(dish.price) * Number(dish.quantity)).toFixed(2)}`}
                 </Typography>
               ))}
             </Box>
@@ -77,6 +82,9 @@ const OrderSummary = ({ addedDishes = {}, updateTotal }) => {
         <Typography variant="body1">Delivery Fee: ${deliveryFee.toFixed(2)}</Typography>
         <Typography variant="h6" sx={{ marginTop: 1 }}>
           Total: ${total.toFixed(2)}
+        </Typography>
+        <Typography component="span" color="error" variant="caption">
+          (Please note that the total shown is for reference only and may vary at the time of delivery.)
         </Typography>
       </Box>
     </Box>

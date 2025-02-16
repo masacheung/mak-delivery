@@ -20,7 +20,9 @@ const pickupLocations = [
 const RESTAURANT_NAME = {
     1: "Tasty Moment",
     2: "港茶巷 HK ALLEY",
-    3: "雲吞佳"
+    3: "雲吞佳",
+    4: "S&Y Mini HotPot 蜀世冒菜",
+    5: "98K"
 };
 
 const Admin = () => {
@@ -156,9 +158,13 @@ const Admin = () => {
                     <ul style={{ paddingLeft: "20px" }}>
                       {dishes.map((dish) => (
                         <li key={dish.id}>
-                          {`${dish.name} ${dish.selectedOptions && dish.selectedOptions.length > 0
-                          ? ` (${dish.selectedOptions.join(", ")})` // ✅ Display selected options
-                          : ""} x${dish.quantity}`} -
+                          {`${dish.name} ${
+                            dish.selectedOptions && Object.keys(dish.selectedOptions).length > 0
+                              ? ` (${Object.entries(dish.selectedOptions)
+                                  .map(([optionKey, selected]) => selected.join(", "))
+                                  .join("; ")})` // ✅ Display all selected options correctly
+                              : ""
+                          } x${dish.quantity}`} -
                           {dish.price === "SP" ? (
                             <Typography color="error" variant="caption">
                               SP (Check with restaurant)

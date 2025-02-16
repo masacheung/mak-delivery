@@ -48,9 +48,13 @@ const OrderedPage = () => {
                   {dishes.map((dish) => (
                     <ListItem key={`${restaurantId}-${dish.id}`}>
                       <ListItemText
-                        primary={`${dish.name} ${dish.selectedOptions && dish.selectedOptions.length > 0
-                        ? ` (${dish.selectedOptions.join(", ")})` // ✅ Display selected options
-                        : ""} x${dish.quantity}`}
+                        primary={`${dish.name} ${
+                          dish.selectedOptions && Object.keys(dish.selectedOptions).length > 0
+                            ? ` (${Object.entries(dish.selectedOptions)
+                                .map(([optionKey, selected]) => selected.join(", "))
+                                .join("; ")})` // ✅ Display all selected options correctly
+                            : ""
+                        } x${dish.quantity}`}
                         secondary={isNaN(dish.price) ? "SP (Check with restaurant)" : `$${Number(dish.price).toFixed(2)} each`}
                       />
                     </ListItem>
@@ -65,7 +69,10 @@ const OrderedPage = () => {
           <Divider sx={{ my: 2 }} />
 
           <Typography variant="body1">
-            <strong>Total:</strong> ${Number(order.total) ? Number(order.total).toFixed(2) : "N/A"}
+            <strong>Total: </strong> ${Number(order.total) ? Number(order.total).toFixed(2) : "N/A"}
+          </Typography>
+          <Typography component="span" color="error" variant="caption">
+            (Please note that the total shown is for reference only and may vary at the time of delivery.)
           </Typography>
           <Typography variant="body1">
             <strong>WeChat ID:</strong> {order.wechat_id || "N/A"}
@@ -74,7 +81,7 @@ const OrderedPage = () => {
             <strong>Pickup Location:</strong> {order.pick_up_location || "N/A"}
           </Typography>
           <Typography variant="body1">
-            <strong>Pickup Location:</strong> {order.pick_up_date || "N/A"}
+            <strong>Pickup Date:</strong> {order.pick_up_date ? new Date(order.pick_up_date).toISOString().split("T")[0] : ""}
           </Typography>
 
           {/* Navigation Buttons */}

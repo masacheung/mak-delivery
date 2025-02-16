@@ -10,7 +10,7 @@ const HK_ALLEY = {
         { id: 26, name: '金磚鴛鴦奶茶(M)', price:6.00 },
         { id: 27, name: '金磚鴛鴦奶茶(L)', price:7.00  },
         { id: 28, name: '金磚布蕾奶茶(M)', price:6.00  },
-        { id: 29, name: '  金磚布蕾奶茶(L)', price:7.00  },
+        { id: 29, name: '金磚布蕾奶茶(L)', price:7.00  },
         { id: 210, name: '布蕾打冷震奶茶(L)', price:7.95 },
         { id: 211, name: '港式檸檬(L)', price:6.50  },
         { id: 212, name: '陳皮檸檬(L)', price:7.00  },

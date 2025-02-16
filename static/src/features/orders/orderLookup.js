@@ -81,13 +81,21 @@ const OrderLookup = () => {
               </Box>
 
               <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                <Typography sx={{ fontWeight: "bold", minWidth: "150px", textAlign: "left" }}>Pickup Location:</Typography>
-                <Typography sx={{ textAlign: "right" }}>{orderData.pick_up_date}</Typography>
+                <Typography sx={{ fontWeight: "bold", minWidth: "150px", textAlign: "left" }}>Pickup Date:</Typography>
+                <Typography sx={{ textAlign: "right" }}>
+                  {orderData.pick_up_date ? new Date(orderData.pick_up_date).toISOString().split("T")[0] : ""}
+                </Typography>
               </Box>
 
               <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                <Typography sx={{ fontWeight: "bold", minWidth: "150px", textAlign: "left" }}>Total:</Typography>
+                <Typography sx={{ fontWeight: "bold", minWidth: "150px", textAlign: "left" }}>Total: </Typography>
                 <Typography sx={{ textAlign: "right" }}>${Number(orderData?.total || 0).toFixed(2)}</Typography>
+              </Box>
+
+              <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                <Typography component="span" color="error" variant="caption">
+                  (Please note that the total shown is for reference only and may vary at the time of delivery.)
+                </Typography>
               </Box>
             </Box>
 
@@ -108,9 +116,13 @@ const OrderLookup = () => {
                     {/* Dish List */}
                     {dishes.map((dish, index) => (
                       <Typography key={dish.id} sx={{ ml: 2 }}>
-                        {index + 1}. {`${dish.name} ${dish.selectedOptions && dish.selectedOptions.length > 0
-                        ? ` (${dish.selectedOptions.join(", ")})` // ✅ Display selected options
-                        : ""}`} x {dish.quantity}
+                        {index + 1}. {`${dish.name} ${
+                          dish.selectedOptions && Object.keys(dish.selectedOptions).length > 0
+                            ? ` (${Object.entries(dish.selectedOptions)
+                                .map(([optionKey, selected]) => selected.join(", "))
+                                .join("; ")})` // ✅ Display all selected options correctly
+                            : ""
+                        }`} x {dish.quantity}
                       </Typography>
                     ))}
                   </Box>

@@ -16,6 +16,8 @@ import OrderSummary from "../order/orderSummary";
 import TASTY_MOMENT from "./tastyMoment";
 import HK_ALLEY from "./hkAlley";
 import WONTON_GUY from "./wontonGuy";
+import S_Y_MINI_HOTPOT from "./syMiniHotPot"
+import NINETY_EIGHT_K from "./ninetyEightK";
 
 const pickupLocations = [
   "Fort Lee 540 Main St",
@@ -36,6 +38,8 @@ const RestaurantList = () => {
   const restaurants = [
     TASTY_MOMENT,
     WONTON_GUY,
+    S_Y_MINI_HOTPOT,
+    NINETY_EIGHT_K,
     HK_ALLEY,
   ];
 
@@ -260,8 +264,10 @@ const RestaurantList = () => {
                       <Chip
                         key={dish.id}
                         label={`${dish.name} ${
-                          dish.selectedOptions && dish.selectedOptions.length > 0
-                            ? ` (${dish.selectedOptions.join(", ")})` // ✅ Display selected options
+                          dish.selectedOptions && Object.keys(dish.selectedOptions).length > 0
+                            ? ` (${Object.entries(dish.selectedOptions)
+                                .map(([optionKey, selected]) => selected.join(", "))
+                                .join("; ")})` // ✅ Display selected options for all option groups
                             : ""
                         } x${dish.quantity}`}
                         sx={{ margin: "2px" }}
@@ -314,7 +320,7 @@ const RestaurantList = () => {
           ))}
         </TextField>
         <TextField fullWidth label="Date" type="date" value={orderState.date} onChange={(e) => updateOrderState("date", e.target.value)} margin="normal" required InputLabelProps={{ shrink: true }} error={orderState.errors?.date} helperText={orderState.errors?.date ? "Date is required" : ""}/>
-        <Button variant="contained" color="primary" fullWidth sx={{ mt: 2 }} color="primary" onClick={handleSubmit} sx={{ marginTop: 2 }}>
+        <Button variant="contained" color="primary" fullWidth sx={{ mt: 2,  marginTop: 2 }} onClick={handleSubmit}>
           Submit Order
         </Button>
 
