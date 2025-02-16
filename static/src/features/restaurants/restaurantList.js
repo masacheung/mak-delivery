@@ -18,6 +18,7 @@ import HK_ALLEY from "./hkAlley";
 import WONTON_GUY from "./wontonGuy";
 import S_Y_MINI_HOTPOT from "./syMiniHotPot"
 import NINETY_EIGHT_K from "./ninetyEightK";
+import CHEF_GE from "./chefGe"
 
 const pickupLocations = [
   "Fort Lee 540 Main St",
@@ -30,6 +31,7 @@ const pickupLocations = [
   "Jersey City (1 Shorn Ln)",
   "Jersey City (155 Bay St)",
   "JSQ (Overlook Flat)",
+  "Ridgewood"
 ];
 
 const RestaurantList = () => {
@@ -37,6 +39,7 @@ const RestaurantList = () => {
 
   const restaurants = [
     TASTY_MOMENT,
+    CHEF_GE,
     WONTON_GUY,
     S_Y_MINI_HOTPOT,
     NINETY_EIGHT_K,

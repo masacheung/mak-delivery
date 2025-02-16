@@ -15,6 +15,7 @@ const pickupLocations = [
   "Jersey City (1 Shorn Ln)",
   "Jersey City (155 Bay St)",
   "JSQ (Overlook Flat)",
+  "Ridgewood"
 ];
 
 const RESTAURANT_NAME = {
@@ -22,7 +23,8 @@ const RESTAURANT_NAME = {
     2: "港茶巷 HK ALLEY",
     3: "雲吞佳",
     4: "S&Y Mini HotPot 蜀世冒菜",
-    5: "98K"
+    5: "98K",
+    6: "葛师傅"
 };
 
 const Admin = () => {

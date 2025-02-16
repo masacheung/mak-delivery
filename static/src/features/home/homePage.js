@@ -13,6 +13,7 @@ const pickupLocations = [
   "Jersey City (1 Shorn Ln)",
   "Jersey City (155 Bay St)",
   "JSQ (Overlook Flat)",
+  "Ridgewood"
 ];
 
 const HomePage = () => {
