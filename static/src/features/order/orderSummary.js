@@ -79,7 +79,7 @@ const OrderSummary = ({ addedDishes = {}, updateTotal }) => {
       </Box>
 
       <Box sx={{ marginTop: 2, borderTop: "1px solid #ccc", paddingTop: 2 }}>
-        <Typography variant="body1">Tax (7%): ${tax.toFixed(2)}</Typography>
+        <Typography variant="body1">Tax (6.625%): ${tax.toFixed(2)}</Typography>
         <Typography variant="body1">Delivery Fee: ${deliveryFee.toFixed(2)}</Typography>
         <Typography variant="h6" sx={{ marginTop: 1 }}>
           Total: ${total.toFixed(2)}
