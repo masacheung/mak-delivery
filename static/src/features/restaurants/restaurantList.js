@@ -334,7 +334,7 @@ const RestaurantList = () => {
             </MenuItem>
           ))}
         </TextField>
-        <TextField fullWidth label="Date" type="date" value={orderState.date} onChange={(e) => updateOrderState("date", e.target.value)} margin="normal" required InputLabelProps={{ shrink: true }} error={orderState.errors?.date} helperText={orderState.errors?.date ? "Date is required" : ""}/>
+        <TextField fullWidth label="Pick-up Date" type="date" value={orderState.date} onChange={(e) => updateOrderState("date", e.target.value)} margin="normal" required InputLabelProps={{ shrink: true }} error={orderState.errors?.date} helperText={orderState.errors?.date ? "Date is required" : ""}/>
         <Button variant="contained" color="primary" fullWidth sx={{ mt: 2,  marginTop: 2 }} onClick={handleSubmit}>
           Submit Order
         </Button>
