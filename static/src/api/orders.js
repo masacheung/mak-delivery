@@ -65,7 +65,7 @@ router.get("/search", async (req, res) => {
     );
 
     if (result.rows.length === 0) {
-      return res.status(404).json({ error: "No orders found for the given criteria." });
+      return res.status(200).json({ message: "No orders found for the given criteria.", orders: [] });
     }
 
     const orders = result.rows.map((order) => ({

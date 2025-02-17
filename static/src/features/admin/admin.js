@@ -52,8 +52,10 @@ const Admin = () => {
   };
 
   const handleSearch = async () => {
+    const encodePickUpLocation = encodeURIComponent(pickUpLocation);
+
     try {
-      const response = await fetch(`/api/orders/search?pick_up_location=${pickUpLocation}&pick_up_date=${pickUpDate}`);
+      const response = await fetch(`/api/orders/search?pick_up_location=${encodePickUpLocation}&pick_up_date=${pickUpDate}`);
       if (!response.ok) {
         throw new Error("Failed to fetch orders");
       }
