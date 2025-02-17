@@ -7,7 +7,7 @@ const SPICE_TWENTY_FOUR = {
                     option1:
                         {
                         name: "主菜選2",
-                        choices: ["香辣排骨", "鮮露蘆筍牛肉(+$5)", "菠蘿辣子雞", "火爆腰花", "土匪豬肝", "香椿炒雞蛋", "椒鹽魚片", "鹽焗雞半隻", "上湯河塘小炒", "牛肉麻辣香鍋"],
+                        choices: ["香辣排骨", "鮮露蘆筍牛肉(+$5)", "菠蘿辣子雞", "火爆腰花", "土匪豬肝", "香椿炒雞蛋", "椒鹽魚片", "鹽焗雞半隻", "上湯河塘小炒", "牛肉麻辣香鍋 請在備註欄標明 (薑蔥, 黑胡椒, 豆豉)"],
                         selectedOptions: [], limit: 2
                         },
                     option2:
@@ -17,7 +17,7 @@ const SPICE_TWENTY_FOUR = {
                     },
                     option3: {
                         name: "涼菜選1",
-                        choices: ["口水雞", "夫妻肺片", "燒椒茄子", "撈汁秋葵", "鹽酥雞",], selectedOptions: [], limit: 1
+                        choices: ["口水雞", "夫妻肺片", "燒椒茄子", "撈汁秋葵", "鹽酥雞"], selectedOptions: [], limit: 1
                     },
                 }
          },
@@ -103,10 +103,10 @@ const SPICE_TWENTY_FOUR = {
                             "烏冬麵($3.95)",
                             "公仔麵($3.95)",
                             "兩面黃($3.95)",
-                        ]
+                        ], selectedOptions: [], limit: 100
                         },
                     option4: {
-                        name: "Toppings", choices: ["青蔥", "香菜", "芝麻", "油蔥酥($1.50)","黃金炒蛋($3.50)",], selectedOptions: [], limit: 1
+                        name: "Toppings", choices: ["青蔥", "香菜", "芝麻", "油蔥酥($1.50)","黃金炒蛋($3.50)",], selectedOptions: [], limit: 100
                     }
         }},
         { id: 73, name: '燒椒茄子', price:9.95},
@@ -123,7 +123,7 @@ const SPICE_TWENTY_FOUR = {
         { id: 714, name: '古法酥炸丸子', price:8.95},
         { id: 715, name: '紅油乾炒拌手', price:8.95},
         { id: 716, name: '紅糖糍粑', price:7.95},
-        { id: 717, name: '冒烤鴨🌶️', price:55.95  },
+        { id: 717, name: '冒烤鴨 (spicy）🌶️', price:55.95  },
         { id: 718, name: '香椿炒雞蛋', price:17.95  },
         { id: 719, name: '菠蘿辣子雞', price:18.95 },
         { id: 720, name: '雞卜卜脆炒飯', price:19.95  },
@@ -154,9 +154,9 @@ const SPICE_TWENTY_FOUR = {
         { id: 745, name: '素菜兩面黃', price:13.95 },
         { id: 746, name: '黑松露炒飯', price:16.95 },
         { id: 747, name: '港式臘味炒飯', price:18.95 },
-        { id: 748, name: '成都辣炒飯(spicy)', price:15.95 },
+        { id: 748, name: '成都辣炒飯 (spicy) 🌶️', price:15.95 },
         { id: 749, name: '菠蘿蝦仁炒飯', price:13.95},
-        { id: 750, name: '紅燒牛腩麵(spicy）', price:12.95},
+        { id: 750, name: '紅燒牛腩麵 (spicy）🌶️', price:12.95},
         { id: 751, name: '清湯素菜麵 ', price:12.95},
         { id: 752, name: '炒手', price:10.95 , options: {option1: {name: "Types", choices: ["老麻", "骨湯", ], selectedOptions: [], limit: 1 }}},
         { id: 753, name: '涼麵', price:8.95 , options: {option1: {name: "Types", choices: ["麻辣", "芝麻", ], selectedOptions: [], limit: 1 }}},

@@ -25,7 +25,9 @@ const OrderedPage = () => {
           <Typography variant="h5" fontWeight="bold" gutterBottom align="center">
             Order Confirmation
           </Typography>
-
+          <Typography color="error" variant="caption" display="block">
+            (Please take a screenshot of this order confirmation and remember your Order ID and WeChat ID for order lookup.)
+          </Typography>
           <Typography variant="body1" color="textSecondary">
             <strong>Order ID:</strong> {order.id}
           </Typography>

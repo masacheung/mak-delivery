@@ -7,6 +7,7 @@
     <list default="true" id="f1fd87b3-22bf-4469-bc34-46a90dadddb5" name="Changes" comment="">
       <change afterPath="$PROJECT_DIR$/static/src/features/restaurants/chefGe.js" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/static/src/features/restaurants/hkAlley.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/src/features/restaurants/meeTu.js" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/static/src/features/restaurants/ninetyEightK.js" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/static/src/features/restaurants/spiceTwentyFour.js" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/static/src/features/restaurants/syMiniHotPot.js" afterDir="false" />

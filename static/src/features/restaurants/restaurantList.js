@@ -16,10 +16,11 @@ import OrderSummary from "../order/orderSummary";
 import TASTY_MOMENT from "./tastyMoment";
 import HK_ALLEY from "./hkAlley";
 import WONTON_GUY from "./wontonGuy";
-import S_Y_MINI_HOTPOT from "./syMiniHotPot"
+import S_Y_MINI_HOTPOT from "./syMiniHotPot";
 import NINETY_EIGHT_K from "./ninetyEightK";
-import CHEF_GE from "./chefGe"
-import SPICE_TWENTY_FOUR from "./spiceTwentyFour"
+import CHEF_GE from "./chefGe";
+import SPICE_TWENTY_FOUR from "./spiceTwentyFour";
+import MEE_TU from "./meeTu";
 
 const pickupLocations = [
   "Fort Lee 540 Main St",
@@ -46,6 +47,7 @@ const RestaurantList = () => {
     S_Y_MINI_HOTPOT,
     NINETY_EIGHT_K,
     HK_ALLEY,
+    MEE_TU
   ];
 
   const [orderState, setOrderState] = useState({
@@ -232,7 +234,12 @@ const RestaurantList = () => {
         <Typography variant="h4" gutterBottom>
           Restaurant List
         </Typography>
-
+        <Typography color="error" variant="caption" display="block">
+          (Please refer to the WeChat notification for available restaurant(s) and pickup location on your selected date.)
+        </Typography>
+        <Typography color="error" variant="caption" display="block">
+          (For drink(s), the total price includes only the drink and excludes add-ons.)
+        </Typography>
         <List>
           {restaurants.map((restaurant) => (
             <ListItem

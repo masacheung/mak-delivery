@@ -25,7 +25,8 @@ const RESTAURANT_NAME = {
     4: "S&Y Mini HotPot 蜀世冒菜",
     5: "98K",
     6: "葛师傅",
-    7: "Spice 24"
+    7: "Spice 24",
+    8: "Meetu"
 };
 
 const Admin = () => {
