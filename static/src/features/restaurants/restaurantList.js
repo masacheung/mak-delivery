@@ -19,6 +19,7 @@ import WONTON_GUY from "./wontonGuy";
 import S_Y_MINI_HOTPOT from "./syMiniHotPot"
 import NINETY_EIGHT_K from "./ninetyEightK";
 import CHEF_GE from "./chefGe"
+import SPICE_TWENTY_FOUR from "./spiceTwentyFour"
 
 const pickupLocations = [
   "Fort Lee 540 Main St",
@@ -40,6 +41,7 @@ const RestaurantList = () => {
   const restaurants = [
     TASTY_MOMENT,
     CHEF_GE,
+    SPICE_TWENTY_FOUR,
     WONTON_GUY,
     S_Y_MINI_HOTPOT,
     NINETY_EIGHT_K,

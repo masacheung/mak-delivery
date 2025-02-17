@@ -8,8 +8,10 @@
       <change afterPath="$PROJECT_DIR$/static/src/features/restaurants/chefGe.js" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/static/src/features/restaurants/hkAlley.js" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/static/src/features/restaurants/ninetyEightK.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/src/features/restaurants/spiceTwentyFour.js" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/static/src/features/restaurants/syMiniHotPot.js" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/static/src/features/restaurants/wontonGuy.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/static/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/static/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/static/src/api/orders.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/src/api/orders.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/static/src/db/init.sql" beforeDir="false" afterPath="$PROJECT_DIR$/static/src/db/init.sql" afterDir="false" />
