@@ -59,7 +59,7 @@ const OrderSummary = ({ addedDishes = {}, updateTotal }) => {
           .filter(([_, dishes]) => dishes.length > 0) // Only include restaurants with orders
           .map(([restaurantId, dishes]) => (
             <Box key={restaurantId} sx={{ marginBottom: 2 }}>
-              <Typography variant="h6">{RESTAURANT_NAME[restaurantId]}</Typography>
+              <Typography variant="h6" fontWeight="bold" color="primary">{RESTAURANT_NAME[restaurantId]}</Typography>
               {dishes.map((dish) => (
                 <Typography key={dish.id} variant="body1">
                   {`${dish.name} ${

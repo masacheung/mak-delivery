@@ -113,7 +113,7 @@ const OrderLookup = () => {
                 Object.entries(orderData.order_details).map(([restaurantId, dishes]) => (
                   <Box key={restaurantId} sx={{ mt: 2 }}>
                     {/* Restaurant Name */}
-                    <Typography variant="h6" sx={{ fontWeight: "bold", textDecoration: "underline" }}>
+                    <Typography variant="h6" fontWeight="bold" color="primary" sx={{ textDecoration: "underline" }}>
                       {dishes[0]?.restaurantName}
                     </Typography>
 
