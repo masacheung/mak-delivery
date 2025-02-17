@@ -25,14 +25,14 @@ import MEE_TU from "./meeTu";
 const pickupLocations = [
   "Fort Lee 540 Main St",
   "Hackensack 99 Ranch",
-  "Tenafly (165 Grove St, Tenafly, NJ 07670)",
-  "Weehawken (150 Henley Place)",
-  "Weehawken (9 Ave at Port Imperial)",
-  "Möge Tea (2029 Lemoine Ave #102, Fort Lee, NJ 07024)",
-  "Jersey City (Canopy 159 Morgan St)",
-  "Jersey City (1 Shorn Ln)",
-  "Jersey City (155 Bay St)",
-  "JSQ (Overlook Flat)",
+  "Tenafly - 165 Grove St, Tenafly, NJ 07670",
+  "Weehawken - 150 Henley Place",
+  "Weehawken - 9 Ave at Port Imperial",
+  "Möge Tea - 2029 Lemoine Ave #102, Fort Lee, NJ 07024",
+  "Jersey City - Canopy 159 Morgan St",
+  "Jersey City - 1 Shorn Ln",
+  "Jersey City - 155 Bay St",
+  "JSQ - Overlook Flat",
   "Ridgewood"
 ];
 
