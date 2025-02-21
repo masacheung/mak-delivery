@@ -115,13 +115,15 @@ const Admin = () => {
 
       {/* Pickup Location Dropdown */}
       <FormControl sx={{ minWidth: 300, mb: 2 }}>
-        <InputLabel>Pickup Location</InputLabel>
+        <InputLabel shrink htmlFor="location-select">Pickup Location</InputLabel>
         <Select
           value={pickUpLocation}
           onChange={(e) => setPickUpLocation(e.target.value)}
           displayEmpty
         >
-          <MenuItem value="" disabled></MenuItem>
+          <MenuItem value="">
+            <em>Clear Selection</em>
+          </MenuItem>
           {pickupLocations.map((location, index) => (
             <MenuItem key={index} value={location}>{location}</MenuItem>
           ))}
@@ -129,15 +131,22 @@ const Admin = () => {
       </FormControl>
 
       <FormControl sx={{ minWidth: 300, mb: 2 }}>
-        <InputLabel>Select Restaurant</InputLabel>
+        <InputLabel shrink htmlFor="restaurant-select">
+          Select Restaurant
+        </InputLabel>
         <Select
+          id="restaurant-select"
           value={restaurant}
           onChange={(e) => setRestaurant(e.target.value)}
           displayEmpty
         >
-          <MenuItem value="" disabled></MenuItem>
+          <MenuItem value="">
+            <em>Clear Selection</em>
+          </MenuItem>
           {Object.entries(RESTAURANT_NAME).map(([id, name]) => (
-            <MenuItem key={id} value={id}>{name}</MenuItem>
+            <MenuItem key={id} value={id}>
+              {name}
+            </MenuItem>
           ))}
         </Select>
       </FormControl>
