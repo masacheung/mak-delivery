@@ -36,6 +36,7 @@ const Admin = () => {
   const [error, setError] = useState("");
   const [pickUpLocation, setPickUpLocation] = useState("");
   const [pickUpDate, setPickUpDate] = useState("");
+  const [restaurant, setRestaurant] = useState("");
   const [orders, setOrders] = useState([]);
 
   const handleLogin = (e) => {
@@ -55,7 +56,7 @@ const Admin = () => {
     const encodePickUpLocation = encodeURIComponent(pickUpLocation);
 
     try {
-      const response = await fetch(`/api/orders/search?pick_up_location=${encodePickUpLocation}&pick_up_date=${pickUpDate}`);
+      const response = await fetch(`/api/orders/search?pick_up_location=${encodePickUpLocation}&pick_up_date=${pickUpDate}&restaurantId=${restaurant}`);
       if (!response.ok) {
         throw new Error("Failed to fetch orders");
       }
@@ -123,6 +124,20 @@ const Admin = () => {
           <MenuItem value="" disabled></MenuItem>
           {pickupLocations.map((location, index) => (
             <MenuItem key={index} value={location}>{location}</MenuItem>
+          ))}
+        </Select>
+      </FormControl>
+
+      <FormControl sx={{ minWidth: 300, mb: 2 }}>
+        <InputLabel>Select Restaurant</InputLabel>
+        <Select
+          value={restaurant}
+          onChange={(e) => setRestaurant(e.target.value)}
+          displayEmpty
+        >
+          <MenuItem value="" disabled></MenuItem>
+          {Object.entries(RESTAURANT_NAME).map(([id, name]) => (
+            <MenuItem key={id} value={id}>{name}</MenuItem>
           ))}
         </Select>
       </FormControl>
