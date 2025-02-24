@@ -33,8 +33,24 @@ const WONTON_GUY = {
              }
          }},
         { id: 36, name: '上湯淨麵', price:12.00 },
-        { id: 37, name: '雙拼麵', price:12.75  },
-        { id: 38, name: '三拼麵', price:14.50  },
+        { id: 37, name: '雙拼麵', price:12.75,
+        options: {
+            option1: {
+                name: "Choose Noodle ", choices: ["蛋麵", "河粉" ,"米粉","米線"], selectedOptions: [], limit: 1
+            },
+            option2: {
+                name: "Choose Toppings", choices: [ "雲吞", "水餃","鯪魚球","牛肉","牛腩","炸醬"], selectedOptions: [], limit: 2
+            },
+        }},
+        { id: 38, name: '三拼麵', price:14.50,
+          options: {
+              option1: {
+                  name: "Choose Noodle ", choices: ["蛋麵", "河粉" ,"米粉","米線"], selectedOptions: [], limit: 1
+              },
+              option2: {
+                  name: "Choose Toppings", choices: [ "雲吞", "水餃","鯪魚球","牛肉","牛腩","炸醬"], selectedOptions: [], limit: 3
+              },
+          }},
         { id: 39, name: '雲吞撈麵', price:12.00 ,
         options: {
               option1: {
