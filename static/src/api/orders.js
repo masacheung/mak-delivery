@@ -109,8 +109,8 @@ router.get("/search", async (req, res) => {
   } else if (restaurantId) {
     try {
       const result = await pool.query(
-        "SELECT * FROM orders WHERE order_details::jsonb ? $1 ORDER BY id ASC",
-        [restaurantId]
+        "SELECT * FROM orders WHERE order_details::jsonb ? $1 AND pick_up_date = $2 ORDER BY id ASC",
+        [restaurantId, pick_up_date]
       );
 
       if (result.rows.length === 0) {
