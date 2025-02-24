@@ -28,6 +28,7 @@ const pickupLocations = [
   "Tenafly - 165 Grove St, Tenafly, NJ 07670",
   "Weehawken - 150 Henley Place",
   "Weehawken - 9 Ave at Port Imperial",
+  "900 Madison St, Hoboken, NJ 07030",
   "Möge Tea - 2029 Lemoine Ave #102, Fort Lee, NJ 07024",
   "Jersey City - Canopy 159 Morgan St",
   "Jersey City - 1 Shorn Ln",
