@@ -6,6 +6,9 @@
   <component name="ChangeListManager">
     <list default="true" id="f1fd87b3-22bf-4469-bc34-46a90dadddb5" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/static/src/api/orders.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/src/api/orders.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/src/features/admin/admin.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/src/features/admin/admin.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/src/features/home/homePage.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/src/features/home/homePage.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/src/features/restaurants/restaurantList.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/src/features/restaurants/restaurantList.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
