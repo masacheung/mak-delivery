@@ -3,32 +3,7 @@ import {
   Box, TextField, Button, Typography, Card, CardContent,
   Select, MenuItem, FormControl, InputLabel
 } from "@mui/material";
-
-const pickupLocations = [
-  "Fort Lee 540 Main St",
-  "Hackensack 99 Ranch",
-  "Tenafly - 165 Grove St, Tenafly, NJ 07670",
-  "Weehawken - 150 Henley Place",
-  "Weehawken - 9 Ave at Port Imperial",
-  "900 Madison St, Hoboken, NJ 07030",
-  "Möge Tea - 2029 Lemoine Ave #102, Fort Lee, NJ 07024",
-  "Jersey City - Canopy 159 Morgan St",
-  "Jersey City - 1 Shorn Ln",
-  "Jersey City - 155 Bay St",
-  "JSQ - Overlook Flat",
-  "Ridgewood"
-];
-
-const RESTAURANT_NAME = {
-    1: "Tasty Moment",
-    2: "港茶巷 HK ALLEY",
-    3: "雲吞佳",
-    4: "S&Y Mini HotPot 蜀世冒菜",
-    5: "98K",
-    6: "葛师傅",
-    7: "Spice 24",
-    8: "Meetu"
-};
+import {PICK_UP_LOCATION, RESTAURANT_NAME} from "../../constant/constant";
 
 const Admin = () => {
   const [username, setUsername] = useState("");
@@ -39,6 +14,7 @@ const Admin = () => {
   const [pickUpDate, setPickUpDate] = useState("");
   const [restaurant, setRestaurant] = useState("");
   const [orders, setOrders] = useState([]);
+  const [sumTotal, setSumTotal] = useState(0);
 
   const handleLogin = (e) => {
     e.preventDefault();
@@ -62,7 +38,10 @@ const Admin = () => {
         throw new Error("Failed to fetch orders");
       }
       const data = await response.json();
-      setOrders(data); // Set the fetched orders
+      const sum = data.reduce((acc, item) => acc + parseFloat(item.total || 0), 0);;
+
+      setOrders(data);
+      setSumTotal(parseFloat(totalSum.toFixed(2)));
     } catch (error) {
       console.error("Error fetching orders:", error);
       setOrders([]);
@@ -125,7 +104,7 @@ const Admin = () => {
           <MenuItem value="">
             <em>Clear Selection</em>
           </MenuItem>
-          {pickupLocations.map((location, index) => (
+          {PICK_UP_LOCATION.map((location, index) => (
             <MenuItem key={index} value={location}>{location}</MenuItem>
           ))}
         </Select>
@@ -171,6 +150,7 @@ const Admin = () => {
         <Box mt={4} width="80%">
           <Typography variant="h6">Search Results:</Typography>
           <Typography><strong>Total Orders:</strong> {orders.length}</Typography>
+          <Typography><strong>Total :</strong> $ {sumTotal}</Typography>
           <Typography><strong>Location:</strong> {pickUpLocation}</Typography>
           {orders.map((order) => (
             <Card key={order.id} sx={{ mt: 2, p: 2 }}>
