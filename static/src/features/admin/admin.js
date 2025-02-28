@@ -41,7 +41,7 @@ const Admin = () => {
       const sum = data.reduce((acc, item) => acc + parseFloat(item.total || 0), 0);;
 
       setOrders(data);
-      setSumTotal(parseFloat(totalSum.toFixed(2)));
+      setSumTotal(parseFloat(sum.toFixed(2)));
     } catch (error) {
       console.error("Error fetching orders:", error);
       setOrders([]);
