@@ -130,6 +130,30 @@ router.get("/search", async (req, res) => {
       console.error("Error fetching orders:", error);
       res.status(500).json({ error: "Database error" });
     }
+  } else {
+    try {
+      const result = await pool.query(
+        "SELECT * FROM orders WHERE pick_up_date = $1 ORDER BY id ASC",
+        [pick_up_date]
+      );
+
+      if (result.rows.length === 0) {
+        return res.status(200).json({ message: "No orders found for the given criteria.", orders: [] });
+      }
+
+      const orders = result.rows.map((order) => ({
+        id: order.id,
+        wechat_id: order.wechat_id,
+        order_details: typeof order.order_details === "string" ? JSON.parse(order.order_details) : order.order_details,
+        total: order.total,
+        notes: order.notes
+      }));
+
+      res.json(orders);
+    } catch (error) {
+      console.error("Error fetching orders:", error);
+      res.status(500).json({ error: "Database error" });
+    }
   }
 });
 
