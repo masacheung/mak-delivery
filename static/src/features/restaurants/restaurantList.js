@@ -21,21 +21,8 @@ import NINETY_EIGHT_K from "./ninetyEightK";
 import CHEF_GE from "./chefGe";
 import SPICE_TWENTY_FOUR from "./spiceTwentyFour";
 import MEE_TU from "./meeTu";
-
-const pickupLocations = [
-  "Fort Lee 540 Main St",
-  "Hackensack 99 Ranch",
-  "Tenafly - 165 Grove St, Tenafly, NJ 07670",
-  "Weehawken - 150 Henley Place",
-  "Weehawken - 9 Ave at Port Imperial",
-  "900 Madison St, Hoboken, NJ 07030",
-  "Möge Tea - 2029 Lemoine Ave #102, Fort Lee, NJ 07024",
-  "Jersey City - Canopy 159 Morgan St",
-  "Jersey City - 1 Shorn Ln",
-  "Jersey City - 155 Bay St",
-  "JSQ - Overlook Flat",
-  "Ridgewood"
-];
+import YOU_GARDEN from "./youGarden";
+import { PICK_UP_LOCATION } from "../../constant/constant";
 
 const RestaurantList = () => {
   const navigate = useNavigate();
@@ -46,6 +33,7 @@ const RestaurantList = () => {
     SPICE_TWENTY_FOUR,
     WONTON_GUY,
     S_Y_MINI_HOTPOT,
+    YOU_GARDEN,
     NINETY_EIGHT_K,
     HK_ALLEY,
     MEE_TU
@@ -338,7 +326,7 @@ const RestaurantList = () => {
       <Box sx={{ padding: 2 }}>
         <TextField fullWidth label="WeChat ID" value={orderState.wechatId} onChange={(e) => updateOrderState("wechatId", e.target.value)} margin="normal" required error={orderState.errors?.wechatId} helperText={orderState.errors?.wechatId ? "WeChat ID is required" : ""}/>
         <TextField select fullWidth label="Pick-up Location" value={orderState.pickupLocation} onChange={(e) => updateOrderState("pickupLocation", e.target.value)} margin="normal" required error={orderState.errors?.pickupLocation} helperText={orderState.errors?.pickupLocation ? "Pick-up Location is required" : ""}>
-          {pickupLocations.map((location, index) => (
+          {PICK_UP_LOCATION.map((location, index) => (
             <MenuItem key={index} value={location}>
               {location}
             </MenuItem>
