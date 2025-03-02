@@ -9,20 +9,6 @@ import ClearIcon from '@mui/icons-material/Clear';
 const DishForm = ({ restaurant, quantities, onQuantityChange, onAddDish }) => {
   const [selectedOptions, setSelectedOptions] = useState({});
 
-//  const handleAddDish = (dish) => {
-//    if (quantities[dish.id] > 0) {
-//      onAddDish(restaurant.id, [
-//        {
-//          id: dish.id,
-//          name: dish.name || "Unknown",
-//          price: dish.price ?? 0,
-//          quantity: quantities[dish.id] ?? 0,
-//          options: dish.options || [],
-//          selectedOptions: selectedOptions[dish.id] || [], // ✅ Include selected options
-//        },
-//      ]);
-//    }
-//  };
   const handleAddDish = (dish) => {
       if (quantities[dish.id] > 0) {
         onAddDish(restaurant.id, [
@@ -37,27 +23,6 @@ const DishForm = ({ restaurant, quantities, onQuantityChange, onAddDish }) => {
       }
   };
 
-  const handleResetDish = (dishId) => {
-    onQuantityChange(dishId, 0); // Reset quantity to 0
-  };
-
-//  const handleOptionChange = (dishId, option, limit) => {
-//    setSelectedOptions((prev) => {
-//      const currentOptions = prev[dishId] || [];
-//
-//      if (currentOptions.includes(option)) {
-//        // ✅ Remove option if already selected
-//        return { ...prev, [dishId]: currentOptions.filter((opt) => opt !== option) };
-//      } else {
-//        // ✅ Only add if the selected count is within the limit
-//        if (currentOptions.length < limit) {
-//          return { ...prev, [dishId]: [...currentOptions, option] };
-//        } else {
-//          return prev; // Prevent exceeding the limit
-//        }
-//      }
-//    });
-//  };
   const handleOptionChange = (dishId, optionKey, option, limit) => {
       setSelectedOptions((prev) => {
         const currentOptions = prev[dishId]?.[optionKey] || [];
@@ -94,8 +59,6 @@ const DishForm = ({ restaurant, quantities, onQuantityChange, onAddDish }) => {
         }
       });
     };
-
-    console.log(restaurant.dishes);
 
   return (
     <Box>
