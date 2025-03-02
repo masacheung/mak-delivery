@@ -22,6 +22,7 @@ import CHEF_GE from "./chefGe";
 import SPICE_TWENTY_FOUR from "./spiceTwentyFour";
 import MEE_TU from "./meeTu";
 import YOU_GARDEN from "./youGarden";
+import JI_BEI_CHUAN from "./jiBeiChuan";
 import { PICK_UP_LOCATION } from "../../constant/constant";
 
 const RestaurantList = () => {
@@ -32,6 +33,7 @@ const RestaurantList = () => {
     CHEF_GE,
     SPICE_TWENTY_FOUR,
     WONTON_GUY,
+    JI_BEI_CHUAN,
     S_Y_MINI_HOTPOT,
     YOU_GARDEN,
     NINETY_EIGHT_K,
