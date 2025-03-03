@@ -11,6 +11,7 @@ import {
   TextField,
   MenuItem,
 } from "@mui/material";
+import { PICK_UP_LOCATION } from "../../constant/constant";
 import DishForm from "../dishes/dishForm";
 import OrderSummary from "../order/orderSummary";
 import TASTY_MOMENT from "./tastyMoment";
@@ -23,7 +24,7 @@ import SPICE_TWENTY_FOUR from "./spiceTwentyFour";
 import MEE_TU from "./meeTu";
 import YOU_GARDEN from "./youGarden";
 import JI_BEI_CHUAN from "./jiBeiChuan";
-import { PICK_UP_LOCATION } from "../../constant/constant";
+import MISS_FLOWER_HOTPOT from "./missFlowerHotpot";
 
 const RestaurantList = () => {
   const navigate = useNavigate();
@@ -34,6 +35,7 @@ const RestaurantList = () => {
     SPICE_TWENTY_FOUR,
     WONTON_GUY,
     JI_BEI_CHUAN,
+    MISS_FLOWER_HOTPOT,
     S_Y_MINI_HOTPOT,
     YOU_GARDEN,
     NINETY_EIGHT_K,

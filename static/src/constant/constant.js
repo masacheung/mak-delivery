@@ -23,7 +23,8 @@ const RESTAURANT_NAME = {
     7: "Spice 24",
     8: "Meetu",
     9: "豫園",
-    10: "季北川"
+    10: "季北川",
+    11: "花小娇金汤花胶鸡"
 };
 
 export { PICK_UP_LOCATION, RESTAURANT_NAME };
