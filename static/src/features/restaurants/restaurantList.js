@@ -14,17 +14,17 @@ import {
 import { PICK_UP_LOCATION } from "../../constant/constant";
 import DishForm from "../dishes/dishForm";
 import OrderSummary from "../order/orderSummary";
-import TASTY_MOMENT from "./tastyMoment";
-import HK_ALLEY from "./hkAlley";
-import WONTON_GUY from "./wontonGuy";
-import S_Y_MINI_HOTPOT from "./syMiniHotPot";
-import NINETY_EIGHT_K from "./ninetyEightK";
-import CHEF_GE from "./chefGe";
-import SPICE_TWENTY_FOUR from "./spiceTwentyFour";
-import MEE_TU from "./meeTu";
-import YOU_GARDEN from "./youGarden";
-import JI_BEI_CHUAN from "./jiBeiChuan";
-import MISS_FLOWER_HOTPOT from "./missFlowerHotpot";
+import TASTY_MOMENT from "../../constant/restaurants/tastyMoment";
+import HK_ALLEY from "../../constant/restaurants/hkAlley";
+import WONTON_GUY from "../../constant/restaurants/wontonGuy";
+import S_Y_MINI_HOTPOT from "../../constant/restaurants/syMiniHotPot";
+import NINETY_EIGHT_K from "../../constant/restaurants/ninetyEightK";
+import CHEF_GE from "../../constant/restaurants/chefGe";
+import SPICE_TWENTY_FOUR from "../../constant/restaurants/spiceTwentyFour";
+import MEE_TU from "../../constant/restaurants/meeTu";
+import YOU_GARDEN from "../../constant/restaurants/youGarden";
+import JI_BEI_CHUAN from "../../constant/restaurants/jiBeiChuan";
+import MISS_FLOWER_HOTPOT from "../../constant/restaurants/missFlowerHotpot";
 
 const RestaurantList = () => {
   const navigate = useNavigate();
