@@ -10,7 +10,10 @@ import {
   Chip,
   TextField,
   MenuItem,
+  IconButton,
 } from "@mui/material";
+import ClearIcon from '@mui/icons-material/Clear';
+import { v4 as uuidv4 } from 'uuid';
 import { PICK_UP_LOCATION } from "../../constant/constant";
 import DishForm from "../dishes/dishForm";
 import OrderSummary from "../order/orderSummary";
@@ -96,12 +99,8 @@ const RestaurantList = () => {
     updateOrderState("selectedRestaurant", null);
   };
 
-  const handleQuantityChange = (dishId, action) => {
+  const handleQuantityChange = (dishId, action, restaurantId) => {
     setOrderState((prev) => {
-      // Ensure selectedRestaurant exists before proceeding
-      if (!prev.selectedRestaurant?.id) return prev;
-
-      const restaurantId = prev.selectedRestaurant.id;
       const updatedQuantities = { ...prev.quantities[restaurantId] } || {};
 
       if (action === "increase" && (updatedQuantities[dishId] || 0) < 10) {
@@ -132,19 +131,13 @@ const RestaurantList = () => {
       if (!updatedDishes[restaurantId]) updatedDishes[restaurantId] = [];
 
       selectedDishes.forEach((newDish) => {
-        const existingDishIndex = updatedDishes[restaurantId].findIndex((d) => d.id === newDish.id);
-
-        if (existingDishIndex !== -1) {
-          updatedDishes[restaurantId][existingDishIndex].quantity = newDish.quantity;
-        } else {
-          updatedDishes[restaurantId].push({
-            id: newDish.id,
-            name: newDish.name || "Unknown",
-            price: newDish.price === "SP" ? "SP" : newDish.price ?? 0, // 🔹 Ensure "SP" is preserved
-            quantity: newDish.quantity ?? 0,
-            selectedOptions: newDish.selectedOptions || [],
-          });
-        }
+        updatedDishes[restaurantId].push({
+          id: `${newDish.id}-${uuidv4()}`,
+          name: newDish.name || "Unknown",
+          price: newDish.price === "SP" ? "SP" : newDish.price ?? 0, // 🔹 Ensure "SP" is preserved
+          quantity: newDish.quantity ?? 0,
+          selectedOptions: newDish.selectedOptions || [],
+        });
       });
 
       return { ...prev, addedDishes: updatedDishes };
@@ -268,6 +261,7 @@ const RestaurantList = () => {
                   </Typography>
                   <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1, alignItems: "center" }}>
                     {orderState.addedDishes[restaurant.id].map((dish) => (
+                      <div key={dish.id}>
                       <Chip
                         key={dish.id}
                         label={`${dish.name} ${
@@ -279,6 +273,10 @@ const RestaurantList = () => {
                         } x${dish.quantity}`}
                         sx={{ margin: "2px" }}
                       />
+                      <IconButton size="small" onClick={() => handleQuantityChange(dish.id, "reset", restaurant.id)}>
+                        <ClearIcon fontSize="small" />
+                      </IconButton>
+                      </div>
                     ))}
                   </Box>
                 </Box>

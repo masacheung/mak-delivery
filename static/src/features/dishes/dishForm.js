@@ -4,7 +4,6 @@ import { FormControlLabel, Checkbox, Radio, RadioGroup } from "@mui/material";
 import { Box, Typography, TextField, IconButton, Button, Card, CardContent, CardActions } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
-import ClearIcon from '@mui/icons-material/Clear';
 
 const DishForm = ({ restaurant, quantities, onQuantityChange, onAddDish }) => {
   const [selectedOptions, setSelectedOptions] = useState({});
@@ -20,6 +19,15 @@ const DishForm = ({ restaurant, quantities, onQuantityChange, onAddDish }) => {
             selectedOptions: selectedOptions[dish.id] || {},
           },
         ]);
+
+        // Reset selected options for this dish
+        setSelectedOptions((prev) => ({
+          ...prev,
+          [dish.id]: {}, // Clear selected options
+        }));
+
+        // Reset quantity for this dish
+        onQuantityChange(dish.id, "reset", restaurant.id);
       }
   };
 
@@ -131,7 +139,7 @@ const DishForm = ({ restaurant, quantities, onQuantityChange, onAddDish }) => {
 
             <CardActions sx={{ padding: 0.5, justifyContent: "space-between" }}>
               <Box sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
-                <IconButton size="small" onClick={() => onQuantityChange(dish.id, 'decrease')} disabled={quantities[dish.id] === 0} sx={{ width: 24, height: 24 }}>
+                <IconButton size="small" onClick={() => onQuantityChange(dish.id, 'decrease', restaurant.id)} disabled={quantities[dish.id] === 0} sx={{ width: 24, height: 24 }}>
                   <RemoveIcon fontSize="small" />
                 </IconButton>
                 <TextField
@@ -139,7 +147,7 @@ const DishForm = ({ restaurant, quantities, onQuantityChange, onAddDish }) => {
                   value={quantities[dish.id] || 0}
                   onChange={(e) => {
                     const newQuantity = Math.max(0, Math.min(10, Number(e.target.value)));
-                    onQuantityChange(dish.id, newQuantity);
+                    onQuantityChange(dish.id, newQuantity, restaurant.id);
                   }}
                   sx={{ width: 32, height: 24, textAlign: 'center', fontSize: "0.75rem",
                    "& input": {
@@ -149,7 +157,7 @@ const DishForm = ({ restaurant, quantities, onQuantityChange, onAddDish }) => {
                    }}}
                   inputProps={{ style: { textAlign: "center", fontSize: "0.75rem" } }}
                 />
-                <IconButton size="small" onClick={() => onQuantityChange(dish.id, 'increase')} disabled={quantities[dish.id] === 10} sx={{ width: 24, height: 24 }}>
+                <IconButton size="small" onClick={() => onQuantityChange(dish.id, 'increase', restaurant.id)} disabled={quantities[dish.id] === 10} sx={{ width: 24, height: 24 }}>
                   <AddIcon fontSize="small" />
                 </IconButton>
               </Box>
@@ -163,10 +171,6 @@ const DishForm = ({ restaurant, quantities, onQuantityChange, onAddDish }) => {
               >
                 Add
               </Button>
-
-              <IconButton size="small" onClick={() => onQuantityChange(dish.id, "reset")}>
-                <ClearIcon fontSize="small" />
-              </IconButton>
             </CardActions>
           </Card>
         ))}
