@@ -168,11 +168,13 @@ const RestaurantList = () => {
         date: orderState.date,
         orderDetails: JSON.stringify(
           Object.entries(orderState.addedDishes).reduce((acc, [restaurantId, dishes]) => {
-            const restaurant = restaurants.find((r) => r.id === Number(restaurantId)); // Get restaurant name
-            acc[restaurantId] = dishes.map((dish) => ({
-              ...dish,
-              restaurantName: restaurant ? restaurant.name : `Restaurant ${restaurantId}`, // Assign restaurant name
-            }));
+            if (dishes.length > 0) {
+              const restaurant = restaurants.find((r) => r.id === Number(restaurantId)); // Get restaurant name
+              acc[restaurantId] = dishes.map((dish) => ({
+                ...dish,
+                restaurantName: restaurant ? restaurant.name : `Restaurant ${restaurantId}`, 
+              }));
+            }
             return acc;
           }, {})
         ),
