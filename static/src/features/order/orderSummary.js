@@ -1,7 +1,6 @@
-import React from "react";
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 import { Box, Typography } from "@mui/material";
-import {RESTAURANT_NAME} from "../../constant/constant";
+import { RESTAURANT_NAME } from "../../constant/constant";
 
 const TAX_RATE = 0.0625;
 
@@ -39,35 +38,42 @@ const OrderSummary = ({ addedDishes = {}, updateTotal }) => {
   }, [total]); // Remove updateTotal from dependencies unless it's memoized
 
   return (
-    <Box sx={{ marginTop: 4, padding: 2, borderTop: "1px solid #ccc" }}>
+    <Box sx={{ marginTop: 4, padding: 2, borderTop: "1px solid #ccc", height: "100%", display: "flex", flexDirection: "column" }}>
       <Typography variant="h5" gutterBottom>
         Order Summary
       </Typography>
 
-      <Box>
-        {Object.entries(addedDishes)
-          .filter(([_, dishes]) => dishes.length > 0) // Only include restaurants with orders
-          .map(([restaurantId, dishes]) => (
-            <Box key={restaurantId} sx={{ marginBottom: 2 }}>
-              <Typography variant="h6" fontWeight="bold" color="primary">{RESTAURANT_NAME[restaurantId]}</Typography>
-              {dishes.map((dish) => (
-                <Typography key={dish.id} variant="body1">
-                  {`${dish.name} ${
-                    dish.selectedOptions && Object.keys(dish.selectedOptions).length > 0
-                      ? ` (${Object.entries(dish.selectedOptions)
-                          .map(([optionKey, selected]) => selected.join(", "))
-                          .join("; ")})` // ✅ Display selected options for all option groups
-                      : ""
-                  } x${dish.quantity}`} -
-                  {dish.price === "SP" ? (
-                    <Typography color="error" variant="caption">
-                      SP (Check with restaurant)
-                    </Typography>
-                  ) : `$${(Number(dish.price) * Number(dish.quantity)).toFixed(2)}`}
-                </Typography>
-              ))}
-            </Box>
-          ))}
+      {/* Scrollable Content Container */}
+      <Box sx={{
+        overflowY: "auto",   // Allow vertical scrolling if the content overflows
+        flex: 1,             // Take up remaining space
+        paddingBottom: 2,    // Space at the bottom
+      }}>
+        <Box>
+          {Object.entries(addedDishes)
+            .filter(([_, dishes]) => dishes.length > 0) // Only include restaurants with orders
+            .map(([restaurantId, dishes]) => (
+              <Box key={restaurantId} sx={{ marginBottom: 2 }}>
+                <Typography variant="h6" fontWeight="bold" color="primary">{RESTAURANT_NAME[restaurantId]}</Typography>
+                {dishes.map((dish) => (
+                  <Typography key={dish.id} variant="body1">
+                    {`${dish.name} ${
+                      dish.selectedOptions && Object.keys(dish.selectedOptions).length > 0
+                        ? ` (${Object.entries(dish.selectedOptions)
+                            .map(([optionKey, selected]) => selected.join(", "))
+                            .join("; ")})`
+                        : ""
+                    } x${dish.quantity}`} -
+                    {dish.price === "SP" ? (
+                      <Typography color="error" variant="caption">
+                        SP (Check with restaurant)
+                      </Typography>
+                    ) : `$${(Number(dish.price) * Number(dish.quantity)).toFixed(2)}`}
+                  </Typography>
+                ))}
+              </Box>
+            ))}
+        </Box>
       </Box>
 
       <Box sx={{ marginTop: 2, borderTop: "1px solid #ccc", paddingTop: 2 }}>
