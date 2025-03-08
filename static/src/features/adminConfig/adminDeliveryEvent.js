@@ -60,6 +60,9 @@ const AdminDeliveryEvent = () => {
 
       const data = await response.json();
       console.log("Delivery event submitted:", data);
+      setSelectedLocations([]);
+      setSelectedRestaurants([]);
+      setDeliveryEvent([]);
     } catch (error) {
       console.error("Error submit delivery event:", error);
     }

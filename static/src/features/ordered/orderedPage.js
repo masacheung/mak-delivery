@@ -28,9 +28,6 @@ const OrderedPage = () => {
           <Typography color="error" variant="caption" display="block">
             (Please take a screenshot of this order confirmation and remember your Order ID and WeChat ID for order lookup.)
           </Typography>
-          <Typography variant="body1" color="textSecondary">
-            <strong>Order ID:</strong> {order.id}
-          </Typography>
 
           <Divider sx={{ my: 2 }} />
 
@@ -72,6 +69,9 @@ const OrderedPage = () => {
 
           <Divider sx={{ my: 2 }} />
 
+          <Typography variant="body1" color="textSecondary">
+            <strong>Order ID:</strong> {order.id}
+          </Typography>
           <Typography variant="body1">
             <strong>Total: </strong> ${Number(order.total) ? Number(order.total).toFixed(2) : "N/A"}
           </Typography>

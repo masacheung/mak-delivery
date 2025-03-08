@@ -62,6 +62,8 @@ const RestaurantList = () => {
   });
   const [openEvents, setOpenEvents] = useState([]);
   const [pickupLocations, setPickupLocations] = useState([]);
+  const [availableRestaurants, setAvailableRestaurants] = useState([]);
+  const [enableLocationsDropdown, setEnableLocationsDropdown] = useState(false);
   const [error, setError] = useState("");
 
   const [isOpen, setIsOpen] = useState(false);
@@ -72,11 +74,37 @@ const RestaurantList = () => {
     console.log("Updated openEvents:", openEvents);
   }, [openEvents]);
 
+  useEffect(() => {
+    console.log("Updated availableRestaurants:", availableRestaurants);
+  }, [availableRestaurants]);
+
+  const resetEventsState = () => {
+    setOpenEvents([]);
+    setPickupLocations([]);
+    setAvailableRestaurants([]);
+    setEnableLocationsDropdown(false);
+    setOrderState({
+      selectedRestaurant: null,
+      quantities: {},
+      isDishFormVisible: false,
+      addedDishes: {},
+      notes: "",
+      total: 0,
+      pickupLocation: "",
+    })
+  }
+
   const getUniqueOptions = (events, key) => {
     return [...new Set(events.flatMap(event => event[key]))];
   };
+
+  const getAvailableRestaurants = (events) => {
+    return restaurants.filter(restaurant =>
+      events.some(event => event.restaurants.includes(restaurant.name)));
+  };
   
   const handleSearch = async (date) => {
+    resetEventsState();
     try {
       setError(null); // Clear previous errors
       const response = await fetch(`/api/adminConfig/openEvents?date=${date}`);
@@ -86,8 +114,11 @@ const RestaurantList = () => {
       const data = await response.json();
       setOpenEvents(data); // Store events in state
       setPickupLocations(getUniqueOptions(data, "pick_up_locations"));
+      setAvailableRestaurants(getAvailableRestaurants(data));
+      setEnableLocationsDropdown(true);
     } catch (err) {
       setError(err.message);
+      resetEventsState();
     }
   };
 
@@ -325,19 +356,7 @@ const RestaurantList = () => {
           >
             <CloseIcon />
           </IconButton>
-          <OrderSummary addedDishes={orderState.addedDishes} updateTotal={updateTotal}/>
-
-          <Box sx={{ padding: 2 }}>
-            <Button variant="contained" color="primary" fullWidth sx={{ mt: 2,  marginTop: 2 }} onClick={handleSubmit}>
-              Submit Order
-            </Button>
-
-            {orderState.errors?.noOrders && (
-              <Typography color="error" sx={{ mt: 2, width: "70%" }}>
-                Please add at least one dish before submitting your order.
-              </Typography>
-            )}
-          </Box>
+          <OrderSummary addedDishes={orderState.addedDishes} updateTotal={updateTotal} handleSubmit={handleSubmit}/>
       </Box>)}
       <Box sx={{ width: "100%", paddingTop: (theme) => `calc(${theme.mixins.toolbar.minHeight}px + 16px)` }}>
         <Typography variant="h4" gutterBottom sx={{ fontWeight: 'bold', fontFamily: 'Poppins, sans-serif' }}> 
@@ -348,7 +367,7 @@ const RestaurantList = () => {
         </Typography>
         <TextField fullWidth label="WeChat ID" value={orderState.wechatId} onChange={(e) => updateOrderState("wechatId", e.target.value)} margin="normal" required error={orderState.errors?.wechatId} helperText={orderState.errors?.wechatId ? "WeChat ID is required" : ""}/>
         <TextField fullWidth label="Pick-up Date" type="date" value={orderState.date} onChange={(e) => updateOrderState("date", e.target.value)} margin="normal" required InputLabelProps={{ shrink: true }} error={orderState.errors?.date} helperText={orderState.errors?.date ? "Date is required" : ""}/>
-        <TextField select fullWidth label="Pick-up Location" value={orderState.pickupLocation} onChange={(e) => updateOrderState("pickupLocation", e.target.value)} margin="normal" required error={orderState.errors?.pickupLocation} helperText={orderState.errors?.pickupLocation ? "Pick-up Location is required" : ""}>
+        <TextField select fullWidth label="Pick-up Location" value={orderState.pickupLocation} onChange={(e) => updateOrderState("pickupLocation", e.target.value)} margin="normal" required error={orderState.errors?.pickupLocation} helperText={orderState.errors?.pickupLocation ? "Pick-up Location is required" : ""} disabled={!enableLocationsDropdown}>
           {pickupLocations.map((location, index) => (
             <MenuItem key={index} value={location}>
               {location}
@@ -361,14 +380,8 @@ const RestaurantList = () => {
         <Typography variant="h4" gutterBottom>
           Restaurant List
         </Typography>
-        <Typography color="error" variant="caption" display="block">
-          (Please refer to the WeChat notification for available restaurant(s) and pickup location on your selected date.)
-        </Typography>
-        <Typography color="error" variant="caption" display="block">
-          (For drink(s), the total price includes only the drink and excludes add-ons.)
-        </Typography>
         <List>
-          {restaurants.map((restaurant) => (
+          {availableRestaurants.map((restaurant) => (
             <ListItem
               key={restaurant.id}
               sx={{
