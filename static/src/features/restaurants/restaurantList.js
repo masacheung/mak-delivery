@@ -165,10 +165,10 @@ const RestaurantList = () => {
 
     updateOrderState("errors", newErrors);
 
-    if (Object.values(newErrors).some((error) => error)) return;
-
-    console.log(orderState.total);
-
+    if (Object.values(newErrors).some((error) => error)) {
+      handleClose();
+      return;
+    }
     const orderData = {
         wechatId: orderState.wechatId,
         pickupLocation: orderState.pickupLocation,
