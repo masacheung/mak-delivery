@@ -8,3 +8,10 @@ CREATE TABLE orders (
     order_details JSONB NOT NULL,
     notes TEXT
 );
+
+CREATE TABLE admin_config (
+    id SERIAL PRIMARY KEY,
+    pick_up_date TIMESTAMP NOT NULL,
+    pick_up_locations TEXT[] NOT NULL,
+    restaurants TEXT[] NOT NULL
+);

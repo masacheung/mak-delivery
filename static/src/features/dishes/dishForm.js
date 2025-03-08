@@ -1,7 +1,18 @@
 import React from 'react';
 import { useState } from "react"; // If using state to manage selections
-import { FormControlLabel, Checkbox, Radio, RadioGroup } from "@mui/material";
-import { Box, Typography, TextField, IconButton, Button, Card, CardContent, CardActions } from '@mui/material';
+import { 
+  Box,
+  Typography,
+  TextField,
+  IconButton,
+  Button,
+  Card,
+  CardContent,
+  CardActions,
+  FormControlLabel,
+  Checkbox,
+  Radio,
+  RadioGroup } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 

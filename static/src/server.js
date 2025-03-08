@@ -3,6 +3,8 @@ const path = require("path");
 const cors = require("cors");
 const bodyParser = require("body-parser");
 const ordersRoute = require("./api/orders.js");
+const adminRoute = require("./api/adminConfig.js");
+
 require("dotenv").config();
 
 const app = express();
@@ -32,6 +34,9 @@ app.post("/api/admin/login", (req, res) => {
 
 // Orders API
 app.use("/api/orders", ordersRoute);
+
+// Orders API
+app.use("/api/adminConfig", adminRoute);
 
 // Serve the admin page
 app.get("/admin", (req, res) => {
