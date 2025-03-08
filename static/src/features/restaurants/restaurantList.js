@@ -13,6 +13,8 @@ import {
   IconButton,
 } from "@mui/material";
 import ClearIcon from '@mui/icons-material/Clear';
+import CloseIcon from "@mui/icons-material/Close";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import { v4 as uuidv4 } from 'uuid';
 import { PICK_UP_LOCATION } from "../../constant/constant";
 import DishForm from "../dishes/dishForm";
@@ -58,6 +60,10 @@ const RestaurantList = () => {
     errors: {},
     total: 0,
   });
+
+  const [isOpen, setIsOpen] = useState(false);
+  const handleOpen = () => setIsOpen(true);
+  const handleClose = () => setIsOpen(false);
 
   const updateOrderState = (field, value) => {
     setOrderState((prev) => ({ ...prev, [field]: value }));
@@ -217,8 +223,99 @@ const RestaurantList = () => {
   };
 
   return (
-    <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", width: "100%", maxWidth: 800, margin: "auto", padding: 2 }}>
-      <Box sx={{ width: "100%", padding: 2 }}>
+    <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", width: "95%", maxWidth: 800, margin: "auto", padding: 2 }}>
+      <Box
+        sx={{
+          position: "fixed", // Keep header fixed at top
+          top: 0,
+          left: 0,
+          width: "100%",
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          padding: 2,
+          backgroundColor: "white",
+          boxShadow: 2,
+          zIndex: 1100, // Ensure header is above the content but below the overlay
+        }}
+      >
+        {/* Left - Logo */}
+        <Box sx={{ display: "flex", alignItems: "center", marginLeft: "3%" }}>
+          <img src="/delivery-truck.png" alt="Logo" style={{ width: 40, height: 40 }} />
+        </Box>
+
+        {/* Center - Mak Delivery */}
+        <Typography variant="h6" sx={{ flexGrow: 1, textAlign: "center" }}>
+          Mak Delivery
+        </Typography>
+
+        {/* Right - Shopping Cart */}
+        <IconButton sx={{ marginRight: "3%" }}>
+          <ShoppingCartIcon onClick={handleOpen}/>
+        </IconButton>
+      </Box>
+      {isOpen && (
+        <Box
+          sx={{
+            position: "fixed",  // Make sure it stays fixed at the top
+            top: 0,
+            left: 0,            // Align it to the left side of the page
+            width: "100%",      // Take the full width of the screen
+            height: "100vh",    // Take the full height of the screen
+            backgroundColor: "white",  // White background
+            zIndex: 1300,       // Ensure it's above all content including the header
+            display: "flex",     // Use flexbox to position the content
+            flexDirection: "column",  // Stack content vertically
+            alignItems: "center",     // Horizontally center content
+            padding: 2,
+          }}
+        >
+          <IconButton
+            onClick={handleClose}
+            sx={{
+              position: "absolute",
+              top: 10,
+              left: 10,
+              backgroundColor: "gray",
+              color: "white",
+              zIndex: 1100, // Ensure the button stays above all content
+            }}
+          >
+            <CloseIcon />
+          </IconButton>
+          <OrderSummary addedDishes={orderState.addedDishes} updateTotal={updateTotal}/>
+
+          <Box sx={{ padding: 2 }}>
+            <Button variant="contained" color="primary" fullWidth sx={{ mt: 2,  marginTop: 2 }} onClick={handleSubmit}>
+              Submit Order
+            </Button>
+
+            {orderState.errors?.noOrders && (
+              <Typography color="error" sx={{ mt: 2, width: "70%" }}>
+                Please add at least one dish before submitting your order.
+              </Typography>
+            )}
+          </Box>
+      </Box>)}
+      <Box sx={{ width: "70%", padding: 2 }}>
+        <Typography variant="h4" gutterBottom sx={{ fontWeight: 'bold', fontFamily: 'Poppins, sans-serif' }}> 
+          Order
+        </Typography>
+        <Typography variant="h6" gutterBottom>
+          Order Information
+        </Typography>
+        <TextField fullWidth label="WeChat ID" value={orderState.wechatId} onChange={(e) => updateOrderState("wechatId", e.target.value)} margin="normal" required error={orderState.errors?.wechatId} helperText={orderState.errors?.wechatId ? "WeChat ID is required" : ""}/>
+        <TextField fullWidth label="Pick-up Date" type="date" value={orderState.date} onChange={(e) => updateOrderState("date", e.target.value)} margin="normal" required InputLabelProps={{ shrink: true }} error={orderState.errors?.date} helperText={orderState.errors?.date ? "Date is required" : ""}/>
+        <TextField select fullWidth label="Pick-up Location" value={orderState.pickupLocation} onChange={(e) => updateOrderState("pickupLocation", e.target.value)} margin="normal" required error={orderState.errors?.pickupLocation} helperText={orderState.errors?.pickupLocation ? "Pick-up Location is required" : ""}>
+          {PICK_UP_LOCATION.map((location, index) => (
+            <MenuItem key={index} value={location}>
+              {location}
+            </MenuItem>
+          ))}
+        </TextField>
+      </Box>
+
+      <Box sx={{ width: "70%", padding: 2 }}>
         <Typography variant="h4" gutterBottom>
           Restaurant List
         </Typography>
@@ -323,29 +420,6 @@ const RestaurantList = () => {
           onChange={(e) => setOrderState({ ...orderState, notes: e.target.value })}
           sx={{ marginTop: 2 }}
         />
-      </Box>
-
-      <OrderSummary addedDishes={orderState.addedDishes} updateTotal={updateTotal}/>
-
-      <Box sx={{ padding: 2 }}>
-        <TextField fullWidth label="WeChat ID" value={orderState.wechatId} onChange={(e) => updateOrderState("wechatId", e.target.value)} margin="normal" required error={orderState.errors?.wechatId} helperText={orderState.errors?.wechatId ? "WeChat ID is required" : ""}/>
-        <TextField select fullWidth label="Pick-up Location" value={orderState.pickupLocation} onChange={(e) => updateOrderState("pickupLocation", e.target.value)} margin="normal" required error={orderState.errors?.pickupLocation} helperText={orderState.errors?.pickupLocation ? "Pick-up Location is required" : ""}>
-          {PICK_UP_LOCATION.map((location, index) => (
-            <MenuItem key={index} value={location}>
-              {location}
-            </MenuItem>
-          ))}
-        </TextField>
-        <TextField fullWidth label="Pick-up Date" type="date" value={orderState.date} onChange={(e) => updateOrderState("date", e.target.value)} margin="normal" required InputLabelProps={{ shrink: true }} error={orderState.errors?.date} helperText={orderState.errors?.date ? "Date is required" : ""}/>
-        <Button variant="contained" color="primary" fullWidth sx={{ mt: 2,  marginTop: 2 }} onClick={handleSubmit}>
-          Submit Order
-        </Button>
-
-        {orderState.errors?.noOrders && (
-          <Typography color="error" sx={{ mt: 2 }}>
-            Please add at least one dish before submitting your order.
-          </Typography>
-        )}
       </Box>
     </Box>
   );
