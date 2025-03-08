@@ -24,8 +24,8 @@ const UpcomingEvent = ({ events, onClose }) => {
           onClick={onClose}
           sx={{
             position: "absolute",
-            top: 10,
-            left: 20,
+            top: "0.5rem",
+            left: "0.25rem",
             backgroundColor: "gray",
             color: "white",
             zIndex: 1100, // Ensure the button stays above all content

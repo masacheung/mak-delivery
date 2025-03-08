@@ -1,10 +1,13 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import { Box, Card, CardContent, Typography, Divider, List, ListItem, ListItemText, Button } from "@mui/material";
+import PaymentMethod from "../paymentMethod/paymentMethod";
+import { useState } from "react";
 
 const OrderedPage = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const order = location.state?.order;
+  const [showPaymentMethod, setPaymentMethod] = useState(false); // Controls visibility
 
   if (!order) {
     return (
@@ -96,8 +99,29 @@ const OrderedPage = () => {
             <Button variant="contained" color="secondary" onClick={() => navigate("/lookup-order")}>
               Look Up Another Order
             </Button>
+            <Button variant="contained" color="primary" onClick={() => setPaymentMethod(true)}>
+              Payment Method
+            </Button>
           </Box>
         </CardContent>
+        {showPaymentMethod && (
+          <Box
+            sx={{
+              position: "fixed", // Fix it to the screen
+              top: 0, // Start from the top
+              left: 0,
+              width: "100vw", // Full width
+              height: "100vh", // Full height
+              backgroundColor: "rgba(0, 0, 0, 0.5)", // Semi-transparent background
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              zIndex: 1300, // Ensure it's above everything
+            }}
+          >
+            <PaymentMethod order={order} onClose={() => setPaymentMethod(false)}/>
+          </Box>
+          )}
       </Card>
     </Box>
   );
