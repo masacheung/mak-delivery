@@ -30,73 +30,80 @@ const MISS_FLOWER_HOTPOT = {
                 }
             }
         },        
-        { id: 111, name: "花胶鸡汤", price: 49.99,
+        { id: 111, name: "花胶鸡汤", price: "SP",
             options: {
                 option1: {
                     name: "份量",
-                    choices: ["2人份", "4人份"],
+                    choices: ["2人份 $49.99", "4人份 $89.99"],
                     selectedOptions: [],
-                    limit: 1
+                    limit: 1,
+                    adjustable: true
                 }
             }
         },
-        { id: 112, name: "鲍鱼花胶鸡汤", price: 69.99,
+        { id: 112, name: "鲍鱼花胶鸡汤", price: "SP",
             options: {
                 option1: {
                     name: "份量",
-                    choices: ["2人份", "4人份"],
+                    choices: ["2人份 $69.99", "4人份 $109.99"],
                     selectedOptions: [],
-                    limit: 1
+                    limit: 1,
+                    adjustable: true
                 }
             }
         },
-        { id: 113, name: "金汤花胶鸡", price: 68.99,
+        { id: 113, name: "榴槤花胶鸡", price: "SP",
             options: {
                 option1: {
                     name: "份量",
-                    choices: ["2人份", "4人份"],
+                    choices: ["2人份 $68.99", "4人份 $108.99"],
                     selectedOptions: [],
-                    limit: 1
+                    limit: 1,
+                    adjustable: true
                 }
             }
         },
-        { id: 114, name: "椰子鸡汤", price: 46.99,
+        { id: 114, name: "椰子鸡汤", price: "SP",
             options: {
                 option1: {
                     name: "份量",
-                    choices: ["2人份", "4人份"],
+                    choices: ["2人份 $46.99", "4人份 86.99"],
                     selectedOptions: [],
-                    limit: 1
+                    limit: 1,
+                    adjustable: true
                 }
             }
         },
-        { id: 115, name: "胡椒猪肚鸡汤", price: 46.99,
+        { id: 115, name: "胡椒猪肚鸡汤", price: "SP",
             options: {
                 option1: {
                     name: "份量",
-                    choices: ["2人份", "4人份"],
+                    choices: ["2人份 $46.99", "4人份 $86.99"],
                     selectedOptions: [],
-                    limit: 1
+                    limit: 1,
+                    adjustable: true
                 }
             }
         },
-        { id: 116, name: "芋儿香辣鸡煲", price: 46.99,
+        { id: 116, name: "芋儿香辣鸡煲", price: "SP",
             options: {
                 option1: {
                     name: "份量",
-                    choices: ["2人份", "4人份"],
+                    choices: ["2人份 $46.99", "4人份 $86.99"],
                     selectedOptions: [],
-                    limit: 1
+                    limit: 1,
+                    adjustable: true
                 }
             }
         },
-        { id: 117, name: "素食锅底", price: 15.99,
+        { id: 117, name: "素食锅底", price: "SP",
             options: {
                 option1: {
                     name: "份量",
-                    choices: ["2人份", "4人份"],
+                    choices: ["2人份 $15.99", "4人份 $30.99"],
                     selectedOptions: [],
-                    limit: 1
+                    limit: 1,
+                    adjustable: true
                 },
                 option2: {
                     name: "汤底类型",
@@ -106,32 +113,36 @@ const MISS_FLOWER_HOTPOT = {
                 }
             }
         },
-        { id: 118, name: "鸳鸯锅底", price: 46.99,
+        { id: 118, name: "鸳鸯锅底", price: "SP",
             options: {
                 option1: {
                     name: "主汤底",
                     choices: [
-                        "花胶鸡汤",
-                        "鲍鱼花胶鸡汤",
-                        "金汤花胶鸡",
-                        "椰子鸡汤",
-                        "胡椒猪肚鸡汤",
-                        "芋儿香辣鸡煲",
-                        "素食锅底"
+                        "花胶鸡汤 $49.99",
+                        "鲍鱼花胶鸡汤 $69.99",
+                        "榴槤花胶鸡 $68.99",
+                        "椰子鸡汤 $46.99",
+                        "胡椒猪肚鸡汤 $46.99",
+                        "芋儿香辣鸡煲 $46.99",
+                        "素食锅底 $15.99"
                     ],
                     selectedOptions: [],
-                    limit: 1
+                    limit: 1,
+                    adjustable: true
                 },
                 option2: {
                     name: "附加汤底",
                     choices: [
-                        "胡椒猪肚鸡汤",
-                        "芋儿香辣鸡煲",
-                        "野生菌汤底 / 素油麻辣汤底",
-                        "花胶鸡汤 / 海椰椰子水汤底"
+                        "胡椒猪肚鸡汤 $8.99",
+                        "芋儿香辣鸡煲 $8.99",
+                        "野生菌汤底 $5.99",
+                        "清油麻辣汤底 $5.99",
+                        "花胶鸡汤 $15.99",
+                        "海椰椰子汤底 $15.99"
                     ],
                     selectedOptions: [],
-                    limit: 1
+                    limit: 1,
+                    adjustable: true
                 }
             }
         },
