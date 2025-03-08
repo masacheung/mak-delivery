@@ -11,6 +11,7 @@ import {
   TextField,
   MenuItem,
   IconButton,
+  Badge
 } from "@mui/material";
 import ClearIcon from '@mui/icons-material/Clear';
 import CloseIcon from "@mui/icons-material/Close";
@@ -245,13 +246,24 @@ const RestaurantList = () => {
         </Box>
 
         {/* Center - Mak Delivery */}
-        <Typography variant="h6" sx={{ flexGrow: 1, textAlign: "center" }}>
+        <Typography variant="h6" 
+          sx={{ flexGrow: 1, textAlign: "center", fontWeight: 'bold', fontFamily: 'Poppins, sans-serif',
+            cursor: "pointer", // Show pointer cursor to indicate it's clickable
+            transition: "color 0.3s ease, transform 0.2s ease", // Smooth transition effect
+            "&:hover": {
+              color: "primary.main", // Change color on hover (use theme primary color)
+              transform: "scale(1.05)", // Slightly increase size on hover
+            }, }}
+          onClick={() => navigate("/")}
+        >
           Mak Delivery
         </Typography>
 
         {/* Right - Shopping Cart */}
         <IconButton sx={{ marginRight: "3%" }}>
-          <ShoppingCartIcon onClick={handleOpen}/>
+          <Badge badgeContent={Object.keys(orderState.addedDishes).length > 0 ? Object.keys(orderState.addedDishes).length : null} color="error" sx={{ "& .MuiBadge-badge": { fontSize: 12, minWidth: 20, height: 20 } }}> 
+            <ShoppingCartIcon onClick={handleOpen}/>
+          </Badge>
         </IconButton>
       </Box>
       {isOpen && (

@@ -1,6 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { Box, Button, Typography } from "@mui/material";
+import { Box, Button, Typography, IconButton } from "@mui/material";
+import { AccountCircle } from "@mui/icons-material";
 
 const pickupLocations = [
   "Fort Lee 540 Main St",
@@ -28,6 +29,37 @@ const HomePage = () => {
         flexDirection: "column",
       }}
     >
+      <Box
+        sx={{
+          position: "fixed", // Keep header fixed at top
+          top: 0,
+          left: 0,
+          width: "100%",
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          padding: 2,
+          backgroundColor: "white",
+          boxShadow: 2,
+          zIndex: 1100, // Ensure header is above the content but below the overlay
+        }}
+      >
+        {/* Left - Logo */}
+        <Box sx={{ display: "flex", alignItems: "center", marginLeft: "3%" }}>
+          <img src="/delivery-truck.png" alt="Logo" style={{ width: 40, height: 40 }} />
+        </Box>
+
+        {/* Center - Mak Delivery */}
+        <Typography variant="h6" 
+          sx={{ flexGrow: 1, textAlign: "center", fontWeight: 'bold', fontFamily: 'Poppins, sans-serif',}}>
+          Mak Delivery
+        </Typography>
+
+        {/* Right - Shopping Cart */}
+        <IconButton sx={{ marginRight: "3%" }}>
+          <AccountCircle sx={{ fontSize: 30, color: "black" }}/>
+        </IconButton>
+      </Box>
       {/* Top Section - 60% */}
       <Box
         sx={{
