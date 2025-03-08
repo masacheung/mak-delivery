@@ -1,19 +1,9 @@
 import React from "react";
 import { useEffect } from "react";
 import { Box, Typography } from "@mui/material";
+import {RESTAURANT_NAME} from "../../constant/constant";
 
 const TAX_RATE = 0.0625;
-
-const RESTAURANT_NAME = {
-    1: "Tasty Moment",
-    2: "港茶巷 HK ALLEY",
-    3: "雲吞佳",
-    4: "S&Y Mini HotPot 蜀世冒菜",
-    5: "98K",
-    6: "葛师傅",
-    7: "Spice 24",
-    8: "Meetu"
-};
 
 const OrderSummary = ({ addedDishes = {}, updateTotal }) => {
   // Count the number of restaurants with at least one dish

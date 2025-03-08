@@ -13,11 +13,11 @@ const CHEF_GE = {
         { id: 69, name: '夫妻肺片', price:10.99  },
         { id: 610, name: '口水雞', price:9.99 },
         { id: 611, name: '熗雜拌', price:7.99 ,
-                options: {
-                     option1: {
-                        name: "Types", choices: ["黃瓜", "木耳","洋蔥","豆製品"], selectedOptions: [], limit: 1
-                     }
-                }},
+            options: {
+               option1: {
+                  name: "Types", choices: ["黃瓜", "木耳","洋蔥","豆製品"], selectedOptions: [], limit: 1
+               }
+        }},
         { id: 612, name: '蒜泥白肉', price:9.99  },
         { id: 613, name: '涼拌海帶絲', price:5.99  },
         { id: 614, name: '涼拌土豆絲', price:5.99  },

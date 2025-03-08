@@ -7,13 +7,13 @@ const SPICE_TWENTY_FOUR = {
                     option1:
                         {
                         name: "主菜選2",
-                        choices: ["香辣排骨", "鮮露蘆筍牛肉(+$5)", "菠蘿辣子雞", "火爆腰花", "土匪豬肝", "香椿炒雞蛋", "椒鹽魚片", "鹽焗雞半隻", "上湯河塘小炒", "牛肉麻辣香鍋 請在備註欄標明 (薑蔥, 黑胡椒, 豆豉)"],
-                        selectedOptions: [], limit: 2
+                        choices: ["香辣排骨", "鮮露蘆筍牛肉 $5.00", "菠蘿辣子雞", "火爆腰花", "土匪豬肝", "香椿炒雞蛋", "椒鹽魚片", "鹽焗雞半隻", "上湯河塘小炒", "牛肉麻辣香鍋 請在備註欄標明 (薑蔥, 黑胡椒, 豆豉)"],
+                        selectedOptions: [], limit: 2, adjustable: true
                         },
                     option2:
                         {
                         name: "主食/湯選1",
-                        choices: [ "牛肉炒飯", "雞肉炒飯", "素菜炒飯", "菠蘿蝦炒飯", "卜卜脆炒飯(+$5)", "西湖牛肉羹", "蟹肉魚肚羹(+$5)", "酸辣湯"], selectedOptions: [], limit: 1
+                        choices: [ "牛肉炒飯", "雞肉炒飯", "素菜炒飯", "菠蘿蝦炒飯", "卜卜脆炒飯 $5.00", "西湖牛肉羹", "蟹肉魚肚羹 $5.00", "酸辣湯"], selectedOptions: [], limit: 1, adjustable: true
                     },
                     option3: {
                         name: "涼菜選1",
@@ -23,31 +23,29 @@ const SPICE_TWENTY_FOUR = {
          },
         { id: 72, name: "Create Your Own Stir-Fry", price:"SP",
                 options: {
-                    option1:
+                    optionSize:
                         {
                         name: "Choose Favors ",
                         choices: [
-                            "麻辣香鍋($1.75)",
-                            "亞洲香鍋($1.00)",
-                            "豆豉香鍋($1.00)",
-                            "薑蔥香鍋($1.00)",
-                            "黑胡椒香鍋($1.00)",
-                            "麻辣燙（$1.75）",
-                            "牛奶麻辣燙($1.75)",
-                            "牛奶麻辣燙($1.75)",
-                            "蕃茄湯($1.00)",
-                            "蕃茄湯($1.00)" ,
-                            "藤椒冒菜($1.00)",
-                        ], selectedOptions: [], limit: 1
+                            "麻辣香鍋 $1.75",
+                            "亞洲香鍋 $1.00",
+                            "豆豉香鍋 $1.00",
+                            "薑蔥香鍋 $1.00",
+                            "黑胡椒香鍋 $1.00",
+                            "麻辣燙 $1.75",
+                            "牛奶麻辣燙 $1.75",
+                            "牛奶麻辣燙 $1.75",
+                            "蕃茄湯 $1.00",
+                            "藤椒冒菜 $1.00",
+                        ], selectedOptions: [], limit: 1, adjustable: true
                     },
                     option2:
                         {
                          name: "Choose Spiciness",
                          choices: [ "Mild 微辣", "Medium 中辣", "Hot大辣", "Extra hot 特辣"], selectedOptions: [], limit: 1
                     },
-                    option3:
-                        {
-                        name: "Ingredients",
+                    option3: {
+                        name: "Ingredients (4.95 each)",
                         choices: [
                             "肥牛($4.95)",
                             "牛排($4.95)",
@@ -68,6 +66,14 @@ const SPICE_TWENTY_FOUR = {
                             "午餐肉($4.95)",
                             "親親腸($4.95)",
                             "鵪鶉蛋($4.95)",
+                        ],
+                        selectedOptions: [],
+                        limit: 100,
+                        price: 4.95
+                    },
+                    option4: {
+                        name: "Ingredients (3.95 each)",
+                        choices: [
                             "千葉豆腐($3.95)",
                             "腐竹($3.95)",
                             "豆皮($3.95)",
@@ -102,11 +108,14 @@ const SPICE_TWENTY_FOUR = {
                             "紅薯粉($3.95)",
                             "烏冬麵($3.95)",
                             "公仔麵($3.95)",
-                            "兩面黃($3.95)",
-                        ], selectedOptions: [], limit: 100
-                        },
-                    option4: {
-                        name: "Toppings", choices: ["青蔥", "香菜", "芝麻", "油蔥酥($1.50)","黃金炒蛋($3.50)",], selectedOptions: [], limit: 100
+                            "兩面黃($3.95)"
+                        ],
+                        selectedOptions: [],
+                        limit: 100,
+                        price: 3.95
+                    },
+                    option5: {
+                        name: "Toppings ", choices: ["青蔥", "香菜", "芝麻", "油蔥酥 $1.50", "黃金炒蛋 $3.50"], selectedOptions: [], limit: 100, adjustable: true
                     }
         }},
         { id: 73, name: '燒椒茄子', price:9.95},

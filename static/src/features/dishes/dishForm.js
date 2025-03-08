@@ -8,65 +8,96 @@ import RemoveIcon from '@mui/icons-material/Remove';
 const DishForm = ({ restaurant, quantities, onQuantityChange, onAddDish }) => {
   const [selectedOptions, setSelectedOptions] = useState({});
 
-  const handleAddDish = (dish) => {
-      if (quantities[dish.id] > 0) {
-        onAddDish(restaurant.id, [
-          {
-            id: dish.id,
-            name: dish.name || "Unknown",
-            price: dish.price ?? 0,
-            quantity: quantities[dish.id] ?? 0,
-            selectedOptions: selectedOptions[dish.id] || {},
-          },
-        ]);
+  const calculateTotal = (dish) => {
+    let total = dish.price === 'SP' ? 0 : dish.price;
 
-        // Reset selected options for this dish
-        setSelectedOptions((prev) => ({
-          ...prev,
-          [dish.id]: {}, // Clear selected options
-        }));
+    if (selectedOptions[dish.id]) {
+      const selectedOptionsKeys = Object.keys(selectedOptions[dish.id]);
 
-        // Reset quantity for this dish
-        onQuantityChange(dish.id, "reset", restaurant.id);
+      for (let key of selectedOptionsKeys) {
+          const optionData = dish.options[key]; // May be undefined
+          const selectedOptionsValues = selectedOptions[dish.id][key];
+
+          if (!selectedOptionsValues) continue; // Skip if no values are selected
+
+          if (optionData?.adjustable) {
+              // Handle adjustable options (extract price from selected values)
+              for (let value of selectedOptionsValues) {
+                  const priceMatch = value.match(/\$\d+(\.\d+)?/); // Extract price if present
+                  const price = priceMatch ? parseFloat(priceMatch[0].replace('$', '')) : 0;
+                  total += price;
+              }
+          } else if (optionData?.price) {
+              // Handle regular options (fixed price per selection)
+              total += optionData.price * selectedOptionsValues.length;
+          }
       }
+    }
+
+    return total;
+  };
+
+  const handleAddDish = (dish) => {
+    const total = calculateTotal(dish);
+
+    if (quantities[dish.id] > 0) {
+      onAddDish(restaurant.id, [
+        {
+          id: dish.id,
+          name: dish.name || "Unknown",
+          price: total,
+          quantity: quantities[dish.id] ?? 0,
+          selectedOptions: selectedOptions[dish.id] || {},
+        },
+      ]);
+
+      // Reset selected options for this dish
+      setSelectedOptions((prev) => ({
+        ...prev,
+        [dish.id]: {}, // Clear selected options
+      }));
+
+      // Reset quantity for this dish
+      onQuantityChange(dish.id, "reset", restaurant.id);
+    }
   };
 
   const handleOptionChange = (dishId, optionKey, option, limit) => {
-      setSelectedOptions((prev) => {
-        const currentOptions = prev[dishId]?.[optionKey] || [];
+    setSelectedOptions((prev) => {
+      const currentOptions = prev[dishId]?.[optionKey] || [];
 
-        if (limit === 1) {
+      if (limit === 1) {
+        return {
+          ...prev,
+          [dishId]: {
+            ...prev[dishId],
+            [optionKey]: [option],
+          },
+        };
+      } else {
+        if (currentOptions.includes(option)) {
           return {
             ...prev,
             [dishId]: {
               ...prev[dishId],
-              [optionKey]: [option],
+              [optionKey]: currentOptions.filter((opt) => opt !== option),
             },
           };
         } else {
-          if (currentOptions.includes(option)) {
+          if (currentOptions.length < limit) {
             return {
               ...prev,
               [dishId]: {
                 ...prev[dishId],
-                [optionKey]: currentOptions.filter((opt) => opt !== option),
+                [optionKey]: [...currentOptions, option],
               },
             };
-          } else {
-            if (currentOptions.length < limit) {
-              return {
-                ...prev,
-                [dishId]: {
-                  ...prev[dishId],
-                  [optionKey]: [...currentOptions, option],
-                },
-              };
-            }
-            return prev;
           }
+          return prev;
         }
-      });
-    };
+      }
+    });
+  };
 
   return (
     <Box>
@@ -89,7 +120,7 @@ const DishForm = ({ restaurant, quantities, onQuantityChange, onAddDish }) => {
                 Object.entries(dish.options).map(([optionKey, optionData]) => (
                   <Box key={optionKey} sx={{ marginTop: 0.5 }}>
                     <Typography variant="caption">
-                      Select {optionData.limit} option(s)
+                      Select {optionData.limit === 100 ? "" : optionData.limit} option(s)
                       {optionData.name ? ` for ${optionData.name}` : ''}:
                     </Typography>
                     <Box>

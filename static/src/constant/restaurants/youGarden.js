@@ -92,9 +92,9 @@ const YOU_GARDEN = {
         { id: 988, name: '揚州炒飯 Yang Chow Fried Rice', price:13.95},
         { id: 989, name: '肉絲炒年糕 Rice Cake w. Shredded Pork', price:13.50},
         { id: 990, name: '牛肉炒年糕 Rice Cake with Beef', price:14.50},
-        { id: 911, name: '雞絲炒年糕 Rice Cake w. Shredded Chicken', price:13.95},
-        { id: 912, name: '雜錦炒年糕 Rice Cake w. Beef, Pork, Chicken & Seafood', price:14.95},
-        { id: 913, name: '海鮮炒年糕 Rice Cake w. Seafood', price:14.95},
+        { id: 991, name: '雞絲炒年糕 Rice Cake w. Shredded Chicken', price:13.95},
+        { id: 992, name: '雜錦炒年糕 Rice Cake w. Beef, Pork, Chicken & Seafood', price:14.95},
+        { id: 993, name: '海鮮炒年糕 Rice Cake w. Seafood', price:14.95},
     ]
   };
   
