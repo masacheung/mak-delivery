@@ -29,7 +29,7 @@ const OrderLookup = () => {
   };
 
   return (
-    <Container maxWidth="sm">
+    <Container maxWidth="sm" overflowX="hidden">
       <Box sx={{ textAlign: "center", mt: 5 }}>
         <Typography variant="h4" gutterBottom>
           Order Lookup

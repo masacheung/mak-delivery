@@ -50,7 +50,7 @@ const Admin = () => {
 
   if (!isAuthenticated) {
     return (
-      <Box display="flex" justifyContent="center" alignItems="center" height="100vh">
+      <Box display="flex" justifyContent="center" alignItems="center" height="100vh" overflowX="hidden">
         <Card sx={{ width: 350, padding: 3, boxShadow: 3 }}>
           <CardContent>
             <Typography variant="h5" align="center" gutterBottom>

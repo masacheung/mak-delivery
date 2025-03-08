@@ -224,7 +224,7 @@ const RestaurantList = () => {
   };
 
   return (
-    <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", width: "95%", maxWidth: 800, margin: "auto", padding: 2 }}>
+    <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", width: "95%", maxWidth: 800, margin: "auto", padding: 2, overflowX: "hidden"}}>
       <Box
         sx={{
           position: "fixed", // Keep header fixed at top
@@ -241,7 +241,7 @@ const RestaurantList = () => {
         }}
       >
         {/* Left - Logo */}
-        <Box sx={{ display: "flex", alignItems: "center", marginLeft: "3%" }}>
+        <Box sx={{ display: "flex", alignItems: "center"}}>
           <img src="/delivery-truck.png" alt="Logo" style={{ width: 40, height: 40 }} />
         </Box>
 
@@ -309,7 +309,7 @@ const RestaurantList = () => {
             )}
           </Box>
       </Box>)}
-      <Box sx={{ width: "70%", padding: 2 }}>
+      <Box sx={{ width: "100%", padding: 2, paddingTop: (theme) => `calc(${theme.mixins.toolbar.minHeight}px + 16px)` }}>
         <Typography variant="h4" gutterBottom sx={{ fontWeight: 'bold', fontFamily: 'Poppins, sans-serif' }}> 
           Order
         </Typography>
@@ -327,7 +327,7 @@ const RestaurantList = () => {
         </TextField>
       </Box>
 
-      <Box sx={{ width: "70%", padding: 2 }}>
+      <Box sx={{ width: "100%", padding: 2 }}>
         <Typography variant="h4" gutterBottom>
           Restaurant List
         </Typography>

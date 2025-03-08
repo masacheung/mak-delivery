@@ -19,7 +19,7 @@ const OrderedPage = () => {
       : order.order_details;
 
   return (
-    <Box display="flex" justifyContent="center" alignItems="center" minHeight="100vh" bgcolor="#f5f5f5">
+    <Box display="flex" justifyContent="center" alignItems="center" minHeight="100vh" bgcolor="#f5f5f5" overflowX="hidden">
       <Card sx={{ maxWidth: 500, width: "100%", p: 2, boxShadow: 3 }}>
         <CardContent>
           <Typography variant="h5" fontWeight="bold" gutterBottom align="center">

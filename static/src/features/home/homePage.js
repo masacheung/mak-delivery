@@ -27,6 +27,7 @@ const HomePage = () => {
         height: "100vh",
         display: "flex",
         flexDirection: "column",
+        overflowX: "hidden"
       }}
     >
       <Box
@@ -45,7 +46,7 @@ const HomePage = () => {
         }}
       >
         {/* Left - Logo */}
-        <Box sx={{ display: "flex", alignItems: "center", marginLeft: "3%" }}>
+        <Box sx={{ display: "flex", alignItems: "center"}}>
           <img src="/delivery-truck.png" alt="Logo" style={{ width: 40, height: 40 }} />
         </Box>
 
