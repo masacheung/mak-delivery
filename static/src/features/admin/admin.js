@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import {
   Box, TextField, Button, Typography, Card, CardContent, IconButton
 } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 import { AccountCircle } from "@mui/icons-material";
 import EventIcon from "@mui/icons-material/Event";
 import AdminDeliveryEvent from "../adminConfig/adminDeliveryEvent";
@@ -9,6 +10,7 @@ import AdminOrdersLookup from "../adminOrdersLookup/adminOrdersLookup";
 import UpcomingEvent from "../headerSection/upcomingEvent/upcomingEvent";
 
 const Admin = () => {
+  const navigate = useNavigate();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -38,10 +40,10 @@ const Admin = () => {
       }
       const data = await response.json();
       setEvents(data); // Store events in state
-      setShowEvents(true);
     } catch (err) {
       setError(err.message);
     }
+    setShowEvents(true);
   };
 
   if (!isAuthenticated) {
@@ -110,7 +112,15 @@ const Admin = () => {
 
         {/* Center - Mak Delivery */}
         <Typography variant="h6" 
-          sx={{ flexGrow: 1, textAlign: "center", fontWeight: 'bold', fontFamily: 'Poppins, sans-serif',}}>
+          sx={{ flexGrow: 1, textAlign: "center", fontWeight: 'bold', fontFamily: 'Poppins, sans-serif',
+            cursor: "pointer",
+            transition: "color 0.3s ease, transform 0.2s ease",
+            "&:hover": {
+              color: "primary.main",
+              transform: "scale(1.05)",
+            }
+          }}
+          onClick={() => navigate("/")}>
           Mak Delivery Admin Panel
         </Typography>
 

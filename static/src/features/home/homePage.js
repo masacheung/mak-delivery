@@ -35,10 +35,10 @@ const HomePage = () => {
       }
       const data = await response.json();
       setEvents(data); // Store events in state
-      setShowEvents(true);
     } catch (err) {
       setError(err.message);
     }
+    setShowEvents(true);
   };
 
   return (
@@ -79,7 +79,15 @@ const HomePage = () => {
             textAlign: "center",
             fontWeight: 'bold',
             fontFamily: 'Poppins, sans-serif',
-          }}>
+            cursor: "pointer",
+            transition: "color 0.3s ease, transform 0.2s ease",
+            "&:hover": {
+              color: "primary.main",
+              transform: "scale(1.05)",
+            }
+          }}
+          onClick={() => navigate("/")}
+        >
           Mak Delivery
         </Typography>
 

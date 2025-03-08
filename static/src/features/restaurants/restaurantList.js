@@ -71,6 +71,10 @@ const RestaurantList = () => {
   const handleClose = () => setIsOpen(false);
 
   useEffect(() => {
+    console.log("Updated orderState:", orderState);
+  }, [orderState]);
+
+  useEffect(() => {
     console.log("Updated openEvents:", openEvents);
   }, [openEvents]);
 
@@ -83,7 +87,8 @@ const RestaurantList = () => {
     setPickupLocations([]);
     setAvailableRestaurants([]);
     setEnableLocationsDropdown(false);
-    setOrderState({
+    setOrderState((prevState) => ({
+      ...prevState,  // Spread the previous state to keep other properties unchanged
       selectedRestaurant: null,
       quantities: {},
       isDishFormVisible: false,
@@ -91,7 +96,7 @@ const RestaurantList = () => {
       notes: "",
       total: 0,
       pickupLocation: "",
-    })
+    }));
   }
 
   const getUniqueOptions = (events, key) => {
