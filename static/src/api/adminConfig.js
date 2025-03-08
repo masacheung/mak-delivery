@@ -27,13 +27,9 @@ router.get("/", async (req, res) => {
       [todayDate]
     );
 
-    console.log(todayDate);
-
     if (result.rows.length === 0) {
       return res.status(404).json({ error: "Event not found." });
     }
-
-    console.log(result.rows);
 
     const events = result.rows;
 
