@@ -224,7 +224,7 @@ const RestaurantList = () => {
   };
 
   return (
-    <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", width: "95%", maxWidth: 800, margin: "auto", padding: 2, overflowX: "hidden"}}>
+    <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", width: "95%", maxWidth: 800, margin: "auto", overflowX: "hidden"}}>
       <Box
         sx={{
           position: "fixed", // Keep header fixed at top
@@ -270,8 +270,6 @@ const RestaurantList = () => {
         <Box
           sx={{
             position: "fixed",  // Make sure it stays fixed at the top
-            top: 0,
-            left: 0,            // Align it to the left side of the page
             width: "100%",      // Take the full width of the screen
             height: "100vh",    // Take the full height of the screen
             backgroundColor: "white",  // White background
@@ -280,6 +278,7 @@ const RestaurantList = () => {
             flexDirection: "column",  // Stack content vertically
             alignItems: "center",     // Horizontally center content
             padding: 2,
+            overflowX: "hidden"
           }}
         >
           <IconButton
@@ -287,7 +286,7 @@ const RestaurantList = () => {
             sx={{
               position: "absolute",
               top: 10,
-              left: 10,
+              left: 20,
               backgroundColor: "gray",
               color: "white",
               zIndex: 1100, // Ensure the button stays above all content
