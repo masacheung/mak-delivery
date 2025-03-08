@@ -39,8 +39,9 @@ const HomePage = () => {
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
-          padding: 2,
           backgroundColor: "white",
+          paddingTop: 2,
+          paddingBottom: 2,
           boxShadow: 2,
           zIndex: 1100, // Ensure header is above the content but below the overlay
         }}
@@ -57,7 +58,7 @@ const HomePage = () => {
         </Typography>
 
         {/* Right - Shopping Cart */}
-        <IconButton sx={{ marginRight: "3%" }}>
+        <IconButton>
           <AccountCircle sx={{ fontSize: 30, color: "black" }}/>
         </IconButton>
       </Box>
@@ -70,7 +71,6 @@ const HomePage = () => {
           justifyContent: "center",
           alignItems: "center",
           gap: 2,
-          padding: 2,
         }}
       >
         <Typography

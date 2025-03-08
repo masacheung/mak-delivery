@@ -234,8 +234,9 @@ const RestaurantList = () => {
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
-          padding: 2,
           backgroundColor: "white",
+          paddingTop: 2,
+          paddingBottom: 2,
           boxShadow: 2,
           zIndex: 1100, // Ensure header is above the content but below the overlay
         }}
@@ -260,9 +261,9 @@ const RestaurantList = () => {
         </Typography>
 
         {/* Right - Shopping Cart */}
-        <IconButton sx={{ marginRight: "3%" }}>
+        <IconButton>
           <Badge badgeContent={Object.keys(orderState.addedDishes).length > 0 ? Object.keys(orderState.addedDishes).length : null} color="error" sx={{ "& .MuiBadge-badge": { fontSize: 12, minWidth: 20, height: 20 } }}> 
-            <ShoppingCartIcon onClick={handleOpen}/>
+            <ShoppingCartIcon onClick={handleOpen} sx={{ fontSize: 30, color: "black" }}/>
           </Badge>
         </IconButton>
       </Box>
@@ -277,7 +278,6 @@ const RestaurantList = () => {
             display: "flex",     // Use flexbox to position the content
             flexDirection: "column",  // Stack content vertically
             alignItems: "center",     // Horizontally center content
-            padding: 2,
             overflowX: "hidden"
           }}
         >
@@ -308,7 +308,7 @@ const RestaurantList = () => {
             )}
           </Box>
       </Box>)}
-      <Box sx={{ width: "100%", padding: 2, paddingTop: (theme) => `calc(${theme.mixins.toolbar.minHeight}px + 16px)` }}>
+      <Box sx={{ width: "100%", paddingTop: (theme) => `calc(${theme.mixins.toolbar.minHeight}px + 16px)` }}>
         <Typography variant="h4" gutterBottom sx={{ fontWeight: 'bold', fontFamily: 'Poppins, sans-serif' }}> 
           Order
         </Typography>
@@ -326,7 +326,7 @@ const RestaurantList = () => {
         </TextField>
       </Box>
 
-      <Box sx={{ width: "100%", padding: 2 }}>
+      <Box sx={{ width: "100%" }}>
         <Typography variant="h4" gutterBottom>
           Restaurant List
         </Typography>
