@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Box, Button, Typography, IconButton } from "@mui/material";
 import { AccountCircle } from "@mui/icons-material";
+import EventIcon from "@mui/icons-material/Event";
+import UpcomingEvent from "../headerSection/upcomingEvent/upcomingEvent";
 
 const pickupLocations = [
   "Fort Lee 540 Main St",
@@ -20,6 +22,24 @@ const pickupLocations = [
 
 const HomePage = () => {
   const navigate = useNavigate();
+  const [error, setError] = useState("");
+  const [events, setEvents] = useState([]);
+  const [showEvents, setShowEvents] = useState(false); // Controls visibility
+
+  const handleSearch = async () => {
+    try {
+      setError(null); // Clear previous errors
+      const response = await fetch("/api/adminConfig");
+      if (!response.ok) {
+        throw new Error("Failed to fetch upcoming events");
+      }
+      const data = await response.json();
+      setEvents(data); // Store events in state
+      setShowEvents(true);
+    } catch (err) {
+      setError(err.message);
+    }
+  };
 
   return (
     <Box
@@ -27,7 +47,8 @@ const HomePage = () => {
         height: "100vh",
         display: "flex",
         flexDirection: "column",
-        overflowX: "hidden"
+        overflowX: "hidden",
+        padding: 0, // Ensure no extra padding on the body
       }}
     >
       <Box
@@ -47,21 +68,41 @@ const HomePage = () => {
         }}
       >
         {/* Left - Logo */}
-        <Box sx={{ display: "flex", alignItems: "center"}}>
+        <Box sx={{ display: "flex", alignItems: "center" }}>
           <img src="/delivery-truck.png" alt="Logo" style={{ width: 40, height: 40 }} />
         </Box>
 
         {/* Center - Mak Delivery */}
-        <Typography variant="h6" 
-          sx={{ flexGrow: 1, textAlign: "center", fontWeight: 'bold', fontFamily: 'Poppins, sans-serif',}}>
+        <Typography variant="h6"
+          sx={{
+            flexGrow: 1,
+            textAlign: "center",
+            fontWeight: 'bold',
+            fontFamily: 'Poppins, sans-serif',
+          }}>
           Mak Delivery
         </Typography>
 
         {/* Right - Shopping Cart */}
-        <IconButton>
-          <AccountCircle sx={{ fontSize: 30, color: "black" }}/>
+        <IconButton onClick={handleSearch}>
+          <EventIcon sx={{ fontSize: 30, color: "black" }} />
         </IconButton>
       </Box>
+
+      {/* Upcoming Event */}
+      {showEvents && (
+        <Box
+          sx={{
+            width: "100%", // Ensure full width
+            padding: 0, // Remove padding that might be causing the shift
+            display: "flex",
+            justifyContent: "center", // Center align the UpcomingEvent
+          }}
+        >
+          <UpcomingEvent events={events} onClose={() => setShowEvents(false)} />
+        </Box>
+      )}
+
       {/* Top Section - 60% */}
       <Box
         sx={{
@@ -107,7 +148,6 @@ const HomePage = () => {
         sx={{
           flex: 4,
           textAlign: "center",
-          padding: 2,
           overflowY: "auto",
         }}
       >

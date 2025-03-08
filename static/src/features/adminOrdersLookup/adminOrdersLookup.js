@@ -11,6 +11,11 @@ const AdminOrdersLookup = () => {
   const [restaurant, setRestaurant] = useState("");
   const [orders, setOrders] = useState([]);
   const [sumTotal, setSumTotal] = useState(0);
+  const [isFieldsVisible, setIsFieldsVisible] = useState(false);
+
+  const handleTitleClick = () => {
+    setIsFieldsVisible(!isFieldsVisible); // Toggle the visibility of the form fields
+  };
 
   const handleSearch = async () => {
     const encodePickUpLocation = encodeURIComponent(pickUpLocation);
@@ -38,7 +43,27 @@ const AdminOrdersLookup = () => {
           justifyContent: "space-between",
           alignItems: "center", overflowX: "hidden",
           flexDirection: "column" }}>
-        <Typography variant="h6" gutterBottom gap="5">Collect Orders</Typography>
+        <Typography
+          variant="h5"
+          sx={{
+            fontWeight: "bold",
+            marginBottom: 3,
+            fontFamily: 'Poppins, sans-serif',
+            textAlign: 'center',
+            color: 'text.primary', // Adjust color as needed
+            cursor: "pointer", // Show pointer cursor to indicate it's clickable
+            transition: "color 0.3s ease, transform 0.2s ease", // Smooth transition effect
+            "&:hover": {
+              color: "primary.main", // Change color on hover (use theme primary color)
+              transform: "scale(1.05)", // Slightly increase size on hover
+            }
+          }}
+          onClick={handleTitleClick}
+        >
+          Collect Orders
+        </Typography>
+        {isFieldsVisible && (
+        <>
         {/* Pickup Location Dropdown */}
         <FormControl sx={{ minWidth: 300, mb: 2 }}>
           <InputLabel shrink htmlFor="location-select">Pickup Location</InputLabel>
@@ -140,6 +165,7 @@ const AdminOrdersLookup = () => {
             ))}
           </Box>
         )}
+        </>)}
       </Box>
     </>
   );

@@ -246,19 +246,26 @@ const RestaurantList = () => {
           <img src="/delivery-truck.png" alt="Logo" style={{ width: 40, height: 40 }} />
         </Box>
 
-        {/* Center - Mak Delivery */}
-        <Typography variant="h6" 
-          sx={{ flexGrow: 1, textAlign: "center", fontWeight: 'bold', fontFamily: 'Poppins, sans-serif',
-            cursor: "pointer", // Show pointer cursor to indicate it's clickable
-            transition: "color 0.3s ease, transform 0.2s ease", // Smooth transition effect
-            "&:hover": {
-              color: "primary.main", // Change color on hover (use theme primary color)
-              transform: "scale(1.05)", // Slightly increase size on hover
-            }, }}
-          onClick={() => navigate("/")}
-        >
-          Mak Delivery
-        </Typography>
+        <Box sx={{ flexGrow: 1, display: "flex", justifyContent: "center" }}>
+          <Typography
+            variant="h6"
+            sx={{
+              display: "inline-block", // Shrinks the clickable area
+              padding: "4px 8px", // Reduce padding to limit clickable area
+              fontWeight: "bold",
+              fontFamily: "Poppins, sans-serif",
+              cursor: "pointer",
+              transition: "color 0.3s ease, transform 0.2s ease",
+              "&:hover": {
+                color: "primary.main",
+                transform: "scale(1.05)",
+              },
+            }}
+            onClick={() => navigate("/")}
+          >
+            Mak Delivery
+          </Typography>
+        </Box>
 
         {/* Right - Shopping Cart */}
         <IconButton>

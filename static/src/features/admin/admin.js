@@ -3,14 +3,18 @@ import {
   Box, TextField, Button, Typography, Card, CardContent, IconButton
 } from "@mui/material";
 import { AccountCircle } from "@mui/icons-material";
+import EventIcon from "@mui/icons-material/Event";
 import AdminDeliveryEvent from "../adminConfig/adminDeliveryEvent";
 import AdminOrdersLookup from "../adminOrdersLookup/adminOrdersLookup";
+import UpcomingEvent from "../headerSection/upcomingEvent/upcomingEvent";
 
 const Admin = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [error, setError] = useState("");
+  const [events, setEvents] = useState([]);
+  const [showEvents, setShowEvents] = useState(false); // Controls visibility
 
   const handleLogin = (e) => {
     e.preventDefault();
@@ -22,6 +26,21 @@ const Admin = () => {
       setError("");
     } else {
       setError("Invalid username or password");
+    }
+  };
+
+  const handleSearch = async () => {
+    try {
+      setError(null); // Clear previous errors
+      const response = await fetch("/api/adminConfig");
+      if (!response.ok) {
+        throw new Error("Failed to fetch upcoming events");
+      }
+      const data = await response.json();
+      setEvents(data); // Store events in state
+      setShowEvents(true);
+    } catch (err) {
+      setError(err.message);
     }
   };
 
@@ -96,13 +115,14 @@ const Admin = () => {
         </Typography>
 
         {/* Right - Shopping Cart */}
-        <IconButton>
-          <AccountCircle sx={{ fontSize: 30, color: "black" }}/>
+        <IconButton onClick={handleSearch}>
+          <EventIcon sx={{ fontSize: 30, color: "black" }}/>
         </IconButton>
       </Box>
 
       <AdminDeliveryEvent/>
       <AdminOrdersLookup/>
+      {showEvents && <UpcomingEvent events={events} onClose={() => setShowEvents(false)} />}
     </Box>
   );
 };
