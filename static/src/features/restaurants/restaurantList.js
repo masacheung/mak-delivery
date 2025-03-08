@@ -17,7 +17,6 @@ import ClearIcon from '@mui/icons-material/Clear';
 import CloseIcon from "@mui/icons-material/Close";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import { v4 as uuidv4 } from 'uuid';
-import { PICK_UP_LOCATION } from "../../constant/constant";
 import DishForm from "../dishes/dishForm";
 import OrderSummary from "../order/orderSummary";
 import TASTY_MOMENT from "../../constant/restaurants/tastyMoment";
@@ -61,13 +60,42 @@ const RestaurantList = () => {
     errors: {},
     total: 0,
   });
+  const [openEvents, setOpenEvents] = useState([]);
+  const [pickupLocations, setPickupLocations] = useState([]);
+  const [error, setError] = useState("");
 
   const [isOpen, setIsOpen] = useState(false);
   const handleOpen = () => setIsOpen(true);
   const handleClose = () => setIsOpen(false);
 
-  const updateOrderState = (field, value) => {
+  useEffect(() => {
+    console.log("Updated openEvents:", openEvents);
+  }, [openEvents]);
+
+  const getUniqueOptions = (events, key) => {
+    return [...new Set(events.flatMap(event => event[key]))];
+  };
+  
+  const handleSearch = async (date) => {
+    try {
+      setError(null); // Clear previous errors
+      const response = await fetch(`/api/adminConfig/openEvents?date=${date}`);
+      if (!response.ok) {
+        throw new Error("Failed to fetch upcoming events");
+      }
+      const data = await response.json();
+      setOpenEvents(data); // Store events in state
+      setPickupLocations(getUniqueOptions(data, "pick_up_locations"));
+    } catch (err) {
+      setError(err.message);
+    }
+  };
+
+  const updateOrderState = async (field, value) => {
     setOrderState((prev) => ({ ...prev, [field]: value }));
+    if (field === 'date') {
+      await handleSearch(value);
+    }
   };
 
   const updateTotal = (total) => {
@@ -200,10 +228,6 @@ const RestaurantList = () => {
 
       const result = await response.json(); // FIXED: Define result before using it
 
-      console.log("Order submitted successfully");
-
-      console.log(result.order);
-
       // Redirect to the ordered page with order details
       navigate("/ordered", { state: { order: result.order } });
 
@@ -325,7 +349,7 @@ const RestaurantList = () => {
         <TextField fullWidth label="WeChat ID" value={orderState.wechatId} onChange={(e) => updateOrderState("wechatId", e.target.value)} margin="normal" required error={orderState.errors?.wechatId} helperText={orderState.errors?.wechatId ? "WeChat ID is required" : ""}/>
         <TextField fullWidth label="Pick-up Date" type="date" value={orderState.date} onChange={(e) => updateOrderState("date", e.target.value)} margin="normal" required InputLabelProps={{ shrink: true }} error={orderState.errors?.date} helperText={orderState.errors?.date ? "Date is required" : ""}/>
         <TextField select fullWidth label="Pick-up Location" value={orderState.pickupLocation} onChange={(e) => updateOrderState("pickupLocation", e.target.value)} margin="normal" required error={orderState.errors?.pickupLocation} helperText={orderState.errors?.pickupLocation ? "Pick-up Location is required" : ""}>
-          {PICK_UP_LOCATION.map((location, index) => (
+          {pickupLocations.map((location, index) => (
             <MenuItem key={index} value={location}>
               {location}
             </MenuItem>

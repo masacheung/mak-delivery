@@ -41,4 +41,27 @@ router.get("/", async (req, res) => {
   }
 });
 
+router.get("/openEvents", async (req, res) => {
+  const {date} = req.query;
+
+  try {
+    const result = await pool.query(
+      "SELECT * FROM admin_config WHERE pick_up_date = $1",
+      [date]
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ error: "Event not found." });
+    }
+
+    const events = result.rows;
+
+    res.json(events);
+
+  } catch (error) {
+    console.error("Error fetching event:", error);
+    res.status(500).json({ error: "Database error" });
+  }
+});
+
 module.exports = router;
