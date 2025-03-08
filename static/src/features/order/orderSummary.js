@@ -70,7 +70,7 @@ const OrderSummary = ({ addedDishes = {}, updateTotal, handleSubmit }) => {
       {/* Sticky Total Box */}
       <Box sx={{ 
         position: "sticky", bottom: 0, background: "white", 
-        padding: 2, borderTop: "1px solid #ccc", pb: 3 
+        padding: 2, borderTop: "1px solid #ccc", pb: 3, mb: 6
       }}>
         <Typography variant="body1">Tax (6.625%): ${tax.toFixed(2)}</Typography>
         <Typography variant="body1">Delivery Fee: ${deliveryFee.toFixed(2)}</Typography>
