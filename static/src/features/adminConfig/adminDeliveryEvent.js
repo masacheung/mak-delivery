@@ -41,7 +41,7 @@ const AdminDeliveryEvent = () => {
 
   const handleSubmit = async () => {
     const eventDate = {
-      date: new Date(deliveryEvent).getTime(),,
+      date: deliveryEvent,
       restaurants: selectedRestaurants,
       locations: selectedLocations
     }
