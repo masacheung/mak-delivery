@@ -71,11 +71,7 @@ const UpcomingEvent = ({ events, onClose }) => {
                 <CardContent>
                   {/* Pick-up Date */}
                   <Typography variant="h6" fontWeight="bold">
-                    Pick-up Date: {new Date(event.pick_up_date + "Z").toLocaleDateString("en-US", {
-                      year: "numeric",
-                      month: "long",
-                      day: "numeric",
-                    })}
+                    Pick-up Date: {new Date(event.pick_up_date).toISOString().split("T")[0]}
                   </Typography>
 
                   {/* Pick-up Locations */}
