@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import {
   Box, IconButton, Typography, Card, CardContent, List, ListItem
 } from "@mui/material";
-import CloseIcon from "@mui/icons-material/Close"; // Import Close Icon
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 const UpcomingEvent = ({ events, onClose }) => {
   return (
@@ -31,7 +31,7 @@ const UpcomingEvent = ({ events, onClose }) => {
             zIndex: 1100, // Ensure the button stays above all content
           }}
         >
-          <CloseIcon />
+          <ArrowBackIcon />
         </IconButton>
         <Typography variant="h4" gutterBottom
           sx={{

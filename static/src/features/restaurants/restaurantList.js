@@ -14,7 +14,7 @@ import {
   Badge
 } from "@mui/material";
 import ClearIcon from '@mui/icons-material/Clear';
-import CloseIcon from "@mui/icons-material/Close";
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import { v4 as uuidv4 } from 'uuid';
 import DishForm from "../dishes/dishForm";
@@ -359,7 +359,7 @@ const RestaurantList = () => {
               zIndex: 1100, // Ensure the button stays above all content
             }}
           >
-            <CloseIcon />
+            <ArrowBackIcon />
           </IconButton>
           <OrderSummary addedDishes={orderState.addedDishes} updateTotal={updateTotal} handleSubmit={handleSubmit}/>
       </Box>)}

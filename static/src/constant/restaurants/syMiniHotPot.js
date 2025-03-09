@@ -104,12 +104,27 @@ const S_Y_MINI_HOTPOT = {
         { id: 424, name: 'Pickled Chicken Feet 泡椒凤爪', price:8.95  },
         { id: 425, name: 'Sliced Beef and OX Tongue in Chili Sauce 夫妻肺片', price:10.95  },
         { id: 426, name: 'Arctic Surf Clams w. Homemade Sauce 凉拌北极贝', price:15.95  },
-        { id: 427, name: 'Boiled Fish Filets in Hot Chili Oil (M) 水煮鱼片(中)', price:24.95  },
-        { id: 428, name: 'Boiled Fish Filets in Hot Chili Oil (L) 水煮鱼片(大)', price:39.95  },
-        { id: 429, name: 'Pickled Cabbage & Chili w. Fish Filets (M) 酸菜鱼片(中)', price:24.95  },
-        { id: 430, name: 'Pickled Cabbage & Chili w. Fish Filets (L) 酸菜鱼片(大)', price:39.95  },
-        { id: 431, name: 'Live Fish Fillets w. Pickled Pepper (M) 泡椒鱼片(中) ', price:24.95  },
-        { id: 432, name: 'Live Fish Fillets w. Pickled Pepper (L) 泡椒鱼片(大)', price:39.95  },
+        { id: 427, name: 'Boiled Fish Filets in Hot Chili Oil 水煮鱼片', price:"SP",
+            options: {
+                optionSize: {
+                    name: "Size", choices: ["M $24.95", "L $39.95"], selectedOptions: [], limit: 1, adjustable: true
+                }
+            }
+        },
+        { id: 429, name: 'Pickled Cabbage & Chili w. Fish Filets 酸菜鱼片', price:"SP",
+            options: {
+                optionSize: {
+                    name: "Size", choices: ["M $24.95", "L $39.95"], selectedOptions: [], limit: 1, adjustable: true
+                }
+            }
+        },
+        { id: 431, name: 'Live Fish Fillets w. Pickled Pepper 泡椒鱼片', price:"SP",
+            options: {
+                optionSize: {
+                    name: "Size", choices: ["M $24.95", "L $39.95"], selectedOptions: [], limit: 1, adjustable: true
+                }
+            }
+        },
         { id: 433, name: 'Spicy Beef in Szechuan Style 水煮牛肉', price:30.95  },
         { id: 434, name: 'Five Stars Mixed in Spicy Chili Sauce 五鲜烩 (毛肚,黄喉,肥牛,午餐肉,鱿鱼须) 菜类(青瓜,白菜,木耳,腐竹,魔芋) Black beef tripe, yellow throat, beef, spam meat, squid, cucumber, napa, earwood, bean curd stick, konjak', price:30.95  },
         { id: 435, name: 'Pork Intestine w. Chili Pot 干锅肥肠', price:22.95  },
