@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Box, TextField, Button, Typography, Card, CardContent, IconButton
 } from "@mui/material";
@@ -43,8 +43,17 @@ const Admin = () => {
     } catch (err) {
       setError(err.message);
     }
-    setShowEvents(true);
   };
+
+  useEffect(() => {
+    handleSearch();
+  
+    const interval = setInterval(() => {
+      handleSearch();
+    }, 30 * 60 * 1000);
+  
+    return () => clearInterval(interval);
+  }, []);
 
   if (!isAuthenticated) {
     return (
@@ -125,8 +134,10 @@ const Admin = () => {
         </Typography>
 
         {/* Right - Shopping Cart */}
-        <IconButton onClick={handleSearch}>
-          <EventIcon sx={{ fontSize: 30, color: "black" }}/>
+        <IconButton onClick={() => setShowEvents(true)}>
+          <Badge badgeContent={events.length > 0 ? events.length : null} color="error" sx={{ "& .MuiBadge-badge": { fontSize: 12, minWidth: 20, height: 20 } }}> 
+            <EventIcon sx={{ fontSize: 30, color: "black" }}/>
+          </Badge>
         </IconButton>
       </Box>
 

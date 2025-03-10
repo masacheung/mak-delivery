@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect  } from "react";
 import { useNavigate } from "react-router-dom";
-import { Box, Button, Typography, IconButton } from "@mui/material";
+import { Box, Button, Typography, IconButton, Badge } from "@mui/material";
 import { AccountCircle } from "@mui/icons-material";
 import EventIcon from "@mui/icons-material/Event";
 import UpcomingEvent from "../headerSection/upcomingEvent/upcomingEvent";
@@ -38,8 +38,17 @@ const HomePage = () => {
     } catch (err) {
       setError(err.message);
     }
-    setShowEvents(true);
   };
+
+  useEffect(() => {
+    handleSearch();
+  
+    const interval = setInterval(() => {
+      handleSearch();
+    }, 30 * 60 * 1000);
+  
+    return () => clearInterval(interval);
+  }, []);
 
   return (
     <Box
@@ -92,8 +101,10 @@ const HomePage = () => {
         </Typography>
 
         {/* Right - Shopping Cart */}
-        <IconButton onClick={handleSearch}>
-          <EventIcon sx={{ fontSize: 30, color: "black" }} />
+        <IconButton onClick={() =>setShowEvents(true)}>
+          <Badge badgeContent={events.length > 0 ? events.length : null} color="error" sx={{ "& .MuiBadge-badge": { fontSize: 12, minWidth: 20, height: 20 } }}> 
+            <EventIcon sx={{ fontSize: 30, color: "black" }} />
+          </Badge>
         </IconButton>
       </Box>
 
