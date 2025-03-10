@@ -30,6 +30,7 @@ import MEE_TU from "../../constant/restaurants/meeTu";
 import YOU_GARDEN from "../../constant/restaurants/youGarden";
 import JI_BEI_CHUAN from "../../constant/restaurants/jiBeiChuan";
 import MISS_FLOWER_HOTPOT from "../../constant/restaurants/missFlowerHotpot";
+import NOODLES_TIME from "../../constant/restaurants/noodlesTimes";
 
 const RestaurantList = () => {
   const navigate = useNavigate();
@@ -45,7 +46,8 @@ const RestaurantList = () => {
     YOU_GARDEN,
     NINETY_EIGHT_K,
     HK_ALLEY,
-    MEE_TU
+    MEE_TU,
+    NOODLES_TIME
   ];
 
   const [orderState, setOrderState] = useState({
