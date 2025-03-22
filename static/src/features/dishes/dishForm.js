@@ -49,8 +49,19 @@ const DishForm = ({ restaurant, quantities, onQuantityChange, onAddDish }) => {
   };
 
   const handleAddDish = (dish) => {
+    // Ensure all required options (limit === 1) are selected
+    for (const [optionKey, optionData] of Object.entries(dish.options || {})) {
+      if (optionData.limit === 1) {
+        const selected = selectedOptions[dish.id]?.[optionKey] || [];
+        if (selected.length !== 1) {
+          alert(`Please select exactly one option for ${optionData.name || optionKey}.`);
+          return;
+        }
+      }
+    }
+  
     const total = calculateTotal(dish);
-
+  
     if (quantities[dish.id] > 0) {
       onAddDish(restaurant.id, [
         {
@@ -61,13 +72,13 @@ const DishForm = ({ restaurant, quantities, onQuantityChange, onAddDish }) => {
           selectedOptions: selectedOptions[dish.id] || {},
         },
       ]);
-
+  
       // Reset selected options for this dish
       setSelectedOptions((prev) => ({
         ...prev,
         [dish.id]: {}, // Clear selected options
       }));
-
+  
       // Reset quantity for this dish
       onQuantityChange(dish.id, "reset", restaurant.id);
     }
@@ -78,13 +89,18 @@ const DishForm = ({ restaurant, quantities, onQuantityChange, onAddDish }) => {
       const currentOptions = prev[dishId]?.[optionKey] || [];
 
       if (limit === 1) {
-        return {
-          ...prev,
-          [dishId]: {
-            ...prev[dishId],
-            [optionKey]: [option],
-          },
-        };
+        if (option) {
+          return {
+            ...prev,
+            [dishId]: {
+              ...prev[dishId],
+              [optionKey]: [option], // Override with the selected option
+            },
+          };
+        } else {
+          alert("You must select one option."); // Replace with your frontend error handling
+          return prev;
+        }
       } else {
         if (currentOptions.includes(option)) {
           return {
