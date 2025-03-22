@@ -257,7 +257,7 @@ const MEE_TU = {
         { id: 819, name: '玫瑰奶茶', price:"SP",
         options: {
             optionSize: {
-                name: "Size", choices: ["M $5.45", "L $6.45"], selectedOptions: [], limit: 1, adjustable: true
+                name: "Size", choices: ["M $5.45", "L $6.75"], selectedOptions: [], limit: 1, adjustable: true
             },
              option1:
                   {
