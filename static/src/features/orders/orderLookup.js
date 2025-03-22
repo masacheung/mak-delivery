@@ -8,6 +8,9 @@ const OrderLookup = () => {
   const [orderId, setOrderId] = useState("");
   const [orderData, setOrderData] = useState(null);
   const [error, setError] = useState("");
+  const currentDate = new Date().toISOString().split("T")[0];
+  const [pickUpDate, setPickUpDate] = useState("");
+  const [disableEdit, setDisableEdit] = useState(true);
 
   const handleLookup = async () => {
     if (!wechatId || !orderId) {
@@ -23,6 +26,10 @@ const OrderLookup = () => {
       const data = await response.json();
       console.log(data);
       setOrderData(data);
+      setPickUpDate(new Date(data.pick_up_date).toISOString().split("T")[0]);
+      setDisableEdit(data.pick_up_date >= currentDate);
+      console.log(new Date(data.pick_up_date).toISOString().split("T")[0]);
+      console.log(currentDate);
     } catch (err) {
       setOrderData(null);
       setError("Order not found. Please check your details and try again.");
@@ -136,12 +143,21 @@ const OrderLookup = () => {
           </Box>
         )}
       </Box>
-
+      
       {orderData && (
         <Box display="flex" gap={2} mt={2}>
-          <Button variant="contained" color="primary" fullWidth sx={{ mt: 2 }} onClick={() => navigate("/edit-order", { state: { orderData } })}>
+          <Button variant="contained" color="primary" fullWidth sx={{ mt: 2 }} onClick={() => navigate("/edit-order", { state: { orderData } })}
+          disabled={!disableEdit}
+          >
             Edit Existing Order
           </Button>
+          {!disableEdit && (
+            <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+              <Typography component="span" color="error" variant="caption">
+                Too Late To Edit Order
+              </Typography>
+            </Box>
+          )}
         </Box>
       )}
       {/* Navigation Buttons */}
