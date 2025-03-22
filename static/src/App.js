@@ -5,6 +5,7 @@ import RestaurantList from "./features/restaurants/restaurantList.js";
 import Admin from "./features/admin/admin.js";
 import OrderLookup from "./features/orders/orderLookup.js"; // Import the new component
 import OrderedPage from "./features/ordered/orderedPage.js"
+import EditExistingOrder from "./features/editExistingOrder/editExistingOrder.js";
 
 const App = () => {
   return (
@@ -14,6 +15,7 @@ const App = () => {
         <Route path="/restaurants" element={<RestaurantList />} />
         <Route path="/ordered" element={<OrderedPage />} />
         <Route path="/lookup-order" element={<OrderLookup />} /> {/* Updated */}
+        <Route path="/edit-order" element={<EditExistingOrder />} />
         <Route path="/admin" element={<Admin />} />
       </Routes>
     </Router>

@@ -18,6 +18,27 @@ router.post("/", async (req, res) => {
   }
 });
 
+router.put("/update/:orderId", async (req, res) => {
+  const { orderId } = req.params;
+  const { wechatId, pickupLocation, date, orderDetails, total, notes } = req.body;
+
+  try {
+    const result = await pool.query(
+      "UPDATE orders SET wechat_id = $1, pick_up_location = $2, pick_up_date = $3, order_details = $4, total = $5, notes = $6 WHERE id = $7 RETURNING *",
+      [wechatId, pickupLocation, date, orderDetails, total, notes, orderId]
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ error: "Order not found" });
+    }
+
+    res.status(200).json({ message: "Order updated", order: result.rows[0] });
+  } catch (error) {
+    console.error("Error updating order:", error);
+    res.status(500).json({ error: "Database error" });
+  }
+});
+
 // GET: Fetch order by wechat_id and order_id
 router.get("/", async (req, res) => {
   const { wechatId, orderId } = req.query;

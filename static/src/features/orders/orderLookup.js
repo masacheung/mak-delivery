@@ -21,6 +21,7 @@ const OrderLookup = () => {
       if (!response.ok) throw new Error("Order not found");
 
       const data = await response.json();
+      console.log(data);
       setOrderData(data);
     } catch (err) {
       setOrderData(null);
@@ -136,6 +137,13 @@ const OrderLookup = () => {
         )}
       </Box>
 
+      {orderData && (
+        <Box display="flex" gap={2} mt={2}>
+          <Button variant="contained" color="primary" fullWidth sx={{ mt: 2 }} onClick={() => navigate("/edit-order", { state: { orderData } })}>
+            Edit Existing Order
+          </Button>
+        </Box>
+      )}
       {/* Navigation Buttons */}
       <Box display="flex" gap={2} mt={2}>
         <Button variant="contained" color="primary" fullWidth sx={{ mt: 2 }} onClick={() => navigate("/")}>
