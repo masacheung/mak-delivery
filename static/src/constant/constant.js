@@ -10,7 +10,9 @@ const PICK_UP_LOCATION = [
     "Jersey City - 1 Shorn Ln",
     "Jersey City - 155 Bay St",
     "JSQ - Overlook Flat",
-    "Ridgewood"
+    "Ridgewood",
+    "4000 Riverside Station Blvd, Secaucus, NJ 07094",
+    "200 Angelo Cifelli Dr, Harrison, NJ 07029"
 ];
 
 const RESTAURANT_NAME = {
