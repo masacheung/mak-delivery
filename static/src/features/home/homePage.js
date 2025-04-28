@@ -19,7 +19,10 @@ const pickupLocations = [
   "JSQ - Overlook Flat",
   "Ridgewood",
   "4000 Riverside Station Blvd, Secaucus, NJ 07094",
-  "200 Angelo Cifelli Dr, Harrison, NJ 07029"
+  "200 Angelo Cifelli Dr, Harrison, NJ 07029",
+  "Millburn Free Public Library, 200 Glen Ave, Millburn, NJ 07041",
+  "160 Main St, Millburn, NJ 07041",
+  "1100-8100 Town Center Way, Livingston, NJ 07039"
 ];
 
 const HomePage = () => {
