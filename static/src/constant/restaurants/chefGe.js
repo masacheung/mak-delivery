@@ -11,7 +11,7 @@ const CHEF_GE = {
                name: "Spice", choices: ["中辣", "原味"], selectedOptions: [], limit: 1
             }
         }},
-        { id: 694, name: '特色去骨带鱼  ', price:26.99 },
+        
         { id: 695, name: '馋嘴牛蛙(现杀) ', price:59.99 },
         { id: 696, name: '川味走地鸡 ', price:25.99 },
         { id: 65, name: '一品羊肉鍋', price:39.99  },
@@ -35,7 +35,7 @@ const CHEF_GE = {
         { id: 619, name: '家鄉烙餅', price:4.99  },
         { id: 620, name: '滷肉大餅', price:6.99  },
         { id: 621, name: '白菜豬肉水餃', price:11.99  },
-        { id: 622, name: '韭菜豬肉水餃', price:7.99  },
+        
         { id: 623, name: '肉三鮮水餃', price:13.99  },
         { id: 624, name: '薺菜雲吞湯', price:7.99  },
         { id: 627, name: '特色大盤雞', price:19.99  },
@@ -56,18 +56,18 @@ const CHEF_GE = {
         { id: 6105, name: '红烧狮子头 ', price:16.99 },
         { id: 6106, name: '火爆腰花 ', price:19.99 },
         { id: 6107, name: '西兰花炒牛 ', price:18.99 },
-        { id: 6108, name: '糖醋排骨 ', price:16.99 },
-        { id: 6109, name: '干煸拆骨肉 ', price:18.99 },
+        
+        
         { id: 6110, name: '章茶鸭 ', price:25.99 },
         { id: 6111, name: '藤椒鱼片 ', price:22.99 },
-        { id: 6112, name: '孜然香辣羊腿  ', price:25.99 },
+        
         { id: 6113, name: '干煸鸭头  ', price:23.99 },
-        { id: 6114, name: '手抓小海鲜  ', price:29.99 },
+        
         { id: 6115, name: '火爆鱼肚  ', price:22.99 },
         { id: 6116, name: '金汤椒麻鱼(黑鱼) ', price:22.99 },
         { id: 6117, name: '绝味花千骨', price:25.99 },
         { id: 6118, name: '蜜汁铁板鸡(去骨鸡) ', price:25.99 },
-        { id: 638, name: '牙簽羊肉', price:22.99 },
+        
         { id: 640, name: '乾鍋干葉豆腐', price:16.99  },
         { id: 641, name: '金湯椒麻魚(黑鱼)', price:22.99  },
         { id: 643, name: '菠蘿咕嚕肉', price:15.99  },
