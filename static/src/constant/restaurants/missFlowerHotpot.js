@@ -186,7 +186,7 @@ const MISS_FLOWER_HOTPOT = {
         { id: 1146, name: "有机九鲜菇拼盘 Organic Mushroom Platter", price: 21.99 },
         { id: 1147, name: "五花肉 Pork Belly", price: 5.99 },
         { id: 1148, name: "牛百叶 Beef Tripe", price: 6.99 },
-        { id: 1149, name: "手打牛肉丸 Handmade Beef Balls", price: 5.99 },
+        { id: 1149, name: "手打牛肉丸 Handmade Beef Balls", price: 8.99 },
         { id: 1150, name: "鹌鹑蛋 Quail Egg", price: 3.99 },
         { id: 1151, name: "精品肥牛 Premium Marbled Beef", price: 13.99 },
         { id: 1152, name: "秘制嫩滑鸡肉 Marinated Tender Chicken", price: 24.99 },
