@@ -5,7 +5,7 @@ const CHEF_GE = {
         { id: 61, name: '魚頭泡餅', price:33.99  },
         { id: 691, name: '酸菜全鱼', price:38.99 },
         { id: 692, name: '水煮全鱼', price:38.99 },
-        { id: 693, name: '一特色羊蝎子', price:36.99 ,
+        { id: 693, name: '一特色羊蝎子', price:38.99 ,
          options: {
             option1: {
                name: "Spice", choices: ["中辣", "原味"], selectedOptions: [], limit: 1
