@@ -32,7 +32,8 @@ const RESTAURANT_NAME = {
     10: "季北川",
     11: "花小娇金汤花胶鸡",
     12: "面缘",
-    13: "牛大 NewDa Noodles"
+    13: "牛大 NewDa Noodles",
+    14: "Yo Dessert us"
 };
 
 export { PICK_UP_LOCATION, RESTAURANT_NAME };
