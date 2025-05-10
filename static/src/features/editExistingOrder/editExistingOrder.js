@@ -32,7 +32,7 @@ import JI_BEI_CHUAN from "../../constant/restaurants/jiBeiChuan";
 import MISS_FLOWER_HOTPOT from "../../constant/restaurants/missFlowerHotpot";
 import NOODLES_TIME from "../../constant/restaurants/noodlesTimes";
 import NEW_DA_NOODLES from "../../constant/restaurants/newDaNoodles";
-import YO_DESSERT_US from "../../constant/restaurants/yoDessertUS";
+import YO_DESSERT_US from "../../constant/restaurants/yoDessert";
 
 const EditExistingOrder = () => {
   const navigate = useNavigate();

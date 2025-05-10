@@ -1,6 +1,6 @@
 const YO_DESSERT_US = {
 	id: 14,
-	name: 'YoDessertus',
+	name: 'Yo Dessert us',
 	dishes: [
     { id: 141, name: 'Mango Cheese Yogurt', price:6.25 ,
     	  options: {
@@ -83,6 +83,6 @@ const YO_DESSERT_US = {
   	{ id: 1419, name: 'Strawberry Tiramisu', price:7.95  },
     { id: 1420, name: 'Blueberry Tiramisu', price:7.95  }
   ]
-}
+};
 
 export default YO_DESSERT_US;
