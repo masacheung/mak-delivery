@@ -81,7 +81,12 @@ const YO_DESSERT_US = {
    	{ id: 1417, name: 'Matcha Tiramisu', price:7.95  },
     { id: 1418, name: 'Oreo Tiramisu', price:7.95  },
   	{ id: 1419, name: 'Strawberry Tiramisu', price:7.95  },
-    { id: 1420, name: 'Blueberry Tiramisu', price:7.95  }
+    { id: 1420, name: 'Blueberry Tiramisu', price:7.95  },
+    { id: 1421, name: 'Original Egg Tart', price:2.95  },
+    { id: 1422, name: 'Purple Rice Egg Tart', price:3.25  },
+    { id: 1423, name: 'Peral Choco Egg Tart', price:3.25  },
+    { id: 1424, name: 'Tiramisu Egg Tart', price:3.25  }
+
   ]
 };
 
