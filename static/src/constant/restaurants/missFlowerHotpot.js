@@ -74,11 +74,11 @@ const MISS_FLOWER_HOTPOT = {
                 }
             }
         },
-        { id: 115, name: "胡椒猪肚鸡汤", price: "SP",
+        { id: 115, name: "彩菌鮮雞湯 Stewed Chicken & Mushroom", price: "SP",
             options: {
                 option1: {
                     name: "份量",
-                    choices: ["2人份 $46.99", "4人份 $86.99"],
+                    choices: ["2人份 $49.99", "4人份 $89.99"],
                     selectedOptions: [],
                     limit: 1,
                     adjustable: true
