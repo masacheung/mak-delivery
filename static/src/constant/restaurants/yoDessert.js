@@ -8,6 +8,12 @@ const YO_DESSERT_US = {
             	name: "Sugar level", choices: ["Normal", "Less"], selectedOptions: [], limit: 1
         	}
     	}},
+     { id: 142, name: 'Peach Cheese Yogurt', price:6.95 ,
+        options: {
+            option1: {
+                name: "Sugar level", choices: ["Normal", "Less"], selectedOptions: [], limit: 1
+            }
+       }},
     { id: 142, name: 'Green Grape Cheese Yogurt', price:6.25 ,
     	  options: {
         	option1: {
@@ -86,6 +92,7 @@ const YO_DESSERT_US = {
     { id: 1422, name: 'Purple Rice Egg Tart', price:3.25  },
     { id: 1423, name: 'Peral Choco Egg Tart', price:3.25  },
     { id: 1424, name: 'Tiramisu Egg Tart', price:3.25  }
+     { id: 1425,name: 'Corn Egg Tart', price:3.25  }
 
   ]
 };
