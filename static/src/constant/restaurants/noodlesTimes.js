@@ -20,28 +20,28 @@ const NOODLES_TIME = {
     { id: 136, name: '卤猪脚', price: 6 },
     { id: 137, name: '卤牛肚', price: 8 },
     { id: 138, name: '麻辣猪肚', price: 5 },
-    { id: 139, name: '面缘牛腩面', price: 13.50 },
-    { id: 140, name: '柳州螺蛳粉', price: 13.50,
+    { id: 139, name: '面缘牛腩面', price: 13.80 },
+    { id: 140, name: '柳州螺蛳粉', price: 13.80,
       options: {
         option1: {
            name: "Spicy", choices: ["少辣", "正常","大辣"], selectedOptions: [], limit: 1
         }
     }},
-    { id: 141, name: '螺蛳粉（加强版）', price: 17.50 },
-    { id: 142, name: '桂林汤米粉', price: 13.50 },
-    { id: 143, name: '桂林干捞米粉', price: 13.50 },
+    { id: 141, name: '螺蛳粉（加强版）', price: 17.80 },
+    { id: 142, name: '桂林汤米粉', price: 13.80 },
+    { id: 143, name: '桂林干捞米粉', price: 13.80 },
     { id: 144, name: '老友粉', price: 13.50,
       options: {
         option1: {
            name: "Spicy", choices: ["少辣", "正常","大辣"], selectedOptions: [], limit: 1
         }
     }},
-    { id: 145, name: '面缘牛肉面', price: 13.50 },
-    { id: 146, name: '羊肉汤面/粉', price: 14.50 },
-    { id: 147, name: '麻辣牛腱拌面', price: 13.50 },
-    { id: 148, name: '凉拌酸辣粉', price: 12.50 },
-    { id: 149, name: '酸笋炒牛肉丝拌粉', price: 13.50 },
-    { id: 150, name: '酸豆角炒牛肉丝拌粉', price: 13.50 },
+    { id: 145, name: '面缘牛肉面', price: 13.80 },
+    { id: 146, name: '羊肉汤面/粉', price: 14.80 },
+    { id: 147, name: '麻辣牛腱拌面', price: 13.80 },
+    { id: 148, name: '凉拌酸辣粉', price: 12.80 },
+    { id: 149, name: '酸笋炒牛肉丝拌粉', price: 13.80 },
+    { id: 150, name: '酸豆角炒牛肉丝拌粉', price: 13.80 },
     { id: 151, name: '麻辣小龙虾盖饭', price: 16 },
     { id: 152, name: '萝卜牛腩盖饭', price: 13 },
     { id: 153, name: '酸豆角炒牛肉饭', price: 13 },
