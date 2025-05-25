@@ -6,27 +6,6 @@ import EventIcon from "@mui/icons-material/Event";
 import UpcomingEvent from "../headerSection/upcomingEvent/upcomingEvent";
 import MoreMenu from "../headerSection/menu/more";
 
-const pickupLocations = [
-  "Fort Lee 540 Main St",
-  "Hackensack 99 Ranch",
-  "Tenafly - 165 Grove St, Tenafly, NJ 07670",
-  "Weehawken - 150 Henley Place",
-  "Weehawken - 9 Ave at Port Imperial",
-  "900 Madison St, Hoboken, NJ 07030",
-  "Möge Tea - 2029 Lemoine Ave #102, Fort Lee, NJ 07024",
-  "Jersey City - Canopy 159 Morgan St",
-  "Jersey City - 1 Shorn Ln",
-  "Jersey City - 155 Bay St",
-  "JSQ - Overlook Flat",
-  "Ridgewood",
-  "4000 Riverside Station Blvd, Secaucus, NJ 07094",
-  "200 Angelo Cifelli Dr, Harrison, NJ 07029",
-  "Millburn Free Public Library, 200 Glen Ave, Millburn, NJ 07041",
-  "160 Main St, Millburn, NJ 07041",
-  "1100-8100 Town Center Way, Livingston, NJ 07039",
-  "598 Central Ave, New Providence, NJ 07974"
-];
-
 const HomePage = () => {
   const navigate = useNavigate();
   const [error, setError] = useState("");
@@ -192,12 +171,6 @@ const HomePage = () => {
           overflowY: "auto",
         }}
       >
-        <Typography variant="body1">Pick-up Locations</Typography>
-        <Typography variant="body2" color="textSecondary">
-          {pickupLocations.map((location, index) => (
-            <span key={index} style={{ display: "block" }}>{location}</span>
-          ))}
-        </Typography>
       </Box>
     </Box>
   );

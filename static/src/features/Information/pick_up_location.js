@@ -239,8 +239,13 @@ const PickUpLocations = () => {
           justifyContent: "center",
           alignItems: "center",
           gap: 1,
-          // Optional: width 100% so 110% map width doesn't overflow horizontally
-          width: '100%',
+          width: {
+            xs: "100%",   // full width on small screens (phones)
+            sm: "90%",    // 90% width on small devices
+            md: 700,      // fixed width on medium and up
+            lg: 900,
+          },
+          mx: "auto",    // horizontal center on wider screens
         }}
       >
         <div style={{ marginTop: '50px' }}>
@@ -251,7 +256,12 @@ const PickUpLocations = () => {
           <MapContainer
             center={[40.85, -73.97]}
             zoom={11}
-            style={{ height: '80vh', width: '100%', borderRadius: '1rem' }}
+            style={{
+              height: '80vh',
+              width: '100%',
+              maxWidth: 900, // max width for bigger screens
+              borderRadius: '1rem',
+            }}
           >
             <TileLayer
               attribution='&copy; <a href="https://carto.com/">CARTO</a>'
