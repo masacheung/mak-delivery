@@ -16,9 +16,11 @@ import {
 import ClearIcon from '@mui/icons-material/Clear';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import DensityMediumIcon from '@mui/icons-material/DensityMedium';
 import { v4 as uuidv4 } from 'uuid';
 import DishForm from "../dishes/dishForm";
 import OrderSummary from "../order/orderSummary";
+import MoreMenu from "../headerSection/menu/more";
 import TASTY_MOMENT from "../../constant/restaurants/tastyMoment";
 import HK_ALLEY from "../../constant/restaurants/hkAlley";
 import WONTON_GUY from "../../constant/restaurants/wontonGuy";
@@ -71,6 +73,7 @@ const RestaurantList = () => {
   const [availableRestaurants, setAvailableRestaurants] = useState([]);
   const [enableLocationsDropdown, setEnableLocationsDropdown] = useState(false);
   const [error, setError] = useState("");
+  const [showMenu, setShowMenu] = useState(false); // Controls visibility
 
   const [isOpen, setIsOpen] = useState(false);
   const handleOpen = () => setIsOpen(true);
@@ -308,9 +311,9 @@ const RestaurantList = () => {
         }}
       >
         {/* Left - Logo */}
-        <Box sx={{ display: "flex", alignItems: "center"}}>
-          <img src="/delivery-truck.png" alt="Logo" style={{ width: 40, height: 40 }} />
-        </Box>
+        <IconButton onClick={() =>setShowMenu(true)}>
+          <DensityMediumIcon sx={{ fontSize: 30, color: "black" }}/>
+        </IconButton>
 
         <Box sx={{ flexGrow: 1, display: "flex", justifyContent: "center" }}>
           <Typography
@@ -340,6 +343,20 @@ const RestaurantList = () => {
           </Badge>
         </IconButton>
       </Box>
+      {/* Menu */}
+        {showMenu && (
+          <Box
+            sx={{
+              width: "100%", // Ensure full width
+              padding: 0, // Remove padding that might be causing the shift
+              display: "flex",
+              justifyContent: "center", // Center align the UpcomingEvent
+            }}
+          >
+            <MoreMenu onClose={() => setShowMenu(false)} />
+          </Box>
+        )}
+        
       {isOpen && (
         <Box
           sx={{

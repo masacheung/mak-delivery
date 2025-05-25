@@ -1,4 +1,6 @@
 import React, { useState, useEffect  } from "react";
+import 'leaflet/dist/leaflet.css';
+import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import { useNavigate } from "react-router-dom";
 import { Box, Button, Typography, IconButton, Badge } from "@mui/material";
 import DensityMediumIcon from '@mui/icons-material/DensityMedium';
@@ -6,28 +8,112 @@ import EventIcon from "@mui/icons-material/Event";
 import UpcomingEvent from "../headerSection/upcomingEvent/upcomingEvent";
 import MoreMenu from "../headerSection/menu/more";
 
+import L from 'leaflet';
+
+const customIcon = new L.Icon({
+  iconUrl: 'https://unpkg.com/leaflet@1.9.3/dist/images/marker-icon.png',
+  iconRetinaUrl: 'https://unpkg.com/leaflet@1.9.3/dist/images/marker-icon-2x.png',
+  shadowUrl: 'https://unpkg.com/leaflet@1.9.3/dist/images/marker-shadow.png',
+  iconSize: [25, 41],
+  iconAnchor: [12, 41],
+  popupAnchor: [1, -34],
+  shadowSize: [41, 41],
+});
+
 const pickupLocations = [
-  "Fort Lee 540 Main St",
-  "Hackensack 99 Ranch",
-  "Tenafly - 165 Grove St, Tenafly, NJ 07670",
-  "Weehawken - 150 Henley Place",
-  "Weehawken - 9 Ave at Port Imperial",
-  "900 Madison St, Hoboken, NJ 07030",
-  "Möge Tea - 2029 Lemoine Ave #102, Fort Lee, NJ 07024",
-  "Jersey City - Canopy 159 Morgan St",
-  "Jersey City - 1 Shorn Ln",
-  "Jersey City - 155 Bay St",
-  "JSQ - Overlook Flat",
-  "Ridgewood",
-  "4000 Riverside Station Blvd, Secaucus, NJ 07094",
-  "200 Angelo Cifelli Dr, Harrison, NJ 07029",
-  "Millburn Free Public Library, 200 Glen Ave, Millburn, NJ 07041",
-  "160 Main St, Millburn, NJ 07041",
-  "1100-8100 Town Center Way, Livingston, NJ 07039",
-  "598 Central Ave, New Providence, NJ 07974"
+  {
+    name: "Fort Lee 540 Main St",
+    lat: 40.851994,
+    lng: -73.972452,
+  },
+  {
+    name: "Hackensack 99 Ranch",
+    lat: 40.8892,
+    lng: -74.0424,
+  },
+  {
+    name: "Tenafly - 165 Grove St",
+    lat: 40.9252,
+    lng: -73.9615,
+  },
+  {
+    name: "Weehawken - 150 Henley Place",
+    lat: 40.7743,
+    lng: -74.0150,
+  },
+  {
+    name: "Weehawken - 9 Ave at Port Imperial",
+    lat: 40.7736,
+    lng: -74.0119,
+  },
+  {
+    name: "900 Madison St, Hoboken, NJ 07030",
+    lat: 40.7471,
+    lng: -74.0324,
+  },
+  {
+    name: "Möge Tea - 2029 Lemoine Ave #102, Fort Lee, NJ 07024",
+    lat: 40.8500,
+    lng: -73.9700,
+  },
+  {
+    name: "Jersey City - Canopy 159 Morgan St",
+    lat: 40.7196,
+    lng: -74.0457,
+  },
+  {
+    name: "Jersey City - 1 Shore Ln",
+    lat: 40.7275,
+    lng: -74.0342,
+  },
+  {
+    name: "Jersey City - 155 Bay St",
+    lat: 40.7190,
+    lng: -74.0421,
+  },
+  {
+    name: "JSQ - Overlook Flat",
+    lat: 40.7326,
+    lng: -74.0635,
+  },
+  {
+    name: "Ridgewood",
+    lat: 40.9793,
+    lng: -74.1165,
+  },
+  {
+    name: "4000 Riverside Station Blvd, Secaucus, NJ 07094",
+    lat: 40.7870,
+    lng: -74.0672,
+  },
+  {
+    name: "200 Angelo Cifelli Dr, Harrison, NJ 07029",
+    lat: 40.7380,
+    lng: -74.1550,
+  },
+  {
+    name: "Millburn Free Public Library, 200 Glen Ave, Millburn, NJ 07041",
+    lat: 40.7266,
+    lng: -74.3062,
+  },
+  {
+    name: "160 Main St, Millburn, NJ 07041",
+    lat: 40.7229,
+    lng: -74.3031,
+  },
+  {
+    name: "1100-8100 Town Center Way, Livingston, NJ 07039",
+    lat: 40.7876,
+    lng: -74.3228,
+  },
+  {
+    name: "598 Central Ave, New Providence, NJ 07974",
+    lat: 40.6984,
+    lng: -74.4011,
+  },
 ];
 
-const HomePage = () => {
+const PickUpLocations = () => {
   const navigate = useNavigate();
   const [error, setError] = useState("");
   const [events, setEvents] = useState([]);
@@ -152,55 +238,35 @@ const HomePage = () => {
           flexDirection: "column",
           justifyContent: "center",
           alignItems: "center",
-          gap: 2,
+          gap: 1,
+          // Optional: width 100% so 110% map width doesn't overflow horizontally
+          width: '100%',
         }}
       >
-        <Typography
-          sx={{
-            fontFamily: '"Noto Sans SC", "Microsoft YaHei", sans-serif',
-            fontSize: "2rem",
-            fontWeight: "bold",
-          }}
-        >
-          麥麥送
-        </Typography>
+        <div style={{ marginTop: '50px' }}>
+          <h2 style={{ fontSize: '1.5rem', fontWeight: 'bold', marginBottom: '1rem' }}>
+            📍 Pick-up Locations Map
+          </h2>
 
-        <Button
-          variant="contained"
-          color="primary"
-          sx={{ width: "80%", height: "60px", fontSize: "1.2rem" }}
-          onClick={() => navigate("/restaurants")}
-        >
-          Order
-        </Button>
-
-        <Button
-          variant="contained"
-          color="secondary"
-          sx={{ width: "80%", height: "60px", fontSize: "1.2rem" }}
-          onClick={() => navigate("/lookup-order")}
-        >
-          Look Up Order
-        </Button>
-      </Box>
-
-      {/* Bottom Section - 40% */}
-      <Box
-        sx={{
-          flex: 4,
-          textAlign: "center",
-          overflowY: "auto",
-        }}
-      >
-        <Typography variant="body1">Pick-up Locations</Typography>
-        <Typography variant="body2" color="textSecondary">
-          {pickupLocations.map((location, index) => (
-            <span key={index} style={{ display: "block" }}>{location}</span>
-          ))}
-        </Typography>
+          <MapContainer
+            center={[40.85, -73.97]}
+            zoom={11}
+            style={{ height: '80vh', width: '100%', borderRadius: '1rem' }}
+          >
+            <TileLayer
+              attribution='&copy; <a href="https://carto.com/">CARTO</a>'
+              url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
+            />
+            {pickupLocations.map((location, index) => (
+              <Marker key={index} position={[location.lat, location.lng]} icon={customIcon}>
+                <Popup>{location.name}</Popup>
+              </Marker>
+            ))}
+          </MapContainer>
+        </div>
       </Box>
     </Box>
   );
 };
 
-export default HomePage;
+export default PickUpLocations;
