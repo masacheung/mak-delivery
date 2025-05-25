@@ -236,16 +236,10 @@ const PickUpLocations = () => {
           flex: 6,
           display: "flex",
           flexDirection: "column",
-          justifyContent: "center",
-          alignItems: "center",
           gap: 1,
-          width: {
-            xs: "100%",   // full width on small screens (phones)
-            sm: "90%",    // 90% width on small devices
-            md: 700,      // fixed width on medium and up
-            lg: 900,
-          },
-          mx: "auto",    // horizontal center on wider screens
+          width: '100%',
+          mx: "auto",
+          textAlign: "center", // centers h2 text
         }}
       >
         <div style={{ marginTop: '50px' }}>
@@ -253,26 +247,38 @@ const PickUpLocations = () => {
             📍 Pick-up Locations Map
           </h2>
 
-          <MapContainer
-            center={[40.85, -73.97]}
-            zoom={11}
-            style={{
-              height: '80vh',
-              width: '100%',
-              maxWidth: 900, // max width for bigger screens
-              borderRadius: '1rem',
+          <Box
+            sx={{
+              width: {
+                xs: '100%',
+                sm: '100%',
+                md: 700,
+                lg: 900,
+              },
+              mx: "auto", // centers map box itself
             }}
           >
-            <TileLayer
-              attribution='&copy; <a href="https://carto.com/">CARTO</a>'
-              url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
-            />
-            {pickupLocations.map((location, index) => (
-              <Marker key={index} position={[location.lat, location.lng]} icon={customIcon}>
-                <Popup>{location.name}</Popup>
-              </Marker>
-            ))}
-          </MapContainer>
+            <MapContainer
+              center={[40.85, -73.97]}
+              zoom={11}
+              style={{
+                height: '80vh',
+                width: '100%',
+                maxWidth: 900, // max width for bigger screens
+                borderRadius: '1rem',
+              }}
+            >
+              <TileLayer
+                attribution='&copy; <a href="https://carto.com/">CARTO</a>'
+                url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
+              />
+              {pickupLocations.map((location, index) => (
+                <Marker key={index} position={[location.lat, location.lng]} icon={customIcon}>
+                  <Popup>{location.name}</Popup>
+                </Marker>
+              ))}
+            </MapContainer>
+          </Box>
         </div>
       </Box>
     </Box>
