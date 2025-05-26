@@ -7,6 +7,7 @@ import OrderLookup from "./features/orders/orderLookup.js"; // Import the new co
 import OrderedPage from "./features/ordered/orderedPage.js"
 import EditExistingOrder from "./features/editExistingOrder/editExistingOrder.js";
 import PickUpLocations from "./features/Information/pick_up_location.js";
+import RestaurantSupportList from "./features/Information/restaurant_list.js";
 
 const App = () => {
   return (
@@ -14,6 +15,7 @@ const App = () => {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/pick-up-locations" element={<PickUpLocations />} />
+        <Route path="/restaurant-support" element={<RestaurantSupportList />} />
         <Route path="/restaurants" element={<RestaurantList />} />
         <Route path="/ordered" element={<OrderedPage />} />
         <Route path="/lookup-order" element={<OrderLookup />} /> {/* Updated */}

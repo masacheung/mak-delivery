@@ -81,6 +81,10 @@ const MoreMenu = ({onClose}) => {
         </Box>
 
         <Box
+          onClick={() => {
+            onClose();
+            navigate('/restaurant-support');
+          }}
           sx={{
             whiteSpace: 'nowrap',
             overflow: 'hidden',
@@ -103,7 +107,7 @@ const MoreMenu = ({onClose}) => {
             },
           }}
         >
-          🍽️ Restaurants Support
+          🛍️ Restaurants You Can Order
         </Box>
 
         <Box
