@@ -2,7 +2,7 @@ const MEE_TU = {
     id: 8,
     name: 'Meetu',
     dishes: [
-        { id: 81, name: '招牌生椰水', price:"SP",
+        { id: 81, name: '招牌生椰水 Meetu Coconut Water', price:"SP",
           options: {
             optionSize: {
                 name: "Size", choices: ["M $7.99", "L $8.99"], selectedOptions: [], limit: 1, adjustable: true
@@ -10,13 +10,13 @@ const MEE_TU = {
              option1:
                   {
                   name: "Toppings (0.75 each)",
-                  choices: ["黑糖珍珠 +0.75","茶凍 +0.75","椰奶凍 +0.75","寒天 +0.75"],
+                  choices: ["Boba +0.75","Tea Jelly +0.75","Coconut Milk Jelly +0.75","Crystal Boba +0.75"],
                   selectedOptions: [], limit: 100, price: 0.75
                   },
               option2:
                   {
                   name: "Toppings (1.00 each)",
-                  choices: [ "米麻糬 +1.00", "芝士奶蓋 +1.00", "芋泥 "],
+                  choices: [ "Rice Mochi +1.00", "Salted Cheese Foam +1.00", "Taco Paste +1.00"],
                   selectedOptions: [], limit: 100, price: 1.00
                   },
               option3:
@@ -30,7 +30,7 @@ const MEE_TU = {
                       choices: [ "正常冰", "少冰", "去冰"], selectedOptions: [], limit: 1
                   },
         }},
-        { id: 83, name: '玫瑰生椰水', price:"SP",
+        { id: 83, name: '玫瑰生椰水 Rose Coconut Water', price:"SP",
           options: {
             optionSize: {
                 name: "Size", choices: ["M $8.25", "L $9.25"], selectedOptions: [], limit: 1, adjustable: true
@@ -38,13 +38,13 @@ const MEE_TU = {
              option1:
                   {
                   name: "Toppings (0.75 each)",
-                  choices: ["黑糖珍珠 +0.75","茶凍 +0.75","椰奶凍 +0.75","寒天 +0.75"],
+                  choices: ["Boba +0.75","Tea Jelly +0.75","Coconut Milk Jelly +0.75","Crystal Boba +0.75"],
                   selectedOptions: [], limit: 100, price: 0.75
                   },
               option2:
                   {
                   name: "Toppings (1.00 each)",
-                  choices: [ "米麻糬 +1.00", "芝士奶蓋 +1.00", "芋泥 "],
+                  choices: [ "Rice Mochi +1.00", "Salted Cheese Foam +1.00", "Taco Paste +1.00"],
                   selectedOptions: [], limit: 100, price: 1.00
                   },
               option3:
@@ -66,7 +66,7 @@ const MEE_TU = {
              option1:
                   {
                   name: "Toppings (0.75 each)",
-                  choices: ["黑糖珍珠 +0.75","茶凍 +0.75","椰奶凍 +0.75","寒天 +0.75"],
+                  choices: ["Boba +0.75","Tea Jelly +0.75","Coconut Milk Jelly +0.75","Crystal Boba +0.75"],
                   selectedOptions: [], limit: 100, price: 0.75
                   },
               option2:
@@ -94,7 +94,7 @@ const MEE_TU = {
              option1:
                   {
                   name: "Toppings (0.75 each)",
-                  choices: ["黑糖珍珠 +0.75","茶凍 +0.75","椰奶凍 +0.75","寒天 +0.75"],
+                  choices: ["Boba +0.75","Tea Jelly +0.75","Coconut Milk Jelly +0.75","Crystal Boba +0.75"],
                   selectedOptions: [], limit: 100, price: 0.75
                   },
               option2:
@@ -122,7 +122,7 @@ const MEE_TU = {
              option1:
                   {
                   name: "Toppings (0.75 each)",
-                  choices: ["黑糖珍珠 +0.75","茶凍 +0.75","椰奶凍 +0.75","寒天 +0.75"],
+                  choices: ["Boba +0.75","Tea Jelly +0.75","Coconut Milk Jelly +0.75","Crystal Boba +0.75"],
                   selectedOptions: [], limit: 100, price: 0.75
                   },
               option2:
@@ -150,7 +150,7 @@ const MEE_TU = {
              option1:
                   {
                   name: "Toppings (0.75 each)",
-                  choices: ["黑糖珍珠 +0.75","茶凍 +0.75","椰奶凍 +0.75","寒天 +0.75"],
+                  choices: ["Boba +0.75","Tea Jelly +0.75","Coconut Milk Jelly +0.75","Crystal Boba +0.75"],
                   selectedOptions: [], limit: 100, price: 0.75
                   },
               option2:
@@ -178,7 +178,7 @@ const MEE_TU = {
              option1:
                   {
                   name: "Toppings (0.75 each)",
-                  choices: ["黑糖珍珠 +0.75","茶凍 +0.75","椰奶凍 +0.75","寒天 +0.75"],
+                  choices: ["Boba +0.75","Tea Jelly +0.75","Coconut Milk Jelly +0.75","Crystal Boba +0.75"],
                   selectedOptions: [], limit: 100, price: 0.75
                   },
               option2:
@@ -206,7 +206,7 @@ const MEE_TU = {
              option1:
                   {
                   name: "Toppings (0.75 each)",
-                  choices: ["黑糖珍珠 +0.75","茶凍 +0.75","椰奶凍 +0.75","寒天 +0.75"],
+                  choices: ["Boba +0.75","Tea Jelly +0.75","Coconut Milk Jelly +0.75","Crystal Boba +0.75"],
                   selectedOptions: [], limit: 100, price: 0.75
                   },
               option2:
@@ -234,7 +234,7 @@ const MEE_TU = {
              option1:
                   {
                   name: "Toppings (0.75 each)",
-                  choices: ["黑糖珍珠 +0.75","茶凍 +0.75","椰奶凍 +0.75","寒天 +0.75"],
+                  choices: ["Boba +0.75","Tea Jelly +0.75","Coconut Milk Jelly +0.75","Crystal Boba +0.75"],
                   selectedOptions: [], limit: 100, price: 0.75
                   },
               option2:
@@ -262,7 +262,7 @@ const MEE_TU = {
              option1:
                   {
                   name: "Toppings (0.75 each)",
-                  choices: ["黑糖珍珠 +0.75","茶凍 +0.75","椰奶凍 +0.75","寒天 +0.75"],
+                  choices: ["Boba +0.75","Tea Jelly +0.75","Coconut Milk Jelly +0.75","Crystal Boba +0.75"],
                   selectedOptions: [], limit: 100, price: 0.75
                   },
               option2:
@@ -290,7 +290,7 @@ const MEE_TU = {
              option1:
                   {
                   name: "Toppings (0.75 each)",
-                  choices: ["黑糖珍珠 +0.75","茶凍 +0.75","椰奶凍 +0.75","寒天 +0.75"],
+                  choices: ["Boba +0.75","Tea Jelly +0.75","Coconut Milk Jelly +0.75","Crystal Boba +0.75"],
                   selectedOptions: [], limit: 100, price: 0.75
                   },
               option2:
@@ -318,7 +318,7 @@ const MEE_TU = {
              option1:
                   {
                   name: "Toppings (0.75 each)",
-                  choices: ["黑糖珍珠 +0.75","茶凍 +0.75","椰奶凍 +0.75","寒天 +0.75"],
+                  choices: ["Boba +0.75","Tea Jelly +0.75","Coconut Milk Jelly +0.75","Crystal Boba +0.75"],
                   selectedOptions: [], limit: 100, price: 0.75
                   },
               option2:
@@ -346,7 +346,7 @@ const MEE_TU = {
              option1:
                   {
                   name: "Toppings (0.75 each)",
-                  choices: ["黑糖珍珠 +0.75","茶凍 +0.75","椰奶凍 +0.75","寒天 +0.75"],
+                  choices: ["Boba +0.75","Tea Jelly +0.75","Coconut Milk Jelly +0.75","Crystal Boba +0.75"],
                   selectedOptions: [], limit: 100, price: 0.75
                   },
               option2:
@@ -374,7 +374,7 @@ const MEE_TU = {
              option1:
                   {
                   name: "Toppings (0.75 each)",
-                  choices: ["黑糖珍珠 +0.75","茶凍 +0.75","椰奶凍 +0.75","寒天 +0.75"],
+                  choices: ["Boba +0.75","Tea Jelly +0.75","Coconut Milk Jelly +0.75","Crystal Boba +0.75"],
                   selectedOptions: [], limit: 100, price: 0.75
                   },
               option2:
@@ -402,7 +402,7 @@ const MEE_TU = {
              option1:
                   {
                   name: "Toppings (0.75 each)",
-                  choices: ["黑糖珍珠 +0.75","茶凍 +0.75","椰奶凍 +0.75","寒天 +0.75"],
+                  choices: ["Boba +0.75","Tea Jelly +0.75","Coconut Milk Jelly +0.75","Crystal Boba +0.75"],
                   selectedOptions: [], limit: 100, price: 0.75
                   },
               option2:
@@ -430,7 +430,7 @@ const MEE_TU = {
              option1:
                   {
                   name: "Toppings (0.75 each)",
-                  choices: ["黑糖珍珠 +0.75","茶凍 +0.75","椰奶凍 +0.75","寒天 +0.75"],
+                  choices: ["Boba +0.75","Tea Jelly +0.75","Coconut Milk Jelly +0.75","Crystal Boba +0.75"],
                   selectedOptions: [], limit: 100, price: 0.75
                   },
               option2:
@@ -455,7 +455,7 @@ const MEE_TU = {
              option1:
                   {
                   name: "Toppings (0.75 each)",
-                  choices: ["黑糖珍珠 +0.75","茶凍 +0.75","椰奶凍 +0.75","寒天 +0.75"],
+                  choices: ["Boba +0.75","Tea Jelly +0.75","Coconut Milk Jelly +0.75","Crystal Boba +0.75"],
                   selectedOptions: [], limit: 100, price: 0.75
                   },
               option2:
@@ -480,7 +480,7 @@ const MEE_TU = {
              option1:
                   {
                   name: "Toppings (0.75 each)",
-                  choices: ["黑糖珍珠 +0.75","茶凍 +0.75","椰奶凍 +0.75","寒天 +0.75"],
+                  choices: ["Boba +0.75","Tea Jelly +0.75","Coconut Milk Jelly +0.75","Crystal Boba +0.75"],
                   selectedOptions: [], limit: 100, price: 0.75
                   },
               option2:
@@ -505,7 +505,7 @@ const MEE_TU = {
              option1:
                   {
                   name: "Toppings (0.75 each)",
-                  choices: ["黑糖珍珠 +0.75","茶凍 +0.75","椰奶凍 +0.75","寒天 +0.75"],
+                  choices: ["Boba +0.75","Tea Jelly +0.75","Coconut Milk Jelly +0.75","Crystal Boba +0.75"],
                   selectedOptions: [], limit: 100, price: 0.75
                   },
               option2:
@@ -530,7 +530,7 @@ const MEE_TU = {
              option1:
                   {
                   name: "Toppings (0.75 each)",
-                  choices: ["黑糖珍珠 +0.75","茶凍 +0.75","椰奶凍 +0.75","寒天 +0.75"],
+                  choices: ["Boba +0.75","Tea Jelly +0.75","Coconut Milk Jelly +0.75","Crystal Boba +0.75"],
                   selectedOptions: [], limit: 100, price: 0.75
                   },
               option2:
@@ -555,7 +555,7 @@ const MEE_TU = {
              option1:
                   {
                   name: "Toppings (0.75 each)",
-                  choices: ["黑糖珍珠 +0.75","茶凍 +0.75","椰奶凍 +0.75","寒天 +0.75"],
+                  choices: ["Boba +0.75","Tea Jelly +0.75","Coconut Milk Jelly +0.75","Crystal Boba +0.75"],
                   selectedOptions: [], limit: 100, price: 0.75
                   },
               option2:
@@ -580,7 +580,7 @@ const MEE_TU = {
              option1:
                   {
                   name: "Toppings (0.75 each)",
-                  choices: ["黑糖珍珠 +0.75","茶凍 +0.75","椰奶凍 +0.75","寒天 +0.75"],
+                  choices: ["Boba +0.75","Tea Jelly +0.75","Coconut Milk Jelly +0.75","Crystal Boba +0.75"],
                   selectedOptions: [], limit: 100, price: 0.75
                   },
               option2:
@@ -605,7 +605,7 @@ const MEE_TU = {
              option1:
                   {
                   name: "Toppings (0.75 each)",
-                  choices: ["黑糖珍珠 +0.75","茶凍 +0.75","椰奶凍 +0.75","寒天 +0.75"],
+                  choices: ["Boba +0.75","Tea Jelly +0.75","Coconut Milk Jelly +0.75","Crystal Boba +0.75"],
                   selectedOptions: [], limit: 100, price: 0.75
                   },
               option2:
