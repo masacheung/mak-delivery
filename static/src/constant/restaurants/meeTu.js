@@ -50,7 +50,7 @@ const MEE_TU = {
               option3:
                   {
                       name:"Sweetness",
-                      choices: [ "正常", "小糖", "微糖", "無糖"], selectedOptions: [], limit: 1
+                      choices: [ "正常Full Sugar", "小糖 Less Sugar", "微糖 Light Sugar", "無糖No Sugar"], selectedOptions: [], limit: 1
                   },
               option4:
                   {
@@ -78,7 +78,7 @@ const MEE_TU = {
               option3:
                   {
                       name:"Sweetness",
-                      choices: [ "正常", "小糖", "微糖", "無糖"], selectedOptions: [], limit: 1
+                      choices: ["正常Full Sugar", "小糖 Less Sugar", "微糖 Light Sugar", "無糖No Sugar"], selectedOptions: [], limit: 1
                   },
               option4:
                   {
@@ -106,7 +106,7 @@ const MEE_TU = {
               option3:
                   {
                       name:"Sweetness",
-                      choices: [ "正常", "小糖", "微糖", "無糖"], selectedOptions: [], limit: 1
+                      choices: ["正常Full Sugar", "小糖 Less Sugar", "微糖 Light Sugar", "無糖No Sugar"], selectedOptions: [], limit: 1
                   },
               option4:
                   {
@@ -134,7 +134,7 @@ const MEE_TU = {
               option3:
                   {
                       name:"Sweetness",
-                      choices: [ "正常", "小糖", "微糖", "無糖"], selectedOptions: [], limit: 1
+                      choices: [ "正常Full Sugar", "小糖 Less Sugar", "微糖 Light Sugar", "無糖No Sugar"], selectedOptions: [], limit: 1
                   },
               option4:
                   {
@@ -162,7 +162,7 @@ const MEE_TU = {
               option3:
                   {
                       name:"Sweetness",
-                      choices: [ "正常", "小糖", "微糖", "無糖"], selectedOptions: [], limit: 1
+                      choices: [ "正常Full Sugar", "小糖 Less Sugar", "微糖 Light Sugar", "無糖No Sugar"], selectedOptions: [], limit: 1
                   },
               option4:
                   {
@@ -218,7 +218,7 @@ const MEE_TU = {
               option3:
                   {
                       name:"Sweetness",
-                      choices: [ "正常", "小糖", "微糖", "無糖"], selectedOptions: [], limit: 1
+                      choices: [  "正常Full Sugar", "小糖 Less Sugar", "微糖 Light Sugar", "無糖No Sugar"], selectedOptions: [], limit: 1
                   },
               option4:
                   {
@@ -246,7 +246,7 @@ const MEE_TU = {
               option3:
                   {
                       name:"Sweetness",
-                      choices: [ "正常", "小糖", "微糖", "無糖"], selectedOptions: [], limit: 1
+                      choices: [  "正常Full Sugar", "小糖 Less Sugar", "微糖 Light Sugar", "無糖No Sugar"], selectedOptions: [], limit: 1
                   },
               option4:
                   {
@@ -274,7 +274,7 @@ const MEE_TU = {
               option3:
                   {
                       name:"Sweetness",
-                      choices: [ "正常", "小糖", "微糖", "無糖"], selectedOptions: [], limit: 1
+                      choices: [  "正常Full Sugar", "小糖 Less Sugar", "微糖 Light Sugar", "無糖No Sugar"], selectedOptions: [], limit: 1
                   },
               option4:
                   {
@@ -302,7 +302,7 @@ const MEE_TU = {
               option3:
                   {
                       name:"Sweetness",
-                      choices: [ "正常", "小糖", "微糖", "無糖"], selectedOptions: [], limit: 1
+                      choices: [ "正常Full Sugar", "小糖 Less Sugar", "微糖 Light Sugar", "無糖No Sugar"], selectedOptions: [], limit: 1
                   },
               option4:
                   {
@@ -330,7 +330,7 @@ const MEE_TU = {
               option3:
                   {
                       name:"Sweetness",
-                      choices: [ "正常", "小糖", "微糖", "無糖"], selectedOptions: [], limit: 1
+                      choices: [  "正常Full Sugar", "小糖 Less Sugar", "微糖 Light Sugar", "無糖No Sugar"], selectedOptions: [], limit: 1
                   },
               option4:
                   {
@@ -358,7 +358,7 @@ const MEE_TU = {
               option3:
                   {
                       name:"Sweetness",
-                      choices: [ "正常", "小糖", "微糖", "無糖"], selectedOptions: [], limit: 1
+                      choices: [  "正常Full Sugar", "小糖 Less Sugar", "微糖 Light Sugar", "無糖No Sugar"], selectedOptions: [], limit: 1
                   },
               option4:
                   {
@@ -386,7 +386,7 @@ const MEE_TU = {
               option3:
                   {
                       name:"Sweetness",
-                      choices: [ "正常", "小糖", "微糖", "無糖"], selectedOptions: [], limit: 1
+                      choices: [ "正常Full Sugar", "小糖 Less Sugar", "微糖 Light Sugar", "無糖No Sugar"], selectedOptions: [], limit: 1
                   },
               option4:
                   {
@@ -414,7 +414,7 @@ const MEE_TU = {
               option3:
                   {
                       name:"Sweetness",
-                      choices: [ "正常", "小糖", "微糖", "無糖"], selectedOptions: [], limit: 1
+                      choices: [ "正常Full Sugar", "小糖 Less Sugar", "微糖 Light Sugar", "無糖No Sugar"], selectedOptions: [], limit: 1
                   },
               option4:
                   {
@@ -442,7 +442,7 @@ const MEE_TU = {
               option3:
                   {
                       name:"Sweetness",
-                      choices: [ "正常", "小糖", "微糖", "無糖"], selectedOptions: [], limit: 1
+                      choices: [  "正常Full Sugar", "小糖 Less Sugar", "微糖 Light Sugar", "無糖No Sugar"], selectedOptions: [], limit: 1
                   },
               option4:
                   {
@@ -467,7 +467,7 @@ const MEE_TU = {
               option3:
                   {
                       name:"Sweetness",
-                      choices: [ "正常", "小糖", "微糖", "無糖"], selectedOptions: [], limit: 1
+                      choices: [  "正常Full Sugar", "小糖 Less Sugar", "微糖 Light Sugar", "無糖No Sugar"], selectedOptions: [], limit: 1
                   },
               option4:
                   {
@@ -492,7 +492,7 @@ const MEE_TU = {
               option3:
                   {
                       name:"Sweetness",
-                      choices: [ "正常", "小糖", "微糖", "無糖"], selectedOptions: [], limit: 1
+                      choices: [  "正常Full Sugar", "小糖 Less Sugar", "微糖 Light Sugar", "無糖No Sugar"], selectedOptions: [], limit: 1
                   },
               option4:
                   {
@@ -517,7 +517,7 @@ const MEE_TU = {
               option3:
                   {
                       name:"Sweetness",
-                      choices: [ "正常", "小糖", "微糖", "無糖"], selectedOptions: [], limit: 1
+                      choices: [  "正常Full Sugar", "小糖 Less Sugar", "微糖 Light Sugar", "無糖No Sugar"], selectedOptions: [], limit: 1
                   },
               option4:
                   {
@@ -542,7 +542,7 @@ const MEE_TU = {
               option3:
                   {
                       name:"Sweetness",
-                      choices: [ "正常", "小糖", "微糖", "無糖"], selectedOptions: [], limit: 1
+                      choices: [  "正常Full Sugar", "小糖 Less Sugar", "微糖 Light Sugar", "無糖No Sugar"], selectedOptions: [], limit: 1
                   },
               option4:
                   {
@@ -567,7 +567,7 @@ const MEE_TU = {
               option3:
                   {
                       name:"Sweetness",
-                      choices: [ "正常", "小糖", "微糖", "無糖"], selectedOptions: [], limit: 1
+                      choices: [ "正常Full Sugar", "小糖 Less Sugar", "微糖 Light Sugar", "無糖No Sugar"], selectedOptions: [], limit: 1
                   },
               option4:
                   {
@@ -592,7 +592,7 @@ const MEE_TU = {
               option3:
                   {
                       name:"Sweetness",
-                      choices: [ "正常", "小糖", "微糖", "無糖"], selectedOptions: [], limit: 1
+                      choices: [  "正常Full Sugar", "小糖 Less Sugar", "微糖 Light Sugar", "無糖No Sugar"], selectedOptions: [], limit: 1
                   },
               option4:
                   {
@@ -617,7 +617,7 @@ const MEE_TU = {
               option3:
                   {
                       name:"Sweetness",
-                      choices: [ "正常", "小糖", "微糖", "無糖"], selectedOptions: [], limit: 1
+                      choices: [ "正常Full Sugar", "小糖 Less Sugar", "微糖 Light Sugar", "無糖No Sugar"], selectedOptions: [], limit: 1
                   },
               option4:
                   {
