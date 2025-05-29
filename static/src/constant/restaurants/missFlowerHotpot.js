@@ -224,7 +224,7 @@ const MISS_FLOWER_HOTPOT = {
         { id: 1184, name: "冬瓜 Winter Melon", price: 3.99 },
         { id: 1185, name: "广东点心拼盘 Cantonese Dim Sum Platter", price: 14.99 },
         { id: 1186, name: "九层塔盐酥鸡 Crispy Salted Chicken", price: 9.99 },
-        { id: 1187, name: "秘制花雕陈酿醉鸡 Hua Diao Wine Chicken", price: 8.99 },
+      
         { id: 1188, name: "小酥肉 Thai Fried Pork", price: 10.99 },
         { id: 1189, name: "荔枝虾球 Lychee Fried Shrimp Meatballs", price: 10.99 },
         { id: 1190, name: "风生水起捞汁贵妃鸡 Poached Chicken with Special Sauce", price: 19.99 },
