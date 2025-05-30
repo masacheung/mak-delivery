@@ -84,7 +84,7 @@ const TASTY_MOMENT = {
     { id: 180, name: '鲜鱿算你狠', price:15.95  },
     { id: 181, name: '水煮鱼片', price:20.95  },
     { id: 182, name: '滕椒鱼片', price:21.95  },
-    { id: 183, name: '糟熘鱼片', price:20.95  },
+    { id: 183, name: '糟熘鱼片', price:21.95  },
     { id: 184, name: '葱烤牛仔粒', price:34.95  },
     { id: 185, name: '黄灯厚切牛舌', price:26.95 },
     { id: 186, name: '水煮牛肉', price:24.95  },
