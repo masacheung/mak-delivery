@@ -30,7 +30,7 @@ const NOODLES_TIME = {
     { id: 141, name: '螺蛳粉（加强版）', price: 17.80 },
     { id: 142, name: '桂林汤米粉', price: 13.80 },
     { id: 143, name: '桂林干捞米粉', price: 13.80 },
-    { id: 144, name: '老友粉', price: 13.50,
+    { id: 144, name: '老友粉', price: 13.80,
       options: {
         option1: {
            name: "Spicy", choices: ["少辣", "正常","大辣"], selectedOptions: [], limit: 1
