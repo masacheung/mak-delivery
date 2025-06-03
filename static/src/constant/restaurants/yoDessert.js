@@ -80,7 +80,7 @@ const YO_DESSERT_US = {
             	name: "Sugar level", choices: ["Normal", "Less"], selectedOptions: [], limit: 1
         	}
         }},
-    { id: 1413, name: 'Taro-ube Cheese Yogurt', price:6.95 ,
+    { id: 1413, name: 'Taro-ube Cheese Yogurt', price:7.25 ,
     	options: {
         	option1: {
             	name: "Sugar level", choices: ["Normal", "Less"], selectedOptions: [], limit: 1
