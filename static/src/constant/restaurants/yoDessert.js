@@ -2,6 +2,12 @@ const YO_DESSERT_US = {
 	id: 14,
 	name: 'Yo Dessert us',
 	dishes: [
+    { id: 1423, name: 'Kale Cheese Yogurt', price:7.25,
+	options: {
+        	option1: {
+            	name: "Sugar level", choices: ["Normal", "Less"], selectedOptions: [], limit: 1
+        	}
+    	}},
     { id: 1401, name: 'Mango Cheese Yogurt', price:6.25 ,
     	  options: {
         	option1: {
@@ -89,7 +95,7 @@ const YO_DESSERT_US = {
   	{ id: 1420, name: 'Strawberry Tiramisu', price:7.95  },
     { id: 1421, name: 'Blueberry Tiramisu', price:7.95  },
     { id: 1422, name: 'Original Egg Tart', price:2.95  },
-    { id: 1423, name: 'Purple Rice Egg Tart', price:3.25  },
+    
     { id: 1424, name: 'Peral Choco Egg Tart', price:3.25  },
     { id: 1425, name: 'Tiramisu Egg Tart', price:3.25  },
      { id: 1426, name: 'Corn Egg Tart', price:3.25  } 
