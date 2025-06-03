@@ -173,7 +173,7 @@ const HK_ALLEY = {
                  {
                  name: "add-ons (0.85 each)",
                  price: 0.85,
-                 choices: [ "Oreo +$0.85", "Boba +$0.85", "Coconut Lychee Jelly +$0.85", "White Boba +$0.85", "Herb Jelly +$0.85""], selectedOptions: [], limit: 100
+                 choices: [ "Oreo +$0.85", "Boba +$0.85", "Coconut Lychee Jelly +$0.85", "White Boba +$0.85", "Herb Jelly +$0.85"], selectedOptions: [], limit: 100
                  },
             option3:
                 {
