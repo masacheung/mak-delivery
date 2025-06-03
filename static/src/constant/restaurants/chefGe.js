@@ -14,7 +14,7 @@ const CHEF_GE = {
         
         { id: 695, name: '馋嘴牛蛙(现杀) Spicy Frog Pot with Szechun Pepper', price:59.99 },
         { id: 696, name: '川味走地鸡 Chicken with Szechun Pepper', price:25.99 },
-        { id: 65, name: '一品羊肉鍋', price:39.99  },
+        
         { id: 66, name: '饞嘴牛蛙', price:59.99 },
         { id: 67, name: '酸辣蕨根粉', price:7.99  },
         { id: 68, name: '養顏皮凍', price:7.99  },
