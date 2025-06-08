@@ -2,7 +2,7 @@ const SPICE_TWENTY_FOUR = {
     id: 7,
     name: 'Spice 24',
     dishes: [
-         { id: 71, name: '麥麥送工作餐 Mak's Dinner Combo', price:60,
+         { id: 71, name: '麥麥送工作餐 Mak dinner combo', price:60,
                 options: {
                     option1:
                         {
