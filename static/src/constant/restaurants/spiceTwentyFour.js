@@ -2,12 +2,12 @@ const SPICE_TWENTY_FOUR = {
     id: 7,
     name: 'Spice 24',
     dishes: [
-         { id: 71, name: '麥麥送工作餐', price:60,
+         { id: 71, name: '麥麥送工作餐 Mak's Dinner Combo', price:60,
                 options: {
                     option1:
                         {
-                        name: "主菜選2",
-                        choices: ["香辣排骨", "鮮露蘆筍牛肉 $5.00", "菠蘿辣子雞", "沸腾鱼片 $5.00", "火爆腰花", "土匪豬肝", "港式京都骨", "砂锅腊肉花菜", "香椿炒雞蛋", "椒鹽魚片", "鹽焗雞半隻", "上湯河塘小炒", "牛肉麻辣香鍋 請在備註欄標明 (薑蔥, 黑胡椒, 豆豉)"],
+                        name: "主菜選2 Entrees choice 2",
+                        choices: ["香辣排骨 ", "鮮露蘆筍牛肉 $5.00", "菠蘿辣子雞", "沸腾鱼片 $5.00", "火爆腰花", "土匪豬肝", "港式京都骨", "砂锅腊肉花菜", "香椿炒雞蛋", "椒鹽魚片", "鹽焗雞半隻", "上湯河塘小炒", "牛肉麻辣香鍋 請在備註欄標明 (薑蔥, 黑胡椒, 豆豉)"],
                         selectedOptions: [], limit: 2, adjustable: true
                         },
                     option2:
@@ -118,21 +118,22 @@ const SPICE_TWENTY_FOUR = {
                         name: "Toppings ", choices: ["青蔥", "香菜", "芝麻", "油蔥酥 $1.50", "黃金炒蛋 $3.50"], selectedOptions: [], limit: 100, adjustable: true
                     }
         }},
-        { id: 73, name: '燒椒茄子', price:9.95},
-        { id: 74, name: '雞翅', price:13.95 , options: {option1: {name: "Types", choices: ["黑胡椒", "麻辣", ], selectedOptions: [], limit: 1}}},
-        { id: 75, name: '撈汁秋葵', price:9.95},
-        { id: 76, name: '夫妻肺片', price:11.95 },
-        { id: 77, name: '黑椒牛肉餡餅', price:9.95},
-        { id: 78, name: '爆汁鍋貼', price:7.95},
-        { id: 79, name: '鹽酥雞', price:8.95 },
-        { id: 710, name: '蔥油餅', price:6.95},
-        { id: 711, name: '椒鹽乾炸肥腸', price:10.95},
-        { id: 712, name: '南乳脆五花', price:9.95},
+        { id: 73, name: '燒椒茄子 Spicy Eggplant', price:9.95},
+        { id: 74, name: '雞翅 Chicken Wings ', price:13.95 , options: {option1: {name: "Types", choices: ["黑胡椒 Black Peppers", "麻辣 Mala", ], selectedOptions: [], limit: 1}}},
+        { id: 75, name: '撈汁秋葵 Okra Salad', price:9.95},
+        { id: 76, name: '夫妻肺片 Beef and Tendon in Chili Oil', price:11.95 },
+        { id: 77, name: '黑椒牛肉餡餅 Pepper Beef Empanadas', price:9.95},
+        { id: 78, name: '爆汁鍋貼 Pork Potstickers', price:7.95},
+        { id: 79, name: '鹽酥雞 Popcorn Chicken', price:8.95 },
+        { id: 710, name: '蔥油餅 Scallian Pancake', price:6.95},
+        { id: 711, name: '椒鹽乾炸肥腸 Cripsy Intestine', price:10.95},
+        { id: 712, name: '南乳脆五花 Cripsy Pork Belly', price:9.95},
         { id: 713, name: '美極醬黃瓜', price:7.95},
         { id: 714, name: '古法酥炸丸子', price:8.95},
         { id: 715, name: '紅油乾炒拌手', price:8.95},
         { id: 716, name: '紅糖糍粑', price:7.95},
         { id: 717, name: '冒烤鴨 (spicy）🌶️', price:55.95  },
+         { id: 714, name: '港式京都骨 Pork Chop in Peaking Sauce', price:19.00},
         { id: 718, name: '香椿炒雞蛋', price:17.95  },
         { id: 719, name: '菠蘿辣子雞', price:18.95 },
         { id: 720, name: '雞卜卜脆炒飯', price:19.95  },
