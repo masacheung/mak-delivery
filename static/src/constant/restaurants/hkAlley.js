@@ -2,6 +2,7 @@ const HK_ALLEY = {
     id: 2,
     name: '港茶巷 HK ALLEY',
     dishes: [
+        { id: 237, name: '黯然銷魂飯 HongKong Style Barbecued Pork with veggie and rice', price:17.99 },
         { id: 21, name: '金磚港式奶茶 Hong Kong Milk Tea', price:"SP",
          options: {
             optionSize: {
