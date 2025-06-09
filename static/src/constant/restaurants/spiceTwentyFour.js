@@ -128,7 +128,7 @@ const SPICE_TWENTY_FOUR = {
         { id: 710, name: '蔥油餅 Scallian Pancake', price:6.95},
         { id: 711, name: '椒鹽乾炸肥腸 Cripsy Intestine', price:10.95},
         { id: 712, name: '南乳脆五花 Cripsy Pork Belly', price:9.95},
-        { id: 713, name: '美極醬黃瓜', price:7.95},
+        { id: 713, name: '美極醬黃瓜 ', price:7.95},
         { id: 714, name: '古法酥炸丸子', price:8.95},
         { id: 715, name: '紅油乾炒拌手', price:8.95},
         { id: 716, name: '紅糖糍粑', price:7.95},
