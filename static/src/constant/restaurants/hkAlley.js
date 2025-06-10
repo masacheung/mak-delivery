@@ -8,7 +8,7 @@ const HK_ALLEY = {
             optionSize: {
                 name: "entree/combo(drink's price is not include)", choices: ["17.49", "Combo $15.99"], selectedOptions: [], limit: 1, adjustable: true
             }
-         },
+         }},
         
         { id: 21, name: '金磚港式奶茶 Hong Kong Milk Tea', price:"SP",
          options: {
