@@ -2,7 +2,12 @@ const HK_ALLEY = {
     id: 2,
     name: '港茶巷 HK ALLEY',
     dishes: [
-    
+       { id: 238, name: '牛扒意粉 Black Pepper Steak Pasta', price:"SP",
+         options: {
+            optionSize: {
+                name: "entree/combo(drink's price is not include)", choices: ["21.99", "Combo $20.49"], selectedOptions: [], limit: 1, adjustable: true
+            }
+         }},
          { id: 237, name: '黯然銷魂飯 HongKong Style Barbecued Pork with veggie and rice', price:"SP",
          options: {
             optionSize: {
