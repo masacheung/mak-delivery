@@ -2,10 +2,10 @@ const HK_ALLEY = {
     id: 2,
     name: '港茶巷 HK ALLEY',
     dishes: [
-         { id: 239, name: '鮮蝦意粉 Cream Sauce Shrimp Pasta', price:"SP",
+         { id: 239, name: 'Tomato Sauce ', price:"SP",
          options: {
             optionSize: {
-                name: "entree/combo(drink's price is not include)", choices: ["14.49", "Combo $12.99"], selectedOptions: [], limit: 1, adjustable: true
+                name: "Meat Choices", choices: [" Chicken Cutlet12.99", "Pork Chop $14.49","Steak $21.99], selectedOptions: [], limit: 1, adjustable: true
             }
          }},
        { id: 238, name: '牛扒意粉 Black Pepper Steak Pasta', price:"SP",
