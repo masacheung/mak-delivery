@@ -5,7 +5,7 @@ const HK_ALLEY = {
          { id: 239, name: 'Tomato Sauce ', price:"SP",
          options: {
             optionSize: {
-                name: "Meat Choices", choices: [" Chicken Cutlet12.99", "Pork Chop $14.49","Steak $21.99], selectedOptions: [], limit: 1, adjustable: true
+                name: "Meat Choices", choices: [" Chicken Cutlet12.99", "Pork Chop $14.49","Steak $21.99"], selectedOptions: [], limit: 1, adjustable: true
             }
          }},
        { id: 238, name: '牛扒意粉 Black Pepper Steak Pasta', price:"SP",
