@@ -3,12 +3,19 @@ const HK_ALLEY = {
     name: '港茶巷 HK ALLEY',
     dishes: [
          { id: 239, name: 'Make your own plate (Tomato Sauce) Come with egg and vegetable ', price:"SP",
-         options: {
+         options 1: {
             optionSize: {
                 name: "Meat Choices", choices: [" Chicken Cutlet12.99", "Pork Chop $14.49","Steak $21.99"], selectedOptions: [], limit: 1, adjustable: true
             }
-         }},
-       { id: 238, name: '牛扒意粉 Black Pepper Steak Pasta', price:"SP",
+          },
+          option2:
+                 {
+                 name: "Carb Choices",
+                 choices: [ "Rice", "Pasta"], selectedOptions: [], limit: 1
+                 },
+            }},
+    
+        { id: 238, name: '牛扒意粉 Black Pepper Steak Pasta', price:"SP",
          options: {
             optionSize: {
                 name: "entree/combo(drink's price is not include)", choices: ["21.99", "Combo $20.49"], selectedOptions: [], limit: 1, adjustable: true
