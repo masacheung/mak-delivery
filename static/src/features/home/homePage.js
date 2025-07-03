@@ -38,9 +38,12 @@ const HomePage = () => {
         throw new Error("Failed to fetch upcoming events");
       }
       const data = await response.json();
-      setEvents(data);
+      // Handle empty events gracefully
+      setEvents(Array.isArray(data) ? data : []);
     } catch (err) {
-      setError(err.message);
+      console.log("No events available or server not running:", err.message);
+      setEvents([]); // Set empty array instead of showing error
+      setError(null); // Don't show error to user
     } finally {
       setIsLoading(false);
     }
