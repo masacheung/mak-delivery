@@ -53,6 +53,22 @@ import NOODLES_TIME from "../../constant/restaurants/noodlesTimes";
 import NEW_DA_NOODLES from "../../constant/restaurants/newDaNoodles";
 import YO_DESSERT_US from "../../constant/restaurants/yoDessert";
 
+// Import restaurant images
+import tastyMomentImg from "../../image/tastyMoment.webp";
+import chefImg from "../../image/chef.webp";
+import spiceTwentyFourImg from "../../image/spiceTwentyFour.webp";
+import wontonGuyImg from "../../image/wontonGuy.webp";
+import jiBeiChuanImg from "../../image/jiBeiChuan.webp";
+import missFlowerHotpotImg from "../../image/missFlowerHotpot.webp";
+import syMiniHotpotImg from "../../image/syMiniHotpot.webp";
+import youGardenImg from "../../image/youGarden.webp";
+import nineEightkImg from "../../image/nineEightk.webp";
+import hkAlleyImg from "../../image/hk_alley.webp";
+import meeTuImg from "../../image/meeTu.webp";
+import yoDessertImg from "../../image/yoDessert.webp";
+import noodlesTimeImg from "../../image/noodlesTime.webp";
+import newDaNoodlesImg from "../../image/newDaNoodles.webp";
+
 const RestaurantList = () => {
   const navigate = useNavigate();
   const theme = useTheme();
@@ -326,22 +342,22 @@ const RestaurantList = () => {
 
   const getRestaurantImage = (restaurantName) => {
     const imageMap = {
-      'Tasty Moment': '/static/media/tastyMoment.webp',
-      'Chef Ge': '/static/media/chef.webp',
-      'Spice Twenty Four': '/static/media/spiceTwentyFour.webp',
-      'Wonton Guy': '/static/media/wontonGuy.webp',
-      'Ji Bei Chuan': '/static/media/jiBeiChuan.webp',
-      'Miss Flower Hotpot': '/static/media/missFlowerHotpot.webp',
-      'S&Y Mini Hotpot': '/static/media/syMiniHotpot.webp',
-      'You Garden': '/static/media/youGarden.webp',
-      'Ninety Eight K': '/static/media/nineEightk.webp',
-      'HK Alley': '/static/media/hk_alley.webp',
-      'Mee Tu': '/static/media/meeTu.webp',
-      'Yo Dessert': '/static/media/yoDessert.webp',
-      'Noodles Time': '/static/media/noodlesTime.webp',
-      'New Da Noodles': '/static/media/newDaNoodles.webp'
+      'Tasty Moment': tastyMomentImg,
+      '葛师傅': chefImg,
+      'Spice 24': spiceTwentyFourImg,
+      '雲吞佳': wontonGuyImg,
+      '季北川': jiBeiChuanImg,
+      'Miss Flower Hotpot': missFlowerHotpotImg,
+      'S&Y Mini Hotpot': syMiniHotpotImg,
+      '豫園': youGardenImg,
+      '98K': nineEightkImg,
+      '港茶巷 HK ALLEY': hkAlleyImg,
+      'Meetu': meeTuImg,
+      'Yo Dessert us': yoDessertImg,
+      'Noodles Time': noodlesTimeImg,
+      'New Da Noodles': newDaNoodlesImg
     };
-    return imageMap[restaurantName] || '/static/media/chef.webp';
+    return imageMap[restaurantName] || chefImg;
   };
 
   return (
