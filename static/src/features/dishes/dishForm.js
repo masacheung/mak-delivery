@@ -148,7 +148,7 @@ const DishForm = ({ restaurant, quantities, onQuantityChange, onAddDish, onClose
         flexDirection: "column",
       }}
     >
-      {/* Header */}
+      {/* Header - Always Visible */}
       <AppBar
         position="sticky"
         elevation={0}
@@ -156,6 +156,11 @@ const DishForm = ({ restaurant, quantities, onQuantityChange, onAddDish, onClose
           background: "rgba(255, 255, 255, 0.95)",
           backdropFilter: "blur(10px)",
           borderBottom: "1px solid rgba(0, 0, 0, 0.1)",
+          zIndex: 1100,
+          top: 0,
+          left: 0,
+          right: 0,
+          boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)",
         }}
       >
         <Toolbar
@@ -164,6 +169,7 @@ const DishForm = ({ restaurant, quantities, onQuantityChange, onAddDish, onClose
             justifyContent: "space-between",
             alignItems: "center",
             padding: isMobile ? "0 16px" : "0 24px",
+            minHeight: isMobile ? "56px" : "64px",
           }}
         >
           <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
@@ -185,11 +191,19 @@ const DishForm = ({ restaurant, quantities, onQuantityChange, onAddDish, onClose
               onClick={onClose}
               sx={{
                 color: "primary.main",
+                backgroundColor: "rgba(102, 126, 234, 0.1)",
+                borderRadius: "50%",
+                width: 40,
+                height: 40,
                 transition: "all 0.3s ease",
-                "&:hover": { transform: "scale(1.1)" },
+                "&:hover": { 
+                  transform: "scale(1.1)",
+                  backgroundColor: "rgba(102, 126, 234, 0.2)",
+                  boxShadow: "0 4px 12px rgba(102, 126, 234, 0.3)",
+                },
               }}
             >
-              <CloseIcon />
+              <CloseIcon fontSize="medium" />
             </IconButton>
           )}
         </Toolbar>
