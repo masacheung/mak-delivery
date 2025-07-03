@@ -395,6 +395,7 @@ const OrderSummary = ({ orderState, updateOrderState, onClose, onSubmit, updateT
                 flexShrink: 0,
               }}
             >
+              {/* Header - Always Visible */}
               <CardContent sx={{ 
                 padding: isMobile ? "16px" : "20px",
                 paddingBottom: "8px",
@@ -414,18 +415,18 @@ const OrderSummary = ({ orderState, updateOrderState, onClose, onSubmit, updateT
                 </Box>
               </CardContent>
               
+              {/* Scrollable Price Details */}
               <Box
                 sx={{
                   flex: 1,
                   overflowY: "auto",
                   paddingX: isMobile ? "16px" : "20px",
-                  paddingBottom: "16px",
-                  display: "flex",
-                  flexDirection: "column",
+                  paddingBottom: "8px",
+                  minHeight: 0,
                 }}
                 className="custom-scroll"
               >
-                <Box sx={{ display: "flex", flexDirection: "column", gap: 1, marginBottom: 2 }}>
+                <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
                   <Box sx={{ display: "flex", justifyContent: "space-between" }}>
                     <Typography variant="body1">Subtotal:</Typography>
                     <Typography variant="body1" sx={{ fontWeight: 600 }}>
@@ -476,13 +477,25 @@ const OrderSummary = ({ orderState, updateOrderState, onClose, onSubmit, updateT
                   sx={{
                     display: "block",
                     color: "text.secondary",
-                    marginBottom: 2,
+                    marginTop: 1,
                     fontStyle: "italic",
                   }}
                 >
                   * Total shown is for reference only and may vary at delivery
                 </Typography>
+              </Box>
 
+              {/* Submit Button - Always Visible at Bottom */}
+              <Box
+                sx={{
+                  padding: isMobile ? "16px" : "20px",
+                  paddingTop: "8px",
+                  borderTop: "1px solid rgba(0, 0, 0, 0.1)",
+                  background: "rgba(255, 255, 255, 0.95)",
+                  backdropFilter: "blur(10px)",
+                  flexShrink: 0,
+                }}
+              >
                 <Button
                   variant="contained"
                   size="large"
@@ -497,7 +510,6 @@ const OrderSummary = ({ orderState, updateOrderState, onClose, onSubmit, updateT
                     textTransform: "none",
                     boxShadow: "0 6px 20px rgba(255, 105, 135, 0.4)",
                     transition: "all 0.3s ease",
-                    marginTop: "auto",
                     "&:hover": {
                       transform: "translateY(-2px)",
                       boxShadow: "0 8px 25px rgba(255, 105, 135, 0.5)",
