@@ -103,16 +103,22 @@ const HomePage = () => {
           <DensityMediumIcon sx={{ fontSize: isMobile ? 24 : 28 }} />
         </IconButton>
 
-        <Typography
-          className="app-title"
-          variant={isMobile ? "h6" : "h5"}
-          sx={{
-            flexGrow: 1,
-            textAlign: "center",
-            cursor: "pointer",
-            transition: "all 0.3s ease",
-            "&:hover": {
-              transform: "scale(1.05)",
+        <Typography 
+          variant={isMobile ? "h6" : "h5"} 
+          component="div" 
+          sx={{ 
+            flexGrow: 1, 
+            textAlign: 'center',
+            fontWeight: 'bold',
+            background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+            backgroundClip: 'text',
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+            fontFamily: 'Poppins, sans-serif',
+            cursor: 'pointer',
+            '&:hover': {
+              transform: 'scale(1.05)',
+              transition: 'transform 0.2s ease',
             }
           }}
           onClick={() => navigate("/")}

@@ -347,15 +347,15 @@ const RestaurantList = () => {
       'Spice 24': spiceTwentyFourImg,
       '雲吞佳': wontonGuyImg,
       '季北川': jiBeiChuanImg,
-      'Miss Flower Hotpot': missFlowerHotpotImg,
-      'S&Y Mini Hotpot': syMiniHotpotImg,
+      '花小娇金汤花胶鸡': missFlowerHotpotImg,
+      'S&Y Mini HotPot 蜀世冒菜': syMiniHotpotImg,
       '豫園': youGardenImg,
       '98K': nineEightkImg,
       '港茶巷 HK ALLEY': hkAlleyImg,
       'Meetu': meeTuImg,
       'Yo Dessert us': yoDessertImg,
-      'Noodles Time': noodlesTimeImg,
-      'New Da Noodles': newDaNoodlesImg
+      '面缘': noodlesTimeImg,
+      '牛大 NewDa Noodles': newDaNoodlesImg
     };
     return imageMap[restaurantName] || chefImg;
   };
