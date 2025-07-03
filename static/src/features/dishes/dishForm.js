@@ -246,8 +246,11 @@ const DishForm = ({ restaurant, quantities, onQuantityChange, onAddDish, onClose
                   borderRadius: 3,
                   overflow: "visible",
                   transition: "all 0.3s ease",
-                  minHeight: "120px",
+                  height: "auto",
+                  minHeight: isMobile ? "200px" : "180px",
                   marginBottom: 2,
+                  display: "flex",
+                  flexDirection: "column",
                   "&:hover": {
                     transform: "translateY(-2px)",
                     boxShadow: "0 8px 25px rgba(0, 0, 0, 0.15)",
@@ -256,10 +259,10 @@ const DishForm = ({ restaurant, quantities, onQuantityChange, onAddDish, onClose
               >
                 <CardContent sx={{ 
                   padding: isMobile ? 2 : 3,
-                  minHeight: "80px",
+                  height: "100%",
                   display: "flex",
                   flexDirection: "column",
-                  justifyContent: "space-between"
+                  justifyContent: "flex-start"
                 }}>
                   {/* Dish Header */}
                   <Box
