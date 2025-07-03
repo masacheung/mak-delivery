@@ -63,9 +63,38 @@ const verifyUserByPhone = async (phoneNumber) => {
 
 const updateVerificationCode = async (phoneNumber, verificationCode, verificationExpiresAt) => {
     const result = await pool.query(
-        'UPDATE users SET verification_code = $2, verification_expires_at = $3 WHERE phone_number = $1 RETURNING id, username, phone_number',
-        [phoneNumber, verificationCode, verificationExpiresAt]
+        'UPDATE users SET verification_code = $1, verification_expires_at = $2 WHERE phone_number = $3 RETURNING id',
+        [verificationCode, verificationExpiresAt, phoneNumber]
     );
+    return result.rows[0];
+};
+
+// Password reset functionality
+const setPasswordResetToken = async (phoneNumber, resetToken, resetExpiresAt) => {
+    const result = await pool.query(
+        'UPDATE users SET verification_code = $1, verification_expires_at = $2 WHERE phone_number = $3 RETURNING id, username, phone_number',
+        [resetToken, resetExpiresAt, phoneNumber]
+    );
+    return result.rows[0];
+};
+
+const updatePassword = async (phoneNumber, passwordHash) => {
+    console.log('Updating password for phone:', phoneNumber);
+    const result = await pool.query(
+        'UPDATE users SET password_hash = $1, verification_code = NULL, verification_expires_at = NULL WHERE phone_number = $2 RETURNING id, username, phone_number',
+        [passwordHash, phoneNumber]
+    );
+    console.log('Update password result:', result.rows[0]);
+    return result.rows[0];
+};
+
+const verifyPasswordResetToken = async (phoneNumber, resetToken) => {
+    console.log('Verifying password reset token:', { phoneNumber, resetToken });
+    const result = await pool.query(
+        'SELECT id, username, phone_number FROM users WHERE phone_number = $1 AND verification_code = $2 AND verification_expires_at > NOW()',
+        [phoneNumber, resetToken]
+    );
+    console.log('Verify password reset token result:', result.rows[0]);
     return result.rows[0];
 };
 
@@ -76,5 +105,8 @@ module.exports = {
     getUserByPhoneNumber, 
     verifyUser, 
     verifyUserByPhone,
-    updateVerificationCode 
+    updateVerificationCode,
+    setPasswordResetToken,
+    updatePassword,
+    verifyPasswordResetToken
 };
