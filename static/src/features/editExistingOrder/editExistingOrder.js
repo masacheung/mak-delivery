@@ -378,13 +378,63 @@ const EditExistingOrder = () => {
   };
 
   const handleRemoveDish = (restaurantId, dishId) => {
-    setOrderState((prev) => ({
-      ...prev,
-      addedDishes: {
-        ...prev.addedDishes,
-        [restaurantId]: prev.addedDishes[restaurantId]?.filter(dish => dish.id !== dishId) || []
+    console.log('Removing dish:', { restaurantId, dishId });
+    
+    setOrderState((prev) => {
+      console.log('Current addedDishes:', prev.addedDishes);
+      console.log('Current quantities:', prev.quantities);
+      
+      // Remove from addedDishes
+      const updatedAddedDishes = { ...prev.addedDishes };
+      if (updatedAddedDishes[restaurantId]) {
+        const beforeLength = updatedAddedDishes[restaurantId].length;
+        updatedAddedDishes[restaurantId] = updatedAddedDishes[restaurantId].filter(dish => dish.id !== dishId);
+        const afterLength = updatedAddedDishes[restaurantId].length;
+        
+        console.log(`Filtered dishes for restaurant ${restaurantId}: ${beforeLength} -> ${afterLength}`);
+        
+        // Clean up empty restaurant arrays
+        if (updatedAddedDishes[restaurantId].length === 0) {
+          delete updatedAddedDishes[restaurantId];
+          console.log(`Removed empty restaurant ${restaurantId} from addedDishes`);
+        }
       }
-    }));
+
+      // For existing dishes, we might need to extract the base dish ID
+      // Existing dishes may have IDs like "originalId-uuid"
+      let baseDishId = dishId;
+      if (dishId.includes('-')) {
+        baseDishId = dishId.split('-')[0];
+      }
+
+      // Also reset quantities if this dish exists in quantities state
+      const updatedQuantities = { ...prev.quantities };
+      if (updatedQuantities[restaurantId]) {
+        // Try both the full ID and base ID
+        if (updatedQuantities[restaurantId][dishId] !== undefined) {
+          updatedQuantities[restaurantId] = { 
+            ...updatedQuantities[restaurantId], 
+            [dishId]: 0 
+          };
+          console.log(`Reset quantity for dish ${dishId}`);
+        } else if (updatedQuantities[restaurantId][baseDishId] !== undefined) {
+          updatedQuantities[restaurantId] = { 
+            ...updatedQuantities[restaurantId], 
+            [baseDishId]: 0 
+          };
+          console.log(`Reset quantity for base dish ${baseDishId}`);
+        }
+      }
+
+      const newState = {
+        ...prev,
+        addedDishes: updatedAddedDishes,
+        quantities: updatedQuantities,
+      };
+      
+      console.log('New state:', newState);
+      return newState;
+    });
   };
 
   return (
@@ -718,46 +768,79 @@ const EditExistingOrder = () => {
                             {restaurant.name}
                           </Typography>
                           
-                          {/* Show added dishes */}
-                          {orderState.addedDishes[restaurant.id]?.length > 0 && (
-                            <Box sx={{ mt: 2 }}>
-                              <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
-                                Added Dishes:
-                              </Typography>
-                              <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
-                                {orderState.addedDishes[restaurant.id].map((dish) => (
-                                  <Box key={dish.id} sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
-                                    <Chip
-                                      label={`${dish.name} x${dish.quantity}`}
-                                      size="small"
-                                      sx={{
-                                        background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-                                        color: 'white',
-                                        fontSize: '0.7rem',
-                                      }}
-                                    />
-                                    <IconButton
-                                      size="small"
-                                      onClick={(e) => {
-                                        e.stopPropagation();
-                                        handleRemoveDish(restaurant.id, dish.id);
-                                      }}
-                                      sx={{ 
-                                        width: 20, 
-                                        height: 20,
-                                        color: '#ff6b6b',
-                                        '&:hover': { 
-                                          background: 'rgba(255, 107, 107, 0.1)',
-                                        }
-                                      }}
-                                    >
-                                      <ClearIcon sx={{ fontSize: 14 }} />
-                                    </IconButton>
-                                  </Box>
-                                ))}
-                              </Box>
-                            </Box>
-                          )}
+                                                     {/* Show added dishes */}
+                           {orderState.addedDishes[restaurant.id]?.length > 0 && (
+                             <Box sx={{ mt: 2 }}>
+                               <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
+                                 Added Dishes:
+                               </Typography>
+                               <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+                                 {orderState.addedDishes[restaurant.id].map((dish) => (
+                                   <Box 
+                                     key={dish.id} 
+                                     sx={{ 
+                                       display: 'flex', 
+                                       alignItems: 'center', 
+                                       gap: 1,
+                                       p: 1,
+                                       borderRadius: 1,
+                                       border: '1px solid #e0e0e0',
+                                       background: 'rgba(255, 255, 255, 0.8)',
+                                     }}
+                                   >
+                                     <Box sx={{ flex: 1, minWidth: 0 }}>
+                                       <Typography 
+                                         variant="caption" 
+                                         sx={{
+                                           fontSize: '0.75rem',
+                                           fontWeight: 'bold',
+                                           color: '#333',
+                                           wordWrap: 'break-word',
+                                           overflow: 'hidden',
+                                           display: '-webkit-box',
+                                           WebkitLineClamp: 2,
+                                           WebkitBoxOrient: 'vertical',
+                                           lineHeight: 1.2,
+                                         }}
+                                       >
+                                         {dish.name}
+                                       </Typography>
+                                       <Typography 
+                                         variant="caption" 
+                                         sx={{
+                                           fontSize: '0.65rem',
+                                           color: '#666',
+                                           fontWeight: 'bold',
+                                         }}
+                                       >
+                                         Qty: {dish.quantity}
+                                       </Typography>
+                                     </Box>
+                                     <IconButton
+                                       size="small"
+                                       onClick={(e) => {
+                                         e.stopPropagation();
+                                         handleRemoveDish(restaurant.id, dish.id);
+                                       }}
+                                       sx={{ 
+                                         width: 24, 
+                                         height: 24,
+                                         color: '#ff6b6b',
+                                         backgroundColor: 'rgba(255, 107, 107, 0.1)',
+                                         border: '1px solid #ff6b6b',
+                                         '&:hover': { 
+                                           backgroundColor: 'rgba(255, 107, 107, 0.2)',
+                                           transform: 'scale(1.1)',
+                                         }
+                                       }}
+                                     >
+                                       <ClearIcon sx={{ fontSize: 16 }} />
+                                     </IconButton>
+                                   </Box>
+                                 ))}
+                               </Box>
+                             </Box>
+                           )}
                         </CardContent>
                       </Card>
                     </Grid>
