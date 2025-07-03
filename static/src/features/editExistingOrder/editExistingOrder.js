@@ -875,41 +875,28 @@ const EditExistingOrder = () => {
         </Fade>
       </Container>
 
-      {/* Order Summary Drawer */}
-      <Drawer
-        anchor="bottom"
-        open={isOrderSummaryOpen}
-        onClose={() => setIsOrderSummaryOpen(false)}
-        PaperProps={{
-          sx: {
-            maxHeight: '90vh',
-            borderRadius: '20px 20px 0 0',
-            background: 'linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.9) 100%)',
-            backdropFilter: 'blur(10px)',
-          }
-        }}
-      >
-        <Box sx={{ p: 2 }}>
-          <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
-            <Typography variant="h6" sx={{ fontWeight: 'bold', color: '#667eea' }}>
-              Order Summary
-            </Typography>
-            <IconButton onClick={() => setIsOrderSummaryOpen(false)}>
-              <CloseIcon />
-            </IconButton>
-          </Box>
-          <OrderSummary 
-            addedDishes={orderState.addedDishes} 
-            updateTotal={updateTotal} 
-            handleSubmit={handleSubmit}
-            wechatId={orderState.wechatId}
-            pickupLocation={orderState.pickupLocation}
-            date={orderState.date}
-            notes={orderState.notes}
-            errors={orderState.errors}
-          />
-        </Box>
-      </Drawer>
+             {/* Order Summary Drawer */}
+       <Drawer
+         anchor="bottom"
+         open={isOrderSummaryOpen}
+         onClose={() => setIsOrderSummaryOpen(false)}
+         PaperProps={{
+           sx: {
+             maxHeight: '90vh',
+             borderRadius: '20px 20px 0 0',
+             background: 'linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.9) 100%)',
+             backdropFilter: 'blur(10px)',
+           }
+         }}
+       >
+         <OrderSummary 
+           orderState={orderState}
+           updateOrderState={updateOrderState}
+           onClose={() => setIsOrderSummaryOpen(false)}
+           onSubmit={handleSubmit}
+           updateTotal={updateTotal}
+         />
+       </Drawer>
 
       {/* Dish Form Drawer */}
       <Drawer
