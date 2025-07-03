@@ -1,5 +1,5 @@
 import React from 'react';
-import { useState } from "react"; // If using state to manage selections
+import { useState } from "react";
 import { 
   Box,
   Typography,
@@ -12,12 +12,28 @@ import {
   FormControlLabel,
   Checkbox,
   Radio,
-  RadioGroup } from '@mui/material';
+  RadioGroup,
+  useTheme,
+  useMediaQuery,
+  Paper,
+  Divider,
+  Chip,
+  Container,
+  AppBar,
+  Toolbar,
+  Fade,
+  Slide
+} from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
+import CloseIcon from '@mui/icons-material/Close';
+import RestaurantIcon from '@mui/icons-material/Restaurant';
+import LocalOfferIcon from '@mui/icons-material/LocalOffer';
 
-const DishForm = ({ restaurant, quantities, onQuantityChange, onAddDish }) => {
+const DishForm = ({ restaurant, quantities, onQuantityChange, onAddDish, onClose }) => {
   const [selectedOptions, setSelectedOptions] = useState({});
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
   const calculateTotal = (dish) => {
     let total = dish.price === 'SP' ? 0 : dish.price;
@@ -26,20 +42,18 @@ const DishForm = ({ restaurant, quantities, onQuantityChange, onAddDish }) => {
       const selectedOptionsKeys = Object.keys(selectedOptions[dish.id]);
 
       for (let key of selectedOptionsKeys) {
-          const optionData = dish.options[key]; // May be undefined
+          const optionData = dish.options[key];
           const selectedOptionsValues = selectedOptions[dish.id][key];
 
-          if (!selectedOptionsValues) continue; // Skip if no values are selected
+          if (!selectedOptionsValues) continue;
 
           if (optionData?.adjustable) {
-              // Handle adjustable options (extract price from selected values)
               for (let value of selectedOptionsValues) {
-                  const priceMatch = value.match(/\$\d+(\.\d+)?/); // Extract price if present
+                  const priceMatch = value.match(/\$\d+(\.\d+)?/);
                   const price = priceMatch ? parseFloat(priceMatch[0].replace('$', '')) : 0;
                   total += price;
               }
           } else if (optionData?.price) {
-              // Handle regular options (fixed price per selection)
               total += optionData.price * selectedOptionsValues.length;
           }
       }
@@ -49,7 +63,6 @@ const DishForm = ({ restaurant, quantities, onQuantityChange, onAddDish }) => {
   };
 
   const handleAddDish = (dish) => {
-    // Ensure all required options (limit === 1) are selected
     for (const [optionKey, optionData] of Object.entries(dish.options || {})) {
       if (optionData.limit === 1) {
         const selected = selectedOptions[dish.id]?.[optionKey] || [];
@@ -73,13 +86,11 @@ const DishForm = ({ restaurant, quantities, onQuantityChange, onAddDish }) => {
         },
       ]);
   
-      // Reset selected options for this dish
       setSelectedOptions((prev) => ({
         ...prev,
-        [dish.id]: {}, // Clear selected options
+        [dish.id]: {},
       }));
   
-      // Reset quantity for this dish
       onQuantityChange(dish.id, "reset", restaurant.id);
     }
   };
@@ -94,11 +105,11 @@ const DishForm = ({ restaurant, quantities, onQuantityChange, onAddDish }) => {
             ...prev,
             [dishId]: {
               ...prev[dishId],
-              [optionKey]: [option], // Override with the selected option
+              [optionKey]: [option],
             },
           };
         } else {
-          alert("You must select one option."); // Replace with your frontend error handling
+          alert("You must select one option.");
           return prev;
         }
       } else {
@@ -127,111 +138,363 @@ const DishForm = ({ restaurant, quantities, onQuantityChange, onAddDish }) => {
   };
 
   return (
-    <Box>
-      <Typography variant="h5" gutterBottom>
-        Add Dishes to {restaurant.name}
-      </Typography>
+    <Box
+      sx={{
+        minHeight: "100vh",
+        background: "linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)",
+        display: "flex",
+        flexDirection: "column",
+      }}
+    >
+      {/* Header */}
+      <AppBar
+        position="sticky"
+        elevation={0}
+        sx={{
+          background: "rgba(255, 255, 255, 0.95)",
+          backdropFilter: "blur(10px)",
+          borderBottom: "1px solid rgba(0, 0, 0, 0.1)",
+        }}
+      >
+        <Toolbar
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            padding: isMobile ? "0 16px" : "0 24px",
+          }}
+        >
+          <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+            <RestaurantIcon sx={{ color: "primary.main" }} />
+            <Typography
+              variant={isMobile ? "h6" : "h5"}
+              className="app-title"
+              sx={{
+                fontWeight: 700,
+                color: "primary.main",
+              }}
+            >
+              {restaurant.name}
+            </Typography>
+          </Box>
 
-        {restaurant.dishes.map((dish) => (
-          <Card key={dish.id} sx={{ marginBottom: 0.5, padding: 0.1 }}>
-            <CardContent sx={{ padding: 1 }}>
-              <Typography variant="body2" fontWeight="bold">
-                {dish.name}
-              </Typography>
-              <Typography variant="caption" color="textSecondary">
-                Price: ${dish.price}
-              </Typography>
+          {onClose && (
+            <IconButton
+              onClick={onClose}
+              sx={{
+                color: "primary.main",
+                transition: "all 0.3s ease",
+                "&:hover": { transform: "scale(1.1)" },
+              }}
+            >
+              <CloseIcon />
+            </IconButton>
+          )}
+        </Toolbar>
+      </AppBar>
 
-              {/* Display options if available */}
-              {dish.options &&
-                Object.entries(dish.options).map(([optionKey, optionData]) => (
-                  <Box key={optionKey} sx={{ marginTop: 0.5 }}>
-                    <Typography variant="caption">
-                      Select {optionData.limit === 100 ? "" : optionData.limit} option(s)
-                      {optionData.name ? ` for ${optionData.name}` : ''}:
-                    </Typography>
-                    <Box>
-                      {optionData.limit === 1 ? (
-                        <RadioGroup
-                          value={selectedOptions[dish.id]?.[optionKey]?.[0] || ""}
-                          onChange={(e) =>
-                            handleOptionChange(dish.id, optionKey, e.target.value, optionData.limit)
-                          }
-                          sx={{
-                            display: "flex",
-                            flexWrap: "wrap",
-                            gap: 1,
-                            flexDirection: "row",
-                          }}
-                        >
-                          {optionData.choices.map((option) => (
-                            <FormControlLabel
-                              key={option}
-                              value={option}
-                              control={<Radio size="small" />}
-                              label={<Typography variant="caption">{option}</Typography>}
-                              sx={{ flex: "0 1 auto", minWidth: "120px", whiteSpace: "nowrap" }}
-                            />
-                          ))}
-                        </RadioGroup>
-                      ) : (
-                        optionData.choices.map((option) => (
-                          <FormControlLabel
-                            key={option}
-                            control={
-                              <Checkbox
-                                size="small"
-                                checked={selectedOptions[dish.id]?.[optionKey]?.includes(option) || false}
-                                onChange={() => handleOptionChange(dish.id, optionKey, option, optionData.limit)}
-                              />
-                            }
-                            label={<Typography variant="caption">{option}</Typography>}
-                            sx={{ marginRight: 1 }}
-                          />
-                        ))
-                      )}
+      {/* Content */}
+      <Container
+        maxWidth="lg"
+        sx={{
+          flex: 1,
+          padding: isMobile ? "16px" : "24px",
+          display: "flex",
+          flexDirection: "column",
+          gap: 2,
+        }}
+      >
+        <Slide direction="down" in={true} timeout={500}>
+          <Typography
+            variant={isMobile ? "h6" : "h5"}
+            sx={{
+              marginBottom: 2,
+              fontWeight: 600,
+              color: "primary.main",
+              textAlign: "center",
+            }}
+          >
+            Select Your Dishes
+          </Typography>
+        </Slide>
+
+        {/* Dishes List */}
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            gap: 2,
+            maxHeight: "calc(100vh - 200px)",
+            overflowY: "auto",
+            paddingRight: 1,
+          }}
+          className="custom-scroll"
+        >
+          {restaurant.dishes.map((dish, index) => (
+            <Fade key={dish.id} in={true} timeout={300 + index * 100}>
+              <Card
+                className="dish-card"
+                sx={{
+                  background: "rgba(255, 255, 255, 0.9)",
+                  backdropFilter: "blur(10px)",
+                  border: "1px solid rgba(255, 255, 255, 0.2)",
+                  borderRadius: 3,
+                  overflow: "hidden",
+                  transition: "all 0.3s ease",
+                  "&:hover": {
+                    transform: "translateY(-2px)",
+                    boxShadow: "0 8px 25px rgba(0, 0, 0, 0.15)",
+                  },
+                }}
+              >
+                <CardContent sx={{ padding: isMobile ? 2 : 3 }}>
+                  {/* Dish Header */}
+                  <Box
+                    sx={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "flex-start",
+                      marginBottom: 2,
+                    }}
+                  >
+                    <Box sx={{ flex: 1 }}>
+                      <Typography
+                        variant={isMobile ? "h6" : "h5"}
+                        sx={{
+                          fontWeight: 600,
+                          color: "primary.main",
+                          marginBottom: 1,
+                        }}
+                      >
+                        {dish.name}
+                      </Typography>
+                      <Chip
+                        icon={<LocalOfferIcon />}
+                        label={dish.price === 'SP' ? 'Special Price' : `$${dish.price}`}
+                        sx={{
+                          backgroundColor: dish.price === 'SP' ? '#FF6B6B' : '#4CAF50',
+                          color: 'white',
+                          fontWeight: 600,
+                        }}
+                      />
+                    </Box>
+
+                    {/* Quantity Controls */}
+                    <Box
+                      sx={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: 1,
+                        backgroundColor: "rgba(102, 126, 234, 0.1)",
+                        borderRadius: 3,
+                        padding: "8px 12px",
+                      }}
+                    >
+                      <IconButton
+                        size="small"
+                        onClick={() => onQuantityChange(dish.id, 'decrease', restaurant.id)}
+                        disabled={quantities[dish.id] === 0}
+                        sx={{
+                          color: "primary.main",
+                          backgroundColor: "white",
+                          width: 32,
+                          height: 32,
+                          "&:hover": {
+                            backgroundColor: "rgba(255, 255, 255, 0.8)",
+                          },
+                        }}
+                      >
+                        <RemoveIcon fontSize="small" />
+                      </IconButton>
+                      
+                      <Typography
+                        variant="body1"
+                        sx={{
+                          fontWeight: 600,
+                          minWidth: 24,
+                          textAlign: "center",
+                          color: "primary.main",
+                        }}
+                      >
+                        {quantities[dish.id] || 0}
+                      </Typography>
+                      
+                      <IconButton
+                        size="small"
+                        onClick={() => onQuantityChange(dish.id, 'increase', restaurant.id)}
+                        disabled={quantities[dish.id] >= 10}
+                        sx={{
+                          color: "primary.main",
+                          backgroundColor: "white",
+                          width: 32,
+                          height: 32,
+                          "&:hover": {
+                            backgroundColor: "rgba(255, 255, 255, 0.8)",
+                          },
+                        }}
+                      >
+                        <AddIcon fontSize="small" />
+                      </IconButton>
                     </Box>
                   </Box>
-                ))}
-            </CardContent>
 
-            <CardActions sx={{ padding: 0.5, justifyContent: "space-between" }}>
-              <Box sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
-                <IconButton size="small" onClick={() => onQuantityChange(dish.id, 'decrease', restaurant.id)} disabled={quantities[dish.id] === 0} sx={{ width: 24, height: 24 }}>
-                  <RemoveIcon fontSize="small" />
-                </IconButton>
-                <TextField
-                  type="number"
-                  value={quantities[dish.id] || 0}
-                  onChange={(e) => {
-                    const newQuantity = Math.max(0, Math.min(10, Number(e.target.value)));
-                    onQuantityChange(dish.id, newQuantity, restaurant.id);
+                  {/* Options */}
+                  {dish.options && Object.entries(dish.options).map(([optionKey, optionData]) => (
+                    <Box key={optionKey} sx={{ marginBottom: 2 }}>
+                      <Divider sx={{ marginBottom: 2 }} />
+                      <Typography
+                        variant="subtitle2"
+                        sx={{
+                          fontWeight: 600,
+                          color: "text.primary",
+                          marginBottom: 1,
+                        }}
+                      >
+                        {optionData.name || optionKey}
+                        {optionData.limit === 1 && <span style={{ color: '#FF6B6B' }}> (Required)</span>}
+                        {optionData.limit > 1 && ` (Choose up to ${optionData.limit})`}
+                      </Typography>
+
+                      <Box
+                        sx={{
+                          display: "flex",
+                          flexWrap: "wrap",
+                          gap: 1,
+                          marginTop: 1,
+                        }}
+                      >
+                        {optionData.limit === 1 ? (
+                          <RadioGroup
+                            value={selectedOptions[dish.id]?.[optionKey]?.[0] || ""}
+                            onChange={(e) =>
+                              handleOptionChange(dish.id, optionKey, e.target.value, optionData.limit)
+                            }
+                            sx={{
+                              display: "flex",
+                              flexDirection: isMobile ? "column" : "row",
+                              flexWrap: "wrap",
+                              gap: 1,
+                            }}
+                          >
+                            {optionData.choices.map((option) => (
+                              <FormControlLabel
+                                key={option}
+                                value={option}
+                                control={<Radio size="small" />}
+                                label={
+                                  <Typography variant="body2" sx={{ fontSize: isMobile ? '0.875rem' : '1rem' }}>
+                                    {option}
+                                  </Typography>
+                                }
+                                sx={{
+                                  flex: "0 1 auto",
+                                  margin: 0,
+                                  padding: "8px 12px",
+                                  backgroundColor: selectedOptions[dish.id]?.[optionKey]?.includes(option) 
+                                    ? "rgba(102, 126, 234, 0.1)" 
+                                    : "rgba(0, 0, 0, 0.04)",
+                                  borderRadius: 2,
+                                  transition: "all 0.3s ease",
+                                  "&:hover": {
+                                    backgroundColor: "rgba(102, 126, 234, 0.1)",
+                                  },
+                                }}
+                              />
+                            ))}
+                          </RadioGroup>
+                        ) : (
+                          optionData.choices.map((option) => (
+                            <FormControlLabel
+                              key={option}
+                              control={
+                                <Checkbox
+                                  size="small"
+                                  checked={selectedOptions[dish.id]?.[optionKey]?.includes(option) || false}
+                                  onChange={() => handleOptionChange(dish.id, optionKey, option, optionData.limit)}
+                                />
+                              }
+                              label={
+                                <Typography variant="body2" sx={{ fontSize: isMobile ? '0.875rem' : '1rem' }}>
+                                  {option}
+                                </Typography>
+                              }
+                              sx={{
+                                flex: "0 1 auto",
+                                margin: 0,
+                                padding: "8px 12px",
+                                backgroundColor: selectedOptions[dish.id]?.[optionKey]?.includes(option) 
+                                  ? "rgba(102, 126, 234, 0.1)" 
+                                  : "rgba(0, 0, 0, 0.04)",
+                                borderRadius: 2,
+                                transition: "all 0.3s ease",
+                                "&:hover": {
+                                  backgroundColor: "rgba(102, 126, 234, 0.1)",
+                                },
+                              }}
+                            />
+                          ))
+                        )}
+                      </Box>
+                    </Box>
+                  ))}
+                </CardContent>
+
+                {/* Add to Cart Button */}
+                <CardActions
+                  sx={{
+                    padding: isMobile ? "16px" : "24px",
+                    paddingTop: 0,
+                    justifyContent: "center",
                   }}
-                  sx={{ width: 32, height: 24, textAlign: 'center', fontSize: "0.75rem",
-                   "& input": {
-                             textAlign: "center",
-                             padding: "4px",
-                             fontSize: "0.75rem" // Ensure smaller text inside
-                   }}}
-                  inputProps={{ style: { textAlign: "center", fontSize: "0.75rem" } }}
-                />
-                <IconButton size="small" onClick={() => onQuantityChange(dish.id, 'increase', restaurant.id)} disabled={quantities[dish.id] === 10} sx={{ width: 24, height: 24 }}>
-                  <AddIcon fontSize="small" />
-                </IconButton>
-              </Box>
-
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={() => handleAddDish(dish)}
-                disabled={quantities[dish.id] === 0}
-                sx={{ minWidth: 70, fontSize: "0.7rem", padding: "3px 5px" }}
-              >
-                Add
-              </Button>
-            </CardActions>
-          </Card>
-        ))}
+                >
+                  <Button
+                    variant="contained"
+                    size="large"
+                    onClick={() => handleAddDish(dish)}
+                    disabled={quantities[dish.id] === 0}
+                    sx={{
+                      background: "linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)",
+                      borderRadius: "50px",
+                      height: isMobile ? 48 : 56,
+                      fontSize: isMobile ? "1rem" : "1.1rem",
+                      fontWeight: 600,
+                      textTransform: "none",
+                      width: "100%",
+                      maxWidth: "300px",
+                      boxShadow: "0 6px 20px rgba(255, 105, 135, 0.4)",
+                      transition: "all 0.3s ease",
+                      "&:hover": {
+                        transform: "translateY(-2px)",
+                        boxShadow: "0 8px 25px rgba(255, 105, 135, 0.5)",
+                      },
+                      "&:disabled": {
+                        background: "rgba(0, 0, 0, 0.12)",
+                        color: "rgba(0, 0, 0, 0.26)",
+                        transform: "none",
+                        boxShadow: "none",
+                      },
+                    }}
+                  >
+                    Add to Cart
+                    {quantities[dish.id] > 0 && (
+                      <Chip
+                        label={`${quantities[dish.id]}`}
+                        size="small"
+                        sx={{
+                          marginLeft: 1,
+                          backgroundColor: "rgba(255, 255, 255, 0.2)",
+                          color: "white",
+                          fontWeight: 600,
+                        }}
+                      />
+                    )}
+                  </Button>
+                </CardActions>
+              </Card>
+            </Fade>
+          ))}
+        </Box>
+      </Container>
     </Box>
   );
 };
