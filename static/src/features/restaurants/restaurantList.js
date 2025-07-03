@@ -717,6 +717,7 @@ const RestaurantList = () => {
             quantities={orderState.quantities[orderState.selectedRestaurant.id] || {}}
             onQuantityChange={handleQuantityChange}
             onAddDish={handleAddDish}
+            onClose={handleCloseDishForm}
           />
         )}
       </Drawer>
