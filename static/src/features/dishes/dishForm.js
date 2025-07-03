@@ -29,9 +29,13 @@ import RemoveIcon from '@mui/icons-material/Remove';
 import CloseIcon from '@mui/icons-material/Close';
 import RestaurantIcon from '@mui/icons-material/Restaurant';
 import LocalOfferIcon from '@mui/icons-material/LocalOffer';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import ExpandLessIcon from '@mui/icons-material/ExpandLess';
+import TuneIcon from '@mui/icons-material/Tune';
 
 const DishForm = ({ restaurant, quantities, onQuantityChange, onAddDish, onClose }) => {
   const [selectedOptions, setSelectedOptions] = useState({});
+  const [expandedDishes, setExpandedDishes] = useState({});
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
@@ -65,6 +69,19 @@ const DishForm = ({ restaurant, quantities, onQuantityChange, onAddDish, onClose
   };
 
   const handleAddDish = (dish) => {
+    // Check if dish has required options that aren't expanded
+    const hasRequiredOptions = dish.options && Object.values(dish.options).some(opt => opt.limit === 1);
+    
+    if (hasRequiredOptions && !expandedDishes[dish.id]) {
+      // Auto-expand to show required options
+      setExpandedDishes(prev => ({
+        ...prev,
+        [dish.id]: true
+      }));
+      alert("Please select the required options for this dish.");
+      return;
+    }
+
     for (const [optionKey, optionData] of Object.entries(dish.options || {})) {
       if (optionData.limit === 1) {
         const selected = selectedOptions[dish.id]?.[optionKey] || [];
@@ -137,6 +154,13 @@ const DishForm = ({ restaurant, quantities, onQuantityChange, onAddDish, onClose
         }
       }
     });
+  };
+
+  const toggleDishExpansion = (dishId) => {
+    setExpandedDishes(prev => ({
+      ...prev,
+      [dishId]: !prev[dishId]
+    }));
   };
 
   return (
@@ -295,19 +319,34 @@ const DishForm = ({ restaurant, quantities, onQuantityChange, onAddDish, onClose
                     }}
                   >
                     <Box sx={{ flex: 1 }}>
-                      <Typography
-                        variant={isMobile ? "h6" : "h5"}
-                        sx={{
-                          fontWeight: 600,
-                          color: "#1976d2",
-                          marginBottom: 1,
-                          fontSize: isMobile ? "1rem" : "1.1rem",
-                          lineHeight: 1.2,
-                          wordBreak: "break-word",
-                        }}
-                      >
-                        {dish.name}
-                      </Typography>
+                      <Box sx={{ display: "flex", alignItems: "center", gap: 1, marginBottom: 1 }}>
+                        <Typography
+                          variant={isMobile ? "h6" : "h5"}
+                          sx={{
+                            fontWeight: 600,
+                            color: "#1976d2",
+                            fontSize: isMobile ? "1rem" : "1.1rem",
+                            lineHeight: 1.2,
+                            wordBreak: "break-word",
+                          }}
+                        >
+                          {dish.name}
+                        </Typography>
+                        {dish.options && Object.keys(dish.options).length > 0 && (
+                          <Chip
+                            icon={<TuneIcon />}
+                            label={`${Object.keys(dish.options).length} options`}
+                            size="small"
+                            sx={{
+                              backgroundColor: "rgba(102, 126, 234, 0.1)",
+                              color: "primary.main",
+                              fontWeight: 500,
+                              height: "24px",
+                              fontSize: "0.7rem",
+                            }}
+                          />
+                        )}
+                      </Box>
                       <Chip
                         icon={<LocalOfferIcon />}
                         label={dish.price === 'SP' ? 'Special Price' : `$${dish.price}`}
@@ -384,8 +423,42 @@ const DishForm = ({ restaurant, quantities, onQuantityChange, onAddDish, onClose
                     </Box>
                   </Box>
 
-                  {/* Options */}
-                  {dish.options && Object.entries(dish.options).map(([optionKey, optionData]) => (
+                  {/* Options Expand Button */}
+                  {dish.options && Object.keys(dish.options).length > 0 && (
+                    <Box
+                      sx={{
+                        display: "flex",
+                        justifyContent: "center",
+                        marginBottom: 2,
+                      }}
+                    >
+                      <Button
+                        variant="outlined"
+                        size="small"
+                        onClick={() => toggleDishExpansion(dish.id)}
+                        startIcon={<TuneIcon />}
+                        endIcon={expandedDishes[dish.id] ? <ExpandLessIcon /> : <ExpandMoreIcon />}
+                        sx={{
+                          borderRadius: "20px",
+                          borderColor: "rgba(102, 126, 234, 0.3)",
+                          color: "primary.main",
+                          fontSize: "0.875rem",
+                          fontWeight: 500,
+                          textTransform: "none",
+                          padding: "6px 16px",
+                          "&:hover": {
+                            borderColor: "primary.main",
+                            backgroundColor: "rgba(102, 126, 234, 0.1)",
+                          },
+                        }}
+                      >
+                        {expandedDishes[dish.id] ? "Hide Options" : `Show Options (${Object.keys(dish.options).length})`}
+                      </Button>
+                    </Box>
+                  )}
+
+                  {/* Options - Conditionally Rendered */}
+                  {dish.options && expandedDishes[dish.id] && Object.entries(dish.options).map(([optionKey, optionData]) => (
                     <Box key={optionKey} sx={{ marginBottom: 2 }}>
                       <Divider sx={{ marginBottom: 2 }} />
                       <Typography
