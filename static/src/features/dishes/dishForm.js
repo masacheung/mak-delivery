@@ -461,60 +461,61 @@ const DishForm = ({ restaurant, quantities, onQuantityChange, onAddDish, onClose
                       </Box>
                     </Box>
                   ))}
-                </CardContent>
 
-                {/* Add to Cart Button */}
-                <CardActions
-                  sx={{
-                    padding: isMobile ? "16px" : "24px",
-                    paddingTop: 0,
-                    paddingBottom: isMobile ? "20px" : "24px",
-                    justifyContent: "center",
-                  }}
-                >
-                  <Button
-                    variant="contained"
-                    size="large"
-                    onClick={() => handleAddDish(dish)}
-                    disabled={quantities[dish.id] === 0}
+                  {/* Add to Cart Button - Inside Card Content */}
+                  <Box
                     sx={{
-                      background: "linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)",
-                      borderRadius: "50px",
-                      height: isMobile ? 48 : 56,
-                      fontSize: isMobile ? "1rem" : "1.1rem",
-                      fontWeight: 600,
-                      textTransform: "none",
-                      width: "100%",
-                      maxWidth: "300px",
-                      boxShadow: "0 6px 20px rgba(255, 105, 135, 0.4)",
-                      transition: "all 0.3s ease",
-                      "&:hover": {
-                        transform: "translateY(-2px)",
-                        boxShadow: "0 8px 25px rgba(255, 105, 135, 0.5)",
-                      },
-                      "&:disabled": {
-                        background: "rgba(0, 0, 0, 0.12)",
-                        color: "rgba(0, 0, 0, 0.26)",
-                        transform: "none",
-                        boxShadow: "none",
-                      },
+                      display: "flex",
+                      justifyContent: "center",
+                      marginTop: 3,
+                      paddingTop: 2,
+                      borderTop: "1px solid rgba(0, 0, 0, 0.1)",
                     }}
                   >
-                    Add to Cart
-                    {quantities[dish.id] > 0 && (
-                      <Chip
-                        label={`${quantities[dish.id]}`}
-                        size="small"
-                        sx={{
-                          marginLeft: 1,
-                          backgroundColor: "rgba(255, 255, 255, 0.2)",
-                          color: "white",
-                          fontWeight: 600,
-                        }}
-                      />
-                    )}
-                  </Button>
-                </CardActions>
+                    <Button
+                      variant="contained"
+                      size="large"
+                      onClick={() => handleAddDish(dish)}
+                      disabled={quantities[dish.id] === 0}
+                      sx={{
+                        background: "linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)",
+                        borderRadius: "50px",
+                        height: isMobile ? 48 : 56,
+                        fontSize: isMobile ? "1rem" : "1.1rem",
+                        fontWeight: 600,
+                        textTransform: "none",
+                        width: "100%",
+                        maxWidth: "300px",
+                        boxShadow: "0 6px 20px rgba(255, 105, 135, 0.4)",
+                        transition: "all 0.3s ease",
+                        "&:hover": {
+                          transform: "translateY(-2px)",
+                          boxShadow: "0 8px 25px rgba(255, 105, 135, 0.5)",
+                        },
+                        "&:disabled": {
+                          background: "rgba(0, 0, 0, 0.12)",
+                          color: "rgba(0, 0, 0, 0.26)",
+                          transform: "none",
+                          boxShadow: "none",
+                        },
+                      }}
+                    >
+                      Add to Cart
+                      {quantities[dish.id] > 0 && (
+                        <Chip
+                          label={`${quantities[dish.id]}`}
+                          size="small"
+                          sx={{
+                            marginLeft: 1,
+                            backgroundColor: "rgba(255, 255, 255, 0.2)",
+                            color: "white",
+                            fontWeight: 600,
+                          }}
+                        />
+                      )}
+                    </Button>
+                  </Box>
+                </CardContent>
               </Card>
             </Fade>
           ))
