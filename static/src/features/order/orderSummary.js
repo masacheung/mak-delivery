@@ -150,156 +150,195 @@ const OrderSummary = ({ orderState, updateOrderState, onClose, onSubmit, updateT
           </Fade>
         ) : (
           <>
-            {/* Scrollable Content Area */}
-            <Box
-              sx={{
-                flex: 1,
-                overflowY: "auto",
-                paddingRight: 1,
-                marginBottom: 2,
-              }}
-              className="custom-scroll"
-            >
-              {/* Order Items */}
-              <Box sx={{ marginBottom: 2 }}>
-              {Object.entries(addedDishes)
-                .filter(([_, dishes]) => dishes.length > 0)
-                .map(([restaurantId, dishes]) => (
-                  <Slide key={restaurantId} direction="up" in={true} timeout={300}>
-                    <Card
-                      className="restaurant-card"
-                      sx={{
-                        marginBottom: 2,
-                        background: "rgba(255, 255, 255, 0.95)",
-                        backdropFilter: "blur(10px)",
-                        border: "1px solid rgba(255, 255, 255, 0.2)",
-                        borderRadius: 3,
-                      }}
-                    >
-                      <CardContent sx={{ padding: isMobile ? "16px" : "20px" }}>
-                        <Box
-                          sx={{
-                            display: "flex",
-                            alignItems: "center",
-                            gap: 1,
-                            marginBottom: 2,
-                          }}
-                        >
-                          <ReceiptIcon sx={{ color: "primary.main", fontSize: 20 }} />
-                          <Typography
-                            variant="h6"
-                            sx={{
-                              fontWeight: 600,
-                              color: "primary.main",
-                            }}
-                          >
-                            {RESTAURANT_NAME[restaurantId]}
-                          </Typography>
-                        </Box>
-                        
-                        <List dense>
-                          {dishes.map((dish) => (
-                            <ListItem
-                              key={dish.id}
-                              sx={{
-                                padding: "8px 0",
-                                borderBottom: "1px solid rgba(0, 0, 0, 0.05)",
-                              }}
-                            >
-                              <ListItemText
-                                primary={
-                                  <Typography
-                                    variant="body1"
-                                    sx={{
-                                      fontWeight: 500,
-                                      color: "text.primary",
-                                    }}
-                                  >
-                                    {dish.name}
-                                    {dish.selectedOptions && Object.keys(dish.selectedOptions).length > 0 && (
-                                      <Typography
-                                        variant="caption"
-                                        sx={{
-                                          display: "block",
-                                          color: "text.secondary",
-                                          marginTop: 0.5,
-                                        }}
-                                      >
-                                        {Object.entries(dish.selectedOptions)
-                                          .map(([_, selected]) => selected.join(", "))
-                                          .join("; ")}
-                                      </Typography>
-                                    )}
-                                  </Typography>
-                                }
-                                secondary={
-                                  <Box sx={{ display: "flex", alignItems: "center", gap: 1, marginTop: 0.5 }}>
-                                    <Chip
-                                      label={`Qty: ${dish.quantity}`}
-                                      size="small"
-                                      sx={{
-                                        backgroundColor: "rgba(102, 126, 234, 0.1)",
-                                        color: "primary.main",
-                                        fontWeight: 600,
-                                      }}
-                                    />
-                                    {dish.price === "SP" ? (
-                                      <Chip
-                                        label="Special Price"
-                                        size="small"
-                                        sx={{
-                                          backgroundColor: "#FF6B6B",
-                                          color: "white",
-                                          fontWeight: 600,
-                                        }}
-                                      />
-                                    ) : (
-                                      <Chip
-                                        label={`$${(Number(dish.price) * Number(dish.quantity)).toFixed(2)}`}
-                                        size="small"
-                                        sx={{
-                                          backgroundColor: "#4CAF50",
-                                          color: "white",
-                                          fontWeight: 600,
-                                        }}
-                                      />
-                                    )}
-                                  </Box>
-                                }
-                              />
-                            </ListItem>
-                          ))}
-                        </List>
-                      </CardContent>
-                    </Card>
-                  </Slide>
-                ))}
-              </Box>
-            </Box>
-
-            {/* Order Information Form */}
+            {/* Section 1: Order Items - Fixed Height with Scroll */}
             <Card
-              className="form-container"
+              className="order-items-section"
               sx={{
+                height: isMobile ? "30vh" : "35vh",
+                minHeight: "200px",
                 background: "rgba(255, 255, 255, 0.95)",
                 backdropFilter: "blur(10px)",
                 border: "1px solid rgba(255, 255, 255, 0.2)",
                 borderRadius: 3,
                 marginBottom: 2,
+                display: "flex",
+                flexDirection: "column",
               }}
             >
-              <CardContent sx={{ padding: isMobile ? "16px" : "20px" }}>
+              <CardContent sx={{ 
+                padding: isMobile ? "16px" : "20px",
+                paddingBottom: "8px",
+                flexShrink: 0,
+              }}>
+                <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                  <ReceiptIcon sx={{ color: "primary.main", fontSize: 20 }} />
+                  <Typography
+                    variant="h6"
+                    sx={{
+                      fontWeight: 600,
+                      color: "primary.main",
+                    }}
+                  >
+                    Order Items
+                  </Typography>
+                </Box>
+              </CardContent>
+              
+              <Box
+                sx={{
+                  flex: 1,
+                  overflowY: "auto",
+                  paddingX: isMobile ? "16px" : "20px",
+                  paddingBottom: "16px",
+                }}
+                className="custom-scroll"
+              >
+                {Object.entries(addedDishes)
+                  .filter(([_, dishes]) => dishes.length > 0)
+                  .map(([restaurantId, dishes]) => (
+                    <Slide key={restaurantId} direction="up" in={true} timeout={300}>
+                      <Card
+                        className="restaurant-card"
+                        sx={{
+                          marginBottom: 2,
+                          background: "rgba(255, 255, 255, 0.8)",
+                          backdropFilter: "blur(5px)",
+                          border: "1px solid rgba(255, 255, 255, 0.3)",
+                          borderRadius: 2,
+                        }}
+                      >
+                        <CardContent sx={{ padding: "12px" }}>
+                          <Typography
+                            variant="subtitle1"
+                            sx={{
+                              fontWeight: 600,
+                              color: "primary.main",
+                              marginBottom: 1,
+                            }}
+                          >
+                            {RESTAURANT_NAME[restaurantId]}
+                          </Typography>
+                          
+                          <List dense>
+                            {dishes.map((dish) => (
+                              <ListItem
+                                key={dish.id}
+                                sx={{
+                                  padding: "4px 0",
+                                  borderBottom: "1px solid rgba(0, 0, 0, 0.05)",
+                                }}
+                              >
+                                <ListItemText
+                                  primary={
+                                    <Typography
+                                      variant="body2"
+                                      sx={{
+                                        fontWeight: 500,
+                                        color: "text.primary",
+                                      }}
+                                    >
+                                      {dish.name}
+                                      {dish.selectedOptions && Object.keys(dish.selectedOptions).length > 0 && (
+                                        <Typography
+                                          variant="caption"
+                                          sx={{
+                                            display: "block",
+                                            color: "text.secondary",
+                                            marginTop: 0.5,
+                                          }}
+                                        >
+                                          {Object.entries(dish.selectedOptions)
+                                            .map(([_, selected]) => selected.join(", "))
+                                            .join("; ")}
+                                        </Typography>
+                                      )}
+                                    </Typography>
+                                  }
+                                  secondary={
+                                    <Box sx={{ display: "flex", alignItems: "center", gap: 1, marginTop: 0.5 }}>
+                                      <Chip
+                                        label={`Qty: ${dish.quantity}`}
+                                        size="small"
+                                        sx={{
+                                          backgroundColor: "rgba(102, 126, 234, 0.1)",
+                                          color: "primary.main",
+                                          fontWeight: 600,
+                                        }}
+                                      />
+                                      {dish.price === "SP" ? (
+                                        <Chip
+                                          label="Special Price"
+                                          size="small"
+                                          sx={{
+                                            backgroundColor: "#FF6B6B",
+                                            color: "white",
+                                            fontWeight: 600,
+                                          }}
+                                        />
+                                      ) : (
+                                        <Chip
+                                          label={`$${(Number(dish.price) * Number(dish.quantity)).toFixed(2)}`}
+                                          size="small"
+                                          sx={{
+                                            backgroundColor: "#4CAF50",
+                                            color: "white",
+                                            fontWeight: 600,
+                                          }}
+                                        />
+                                      )}
+                                    </Box>
+                                  }
+                                />
+                              </ListItem>
+                            ))}
+                          </List>
+                        </CardContent>
+                      </Card>
+                    </Slide>
+                  ))}
+              </Box>
+            </Card>
+
+            {/* Section 2: Order Information Form - Fixed Height with Scroll */}
+            <Card
+              className="order-info-section"
+              sx={{
+                height: isMobile ? "25vh" : "20vh",
+                minHeight: "150px",
+                background: "rgba(255, 255, 255, 0.95)",
+                backdropFilter: "blur(10px)",
+                border: "1px solid rgba(255, 255, 255, 0.2)",
+                borderRadius: 3,
+                marginBottom: 2,
+                display: "flex",
+                flexDirection: "column",
+              }}
+            >
+              <CardContent sx={{ 
+                padding: isMobile ? "16px" : "20px",
+                paddingBottom: "8px",
+                flexShrink: 0,
+              }}>
                 <Typography
                   variant="h6"
                   sx={{
-                    marginBottom: 2,
                     fontWeight: 600,
                     color: "primary.main",
                   }}
                 >
                   Order Information
                 </Typography>
-                
+              </CardContent>
+              
+              <Box
+                sx={{
+                  flex: 1,
+                  overflowY: "auto",
+                  paddingX: isMobile ? "16px" : "20px",
+                  paddingBottom: "16px",
+                }}
+                className="custom-scroll"
+              >
                 <Box
                   sx={{
                     display: "flex",
@@ -338,25 +377,30 @@ const OrderSummary = ({ orderState, updateOrderState, onClose, onSubmit, updateT
                     },
                   }}
                 />
-              </CardContent>
+              </Box>
             </Card>
 
-            {/* Total Summary - Always Visible */}
+            {/* Section 3: Order Total - Fixed Height with Scroll */}
             <Card
-              className="modern-card"
+              className="order-total-section"
               sx={{
+                height: isMobile ? "25vh" : "25vh",
+                minHeight: "180px",
                 background: "rgba(255, 255, 255, 0.95)",
                 backdropFilter: "blur(10px)",
                 border: "1px solid rgba(255, 255, 255, 0.2)",
                 borderRadius: 3,
+                display: "flex",
+                flexDirection: "column",
                 flexShrink: 0,
-                position: "sticky",
-                bottom: 0,
-                zIndex: 1,
               }}
             >
-              <CardContent sx={{ padding: isMobile ? "16px" : "20px" }}>
-                <Box sx={{ display: "flex", alignItems: "center", gap: 1, marginBottom: 2 }}>
+              <CardContent sx={{ 
+                padding: isMobile ? "16px" : "20px",
+                paddingBottom: "8px",
+                flexShrink: 0,
+              }}>
+                <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
                   <LocalShippingIcon sx={{ color: "primary.main", fontSize: 20 }} />
                   <Typography
                     variant="h6"
@@ -368,8 +412,20 @@ const OrderSummary = ({ orderState, updateOrderState, onClose, onSubmit, updateT
                     Order Total
                   </Typography>
                 </Box>
-
-                <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
+              </CardContent>
+              
+              <Box
+                sx={{
+                  flex: 1,
+                  overflowY: "auto",
+                  paddingX: isMobile ? "16px" : "20px",
+                  paddingBottom: "16px",
+                  display: "flex",
+                  flexDirection: "column",
+                }}
+                className="custom-scroll"
+              >
+                <Box sx={{ display: "flex", flexDirection: "column", gap: 1, marginBottom: 2 }}>
                   <Box sx={{ display: "flex", justifyContent: "space-between" }}>
                     <Typography variant="body1">Subtotal:</Typography>
                     <Typography variant="body1" sx={{ fontWeight: 600 }}>
@@ -420,7 +476,6 @@ const OrderSummary = ({ orderState, updateOrderState, onClose, onSubmit, updateT
                   sx={{
                     display: "block",
                     color: "text.secondary",
-                    marginTop: 1,
                     marginBottom: 2,
                     fontStyle: "italic",
                   }}
@@ -442,8 +497,7 @@ const OrderSummary = ({ orderState, updateOrderState, onClose, onSubmit, updateT
                     textTransform: "none",
                     boxShadow: "0 6px 20px rgba(255, 105, 135, 0.4)",
                     transition: "all 0.3s ease",
-                    marginTop: 1,
-                    marginBottom: isMobile ? 1 : 0,
+                    marginTop: "auto",
                     "&:hover": {
                       transform: "translateY(-2px)",
                       boxShadow: "0 8px 25px rgba(255, 105, 135, 0.5)",
@@ -452,7 +506,7 @@ const OrderSummary = ({ orderState, updateOrderState, onClose, onSubmit, updateT
                 >
                   Submit Order
                 </Button>
-              </CardContent>
+              </Box>
             </Card>
           </>
         )}
