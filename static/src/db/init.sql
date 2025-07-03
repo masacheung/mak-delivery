@@ -1,6 +1,6 @@
 CREATE TABLE orders (
     id SERIAL PRIMARY KEY,
-    wechat_id VARCHAR(255) NOT NULL,
+    username VARCHAR(255) NOT NULL,
     create_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     pick_up_date TIMESTAMP NOT NULL,
     pick_up_location VARCHAR(255) NOT NULL,
@@ -15,3 +15,20 @@ CREATE TABLE admin_config (
     pick_up_locations TEXT[] NOT NULL,
     restaurants TEXT[] NOT NULL
 );
+
+-- Users table for account management
+CREATE TABLE users (
+    id SERIAL PRIMARY KEY,
+    username VARCHAR(255) UNIQUE NOT NULL,
+    password_hash VARCHAR(255) NOT NULL,
+    phone_number VARCHAR(20) UNIQUE NOT NULL,
+    is_verified BOOLEAN DEFAULT FALSE,
+    verification_code VARCHAR(6),
+    verification_expires_at TIMESTAMP,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Index for faster lookups
+CREATE INDEX idx_users_username ON users(username);
+CREATE INDEX idx_users_phone ON users(phone_number);

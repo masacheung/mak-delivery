@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../hooks/useAuth";
 import {
   Box,
   Typography,
@@ -74,6 +75,7 @@ const RestaurantList = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const isTablet = useMediaQuery(theme.breakpoints.between('md', 'lg'));
+  const { user } = useAuth();
 
   const restaurants = [
     TASTY_MOMENT,
@@ -97,7 +99,7 @@ const RestaurantList = () => {
     quantities: {},
     isDishFormVisible: false,
     addedDishes: {},
-    wechatId: "",
+    username: "",
     pickupLocation: "",
     date: "",
     notes: "",
@@ -128,6 +130,13 @@ const RestaurantList = () => {
   useEffect(() => {
     console.log("Updated availableRestaurants:", availableRestaurants);
   }, [availableRestaurants]);
+
+  // Set username from logged-in user
+  useEffect(() => {
+    if (user?.username) {
+      setOrderState((prev) => ({ ...prev, username: user.username }));
+    }
+  }, [user]);
 
   const resetEventsState = () => {
     setOpenEvents([]);
@@ -269,7 +278,7 @@ const RestaurantList = () => {
 
   const handleSubmit = async () => {
     let newErrors = {
-      wechatId: !orderState.wechatId,
+      username: !orderState.username,
       pickupLocation: !orderState.pickupLocation,
       date: !orderState.date,
     };
@@ -286,7 +295,7 @@ const RestaurantList = () => {
       return;
     }
     const orderData = {
-        wechatId: orderState.wechatId,
+        username: orderState.username,
         pickupLocation: orderState.pickupLocation,
         date: orderState.date,
         orderDetails: JSON.stringify(
@@ -323,7 +332,7 @@ const RestaurantList = () => {
         quantities: {},
         isDishFormVisible: false,
         addedDishes: {},
-        wechatId: "",
+        username: "",
         pickupLocation: "",
         date: "",
         errors: {},
@@ -388,7 +397,7 @@ const RestaurantList = () => {
           }}
         >
           <IconButton
-            onClick={() => navigate(-1)}
+            onClick={() => navigate("/")}
             sx={{
               color: "primary.main",
               transition: "all 0.3s ease",

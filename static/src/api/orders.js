@@ -3,12 +3,12 @@ const router = express.Router();
 const pool = require("../db/connection.js"); // PostgreSQL connection
 
 router.post("/", async (req, res) => {
-  const { wechatId, pickupLocation, date, orderDetails, total, notes } = req.body;
+  const { username, pickupLocation, date, orderDetails, total, notes } = req.body;
 
   try {
     const result = await pool.query(
-      "INSERT INTO orders (wechat_id, pick_up_location, pick_up_date, order_details, total, notes) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *",
-      [wechatId, pickupLocation, date, orderDetails, total, notes]
+      "INSERT INTO orders (username, pick_up_location, pick_up_date, order_details, total, notes) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *",
+      [username, pickupLocation, date, orderDetails, total, notes]
     );
 
     res.status(201).json({ message: "Order submitted", order: result.rows[0] });
@@ -20,12 +20,12 @@ router.post("/", async (req, res) => {
 
 router.put("/update/:orderId", async (req, res) => {
   const { orderId } = req.params;
-  const { wechatId, pickupLocation, date, orderDetails, total, notes } = req.body;
+  const { username, pickupLocation, date, orderDetails, total, notes } = req.body;
 
   try {
     const result = await pool.query(
-      "UPDATE orders SET wechat_id = $1, pick_up_location = $2, pick_up_date = $3, order_details = $4, total = $5, notes = $6 WHERE id = $7 RETURNING *",
-      [wechatId, pickupLocation, date, orderDetails, total, notes, orderId]
+      "UPDATE orders SET username = $1, pick_up_location = $2, pick_up_date = $3, order_details = $4, total = $5, notes = $6 WHERE id = $7 RETURNING *",
+      [username, pickupLocation, date, orderDetails, total, notes, orderId]
     );
 
     if (result.rows.length === 0) {
@@ -39,18 +39,18 @@ router.put("/update/:orderId", async (req, res) => {
   }
 });
 
-// GET: Fetch order by wechat_id and order_id
+// GET: Fetch order by username and order_id
 router.get("/", async (req, res) => {
-  const { wechatId, orderId } = req.query;
+  const { username, orderId } = req.query;
 
-  if (!wechatId || !orderId) {
-    return res.status(400).json({ error: "WeChat ID and Order ID are required." });
+  if (!username || !orderId) {
+    return res.status(400).json({ error: "Username and Order ID are required." });
   }
 
   try {
     const result = await pool.query(
-      "SELECT * FROM orders WHERE wechat_id = $1 AND id = $2",
-      [wechatId, orderId]
+      "SELECT * FROM orders WHERE username = $1 AND id = $2",
+      [username, orderId]
     );
 
     if (result.rows.length === 0) {
@@ -92,7 +92,7 @@ router.get("/search", async (req, res) => {
 
       const orders = result.rows.map((order) => ({
         id: order.id,
-        wechat_id: order.wechat_id,
+        username: order.username,
         order_details: typeof order.order_details === "string" ? JSON.parse(order.order_details) : order.order_details,
         total: order.total,
         notes: order.notes
@@ -116,7 +116,7 @@ router.get("/search", async (req, res) => {
 
           const orders = result.rows.map((order) => ({
             id: order.id,
-            wechat_id: order.wechat_id,
+            username: order.username,
             order_details: typeof order.order_details === "string" ? JSON.parse(order.order_details) : order.order_details,
             total: order.total,
             notes: order.notes
@@ -140,7 +140,7 @@ router.get("/search", async (req, res) => {
 
       const orders = result.rows.map((order) => ({
         id: order.id,
-        wechat_id: order.wechat_id,
+        username: order.username,
         order_details: typeof order.order_details === "string" ? JSON.parse(order.order_details) : order.order_details,
         total: order.total,
         notes: order.notes
@@ -164,7 +164,7 @@ router.get("/search", async (req, res) => {
 
       const orders = result.rows.map((order) => ({
         id: order.id,
-        wechat_id: order.wechat_id,
+        username: order.username,
         order_details: typeof order.order_details === "string" ? JSON.parse(order.order_details) : order.order_details,
         total: order.total,
         notes: order.notes

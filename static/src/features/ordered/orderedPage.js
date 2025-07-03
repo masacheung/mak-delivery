@@ -167,7 +167,7 @@ const OrderedPage = () => {
                 📱 Please take a screenshot of this confirmation
               </Typography>
               <Typography variant="caption">
-                Save your Order ID and WeChat ID for future order lookup
+                Save your Order ID and Username for future order lookup
               </Typography>
             </Alert>
 
@@ -219,10 +219,10 @@ const OrderedPage = () => {
                   <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                     <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
                       <PersonIcon sx={{ color: "text.secondary", fontSize: 20 }} />
-                      <Typography sx={{ fontWeight: 600 }}>WeChat ID:</Typography>
+                      <Typography sx={{ fontWeight: 600 }}>Username:</Typography>
                     </Box>
                     <Typography sx={{ fontWeight: 500 }}>
-                      {order.wechat_id || "N/A"}
+                      {order.username || "N/A"}
                     </Typography>
                   </Box>
 

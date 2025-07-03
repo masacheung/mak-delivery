@@ -126,7 +126,7 @@ const AdminOrdersLookup = () => {
             {orders.map((order) => (
               <Card key={order.id} sx={{ mt: 2, p: 2 }}>
                 <Typography><strong>Order ID:</strong> {order.id}</Typography>
-                <Typography><strong>WeChat ID:</strong> {order.wechat_id}</Typography>
+                <Typography><strong>Username:</strong> {order.username}</Typography>
                 <Typography><strong>Total:</strong> ${isNaN(Number(order.total)) ? "N/A" : Number(order.total).toFixed(2)}</Typography>
 
                 <Typography variant="h6" mt={2}><strong>Order Details:</strong></Typography>
