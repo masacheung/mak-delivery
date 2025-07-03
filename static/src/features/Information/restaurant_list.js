@@ -139,9 +139,6 @@ const RestaurantSupportList = () => {
         }}
       >
         <div style={{ marginTop: '50px' }}>
-          <h2 style={{ fontSize: '1.5rem', fontWeight: 'bold', marginBottom: '1rem' }}>
-            🛍️ Restaurants You Can Order
-          </h2>
           <RestaurantList/>
         </div>
       </Box>

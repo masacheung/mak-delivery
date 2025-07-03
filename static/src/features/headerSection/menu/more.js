@@ -107,7 +107,7 @@ const MoreMenu = ({onClose}) => {
             },
           }}
         >
-          🛍️ Restaurants You Can Order
+          🛍️ Our Restaurant Partners
         </Box>
 
         <Box
