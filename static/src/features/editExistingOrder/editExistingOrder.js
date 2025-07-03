@@ -378,25 +378,15 @@ const EditExistingOrder = () => {
   };
 
   const handleRemoveDish = (restaurantId, dishId) => {
-    console.log('Removing dish:', { restaurantId, dishId });
-    
     setOrderState((prev) => {
-      console.log('Current addedDishes:', prev.addedDishes);
-      console.log('Current quantities:', prev.quantities);
-      
       // Remove from addedDishes
       const updatedAddedDishes = { ...prev.addedDishes };
       if (updatedAddedDishes[restaurantId]) {
-        const beforeLength = updatedAddedDishes[restaurantId].length;
         updatedAddedDishes[restaurantId] = updatedAddedDishes[restaurantId].filter(dish => dish.id !== dishId);
-        const afterLength = updatedAddedDishes[restaurantId].length;
-        
-        console.log(`Filtered dishes for restaurant ${restaurantId}: ${beforeLength} -> ${afterLength}`);
         
         // Clean up empty restaurant arrays
         if (updatedAddedDishes[restaurantId].length === 0) {
           delete updatedAddedDishes[restaurantId];
-          console.log(`Removed empty restaurant ${restaurantId} from addedDishes`);
         }
       }
 
@@ -416,24 +406,19 @@ const EditExistingOrder = () => {
             ...updatedQuantities[restaurantId], 
             [dishId]: 0 
           };
-          console.log(`Reset quantity for dish ${dishId}`);
         } else if (updatedQuantities[restaurantId][baseDishId] !== undefined) {
           updatedQuantities[restaurantId] = { 
             ...updatedQuantities[restaurantId], 
             [baseDishId]: 0 
           };
-          console.log(`Reset quantity for base dish ${baseDishId}`);
         }
       }
 
-      const newState = {
+      return {
         ...prev,
         addedDishes: updatedAddedDishes,
         quantities: updatedQuantities,
       };
-      
-      console.log('New state:', newState);
-      return newState;
     });
   };
 
