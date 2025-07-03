@@ -113,7 +113,7 @@ const OrderSummary = ({ orderState, updateOrderState, onClose, onSubmit, updateT
           display: "flex",
           flexDirection: "column",
           gap: 2,
-          overflow: "visible",
+          overflow: "hidden",
           paddingBottom: isMobile ? "24px" : "32px",
         }}
       >
@@ -150,15 +150,18 @@ const OrderSummary = ({ orderState, updateOrderState, onClose, onSubmit, updateT
           </Fade>
         ) : (
           <>
-            {/* Order Items */}
+            {/* Scrollable Content Area */}
             <Box
               sx={{
                 flex: 1,
                 overflowY: "auto",
                 paddingRight: 1,
+                marginBottom: 2,
               }}
               className="custom-scroll"
             >
+              {/* Order Items */}
+              <Box sx={{ marginBottom: 2 }}>
               {Object.entries(addedDishes)
                 .filter(([_, dishes]) => dishes.length > 0)
                 .map(([restaurantId, dishes]) => (
@@ -271,6 +274,7 @@ const OrderSummary = ({ orderState, updateOrderState, onClose, onSubmit, updateT
                     </Card>
                   </Slide>
                 ))}
+              </Box>
             </Box>
 
             {/* Order Information Form */}
@@ -337,7 +341,7 @@ const OrderSummary = ({ orderState, updateOrderState, onClose, onSubmit, updateT
               </CardContent>
             </Card>
 
-            {/* Total Summary */}
+            {/* Total Summary - Always Visible */}
             <Card
               className="modern-card"
               sx={{
@@ -345,8 +349,10 @@ const OrderSummary = ({ orderState, updateOrderState, onClose, onSubmit, updateT
                 backdropFilter: "blur(10px)",
                 border: "1px solid rgba(255, 255, 255, 0.2)",
                 borderRadius: 3,
-                marginTop: "auto",
                 flexShrink: 0,
+                position: "sticky",
+                bottom: 0,
+                zIndex: 1,
               }}
             >
               <CardContent sx={{ padding: isMobile ? "16px" : "20px" }}>
