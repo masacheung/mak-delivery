@@ -146,21 +146,22 @@ const DishForm = ({ restaurant, quantities, onQuantityChange, onAddDish, onClose
         background: "linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)",
         display: "flex",
         flexDirection: "column",
+        position: "relative",
       }}
     >
       {/* Header - Always Visible */}
       <AppBar
-        position="sticky"
+        position="fixed"
         elevation={0}
         sx={{
-          background: "rgba(255, 255, 255, 0.95)",
-          backdropFilter: "blur(10px)",
+          background: "rgba(255, 255, 255, 0.98)",
+          backdropFilter: "blur(15px)",
           borderBottom: "1px solid rgba(0, 0, 0, 0.1)",
-          zIndex: 1100,
+          zIndex: 1300,
           top: 0,
           left: 0,
           right: 0,
-          boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)",
+          boxShadow: "0 2px 8px rgba(0, 0, 0, 0.15)",
         }}
       >
         <Toolbar
@@ -215,6 +216,7 @@ const DishForm = ({ restaurant, quantities, onQuantityChange, onAddDish, onClose
         sx={{
           flex: 1,
           padding: isMobile ? "16px" : "24px",
+          paddingTop: isMobile ? "72px" : "80px", // Add top padding for fixed header
           paddingBottom: isMobile ? "32px" : "40px",
           display: "flex",
           flexDirection: "column",
@@ -265,6 +267,8 @@ const DishForm = ({ restaurant, quantities, onQuantityChange, onAddDish, onClose
                   marginBottom: 2,
                   display: "flex",
                   flexDirection: "column",
+                  zIndex: 1, // Ensure cards stay below header
+                  position: "relative",
                   "&:hover": {
                     transform: "translateY(-2px)",
                     boxShadow: "0 8px 25px rgba(0, 0, 0, 0.15)",
