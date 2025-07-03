@@ -376,29 +376,7 @@ const OrderSummary = ({ orderState, updateOrderState, onClose, onSubmit, updateT
                 }}
                 className="custom-scroll"
               >
-                <Box
-                  sx={{
-                    display: "flex",
-                    flexDirection: isMobile ? "column" : "row",
-                    gap: 2,
-                    marginBottom: 2,
-                  }}
-                >
-                  <TextField
-                    fullWidth
-                    label="WeChat ID"
-                    value={orderState?.wechatId || ""}
-                    onChange={(e) => updateOrderState("wechatId", e.target.value)}
-                    required
-                    error={orderState?.errors?.wechatId}
-                    helperText={orderState?.errors?.wechatId ? "WeChat ID is required" : ""}
-                    sx={{
-                      "& .MuiOutlinedInput-root": {
-                        borderRadius: 2,
-                      },
-                    }}
-                  />
-                </Box>
+                {/* Username is automatically handled by authentication - no input needed */}
 
                 <TextField
                   fullWidth

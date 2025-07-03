@@ -4,6 +4,7 @@ const cors = require("cors");
 const bodyParser = require("body-parser");
 const ordersRoute = require("./api/orders.js");
 const adminRoute = require("./api/adminConfig.js");
+const usersRoute = require("./api/users.js");
 
 require("dotenv").config();
 
@@ -32,11 +33,10 @@ app.post("/api/admin/login", (req, res) => {
   }
 });
 
-// Orders API
+// API Routes
 app.use("/api/orders", ordersRoute);
-
-// Orders API
 app.use("/api/adminConfig", adminRoute);
+app.use("/api/users", usersRoute);
 
 // Serve the admin page
 app.get("/admin", (req, res) => {

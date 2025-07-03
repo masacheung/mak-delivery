@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
+import { useAuth } from "../../hooks/useAuth";
 import {
   AppBar,
   Toolbar,
@@ -76,6 +77,7 @@ const EditExistingOrder = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const orderData = location.state?.orderData;
+  const { user } = useAuth();
 
   const restaurants = [
     TASTY_MOMENT,
@@ -118,7 +120,7 @@ const EditExistingOrder = () => {
     quantities: {},
     isDishFormVisible: false,
     addedDishes: {},
-    wechatId: "",
+          username: "",
     pickupLocation: "",
     date: "",
     notes: "",
@@ -145,7 +147,7 @@ const EditExistingOrder = () => {
         quantities: {},
         isDishFormVisible: false,
         addedDishes: orderData.order_details,
-        wechatId: orderData.wechat_id,
+        username: orderData.username,
         pickupLocation: orderData.pick_up_location,
         date: initialDate,
         notes: orderData.notes || "",
@@ -157,6 +159,13 @@ const EditExistingOrder = () => {
       handleSearch(initialDate);
     }
   }, [orderData]);
+
+  // Set username from logged-in user
+  useEffect(() => {
+    if (user?.username) {
+      setOrderState((prev) => ({ ...prev, username: user.username }));
+    }
+  }, [user]);
 
   const resetEventsState = () => {
     setOpenEvents([]);
@@ -307,7 +316,7 @@ const EditExistingOrder = () => {
 
   const handleSubmit = async () => {
     let newErrors = {
-      wechatId: !orderState.wechatId,
+      username: !orderState.username,
       pickupLocation: !orderState.pickupLocation,
       date: !orderState.date,
     };
@@ -326,7 +335,7 @@ const EditExistingOrder = () => {
 
     const orderData = {
       orderId: orderState.orderId,
-      wechatId: orderState.wechatId,
+              username: orderState.username,
       pickupLocation: orderState.pickupLocation,
       date: orderState.date,
       orderDetails: JSON.stringify(
@@ -362,7 +371,7 @@ const EditExistingOrder = () => {
         quantities: {},
         isDishFormVisible: false,
         addedDishes: {},
-        wechatId: "",
+        username: "",
         pickupLocation: "",
         date: "",
         errors: {},
@@ -584,12 +593,12 @@ const EditExistingOrder = () => {
                 <Grid item xs={12} md={6}>
                   <TextField
                     fullWidth
-                    label="WeChat ID"
-                    value={orderState.wechatId}
-                    onChange={(e) => updateOrderState("wechatId", e.target.value)}
+                    label="Username"
+                    value={orderState.username}
+                    onChange={(e) => updateOrderState("username", e.target.value)}
                     required
-                    error={orderState.errors?.wechatId}
-                    helperText={orderState.errors?.wechatId ? "WeChat ID is required" : ""}
+                    error={orderState.errors?.username}
+                    helperText={orderState.errors?.username ? "Username is required" : ""}
                     InputProps={{
                       startAdornment: <PersonIcon sx={{ mr: 1, color: 'text.secondary' }} />,
                     }}

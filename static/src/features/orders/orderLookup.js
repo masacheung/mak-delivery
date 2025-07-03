@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { useAuth } from "../../hooks/useAuth";
 import { 
   Container, 
   TextField, 
@@ -35,8 +36,9 @@ const OrderLookup = () => {
   const navigate = useNavigate();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+  const { user } = useAuth();
   
-  const [wechatId, setWechatId] = useState("");
+  const [username, setUsername] = useState("");
   const [orderId, setOrderId] = useState("");
   const [orderData, setOrderData] = useState(null);
   const [error, setError] = useState("");
@@ -45,9 +47,16 @@ const OrderLookup = () => {
   const [pickUpDate, setPickUpDate] = useState("");
   const [disableEdit, setDisableEdit] = useState(true);
 
+  // Set username from logged-in user
+  useEffect(() => {
+    if (user?.username) {
+      setUsername(user.username);
+    }
+  }, [user]);
+
   const handleLookup = async () => {
-    if (!wechatId || !orderId) {
-      setError("Please enter both WeChat ID and Order ID.");
+    if (!username || !orderId) {
+      setError("Please enter both Username and Order ID.");
       return;
     }
     
@@ -55,7 +64,7 @@ const OrderLookup = () => {
     setLoading(true);
 
     try {
-      const response = await fetch(`/api/orders?wechatId=${wechatId}&orderId=${orderId}`);
+      const response = await fetch(`/api/orders?username=${username}&orderId=${orderId}`);
       if (!response.ok) throw new Error("Order not found");
 
       const data = await response.json();
@@ -136,10 +145,10 @@ const OrderLookup = () => {
             <Box sx={{ marginBottom: 4 }}>
               <TextField
                 fullWidth
-                label="WeChat ID"
+                label="Username"
                 variant="outlined"
-                value={wechatId}
-                onChange={(e) => setWechatId(e.target.value)}
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
                 sx={{
                   marginBottom: 2,
                   "& .MuiOutlinedInput-root": {
@@ -245,10 +254,10 @@ const OrderLookup = () => {
                       <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                         <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
                           <PersonIcon sx={{ color: "text.secondary", fontSize: 20 }} />
-                          <Typography sx={{ fontWeight: 600 }}>WeChat ID:</Typography>
+                          <Typography sx={{ fontWeight: 600 }}>Username:</Typography>
                         </Box>
                         <Chip 
-                          label={orderData.wechat_id} 
+                          label={orderData.username} 
                           size="small"
                           sx={{ 
                             backgroundColor: "rgba(102, 126, 234, 0.1)",

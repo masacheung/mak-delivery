@@ -11,14 +11,20 @@ import {
   useTheme, 
   useMediaQuery,
   Fade,
-  Slide
+  Slide,
+  Menu,
+  MenuItem,
+  Avatar
 } from "@mui/material";
 import DensityMediumIcon from '@mui/icons-material/DensityMedium';
 import EventIcon from "@mui/icons-material/Event";
 import RestaurantIcon from "@mui/icons-material/Restaurant";
 import SearchIcon from "@mui/icons-material/Search";
+import PersonIcon from "@mui/icons-material/Person";
+import LogoutIcon from "@mui/icons-material/Logout";
 import UpcomingEvent from "../headerSection/upcomingEvent/upcomingEvent";
 import MoreMenu from "../headerSection/menu/more";
+import { useAuth } from "../../hooks/useAuth";
 
 const HomePage = () => {
   const navigate = useNavigate();
@@ -29,6 +35,9 @@ const HomePage = () => {
   const [showEvents, setShowEvents] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [userMenuAnchor, setUserMenuAnchor] = useState(null);
+  
+  const { isAuthenticated, user, logout, loading } = useAuth();
 
   const handleSearch = async () => {
     try {
@@ -58,6 +67,43 @@ const HomePage = () => {
   
     return () => clearInterval(interval);
   }, []);
+
+  const handleStartOrdering = () => {
+    if (isAuthenticated) {
+      navigate("/restaurants");
+    } else {
+      navigate("/auth?redirect=/restaurants");
+    }
+  };
+
+  const handleUserMenuOpen = (event) => {
+    setUserMenuAnchor(event.currentTarget);
+  };
+
+  const handleUserMenuClose = () => {
+    setUserMenuAnchor(null);
+  };
+
+  const handleLogout = () => {
+    logout();
+    handleUserMenuClose();
+  };
+
+  if (loading) {
+    return (
+      <Box
+        sx={{
+          minHeight: "100vh",
+          background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <div className="loading-spinner" />
+      </Box>
+    );
+  }
 
   return (
     <Box
@@ -126,32 +172,85 @@ const HomePage = () => {
           Mak Delivery
         </Typography>
 
-        <IconButton 
-          onClick={() => setShowEvents(true)}
-          sx={{
-            color: "primary.main",
-            transition: "all 0.3s ease",
-            "&:hover": {
-              transform: "scale(1.1)",
-              backgroundColor: "rgba(102, 126, 234, 0.1)",
-            }
-          }}
-        >
-          <Badge 
-            badgeContent={events.length > 0 ? events.length : null} 
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+          <IconButton 
+            onClick={() => setShowEvents(true)}
             sx={{
-              "& .MuiBadge-badge": {
-                backgroundColor: "linear-gradient(45deg, #FF6B6B, #FF8E53)",
-                color: "white",
-                fontSize: isMobile ? 10 : 12,
-                minWidth: isMobile ? 16 : 20,
-                height: isMobile ? 16 : 20,
+              color: "primary.main",
+              transition: "all 0.3s ease",
+              "&:hover": {
+                transform: "scale(1.1)",
+                backgroundColor: "rgba(102, 126, 234, 0.1)",
               }
             }}
           >
-            <EventIcon sx={{ fontSize: isMobile ? 24 : 28 }} />
-          </Badge>
-        </IconButton>
+            <Badge 
+              badgeContent={events.length > 0 ? events.length : null} 
+              sx={{
+                "& .MuiBadge-badge": {
+                  backgroundColor: "linear-gradient(45deg, #FF6B6B, #FF8E53)",
+                  color: "white",
+                  fontSize: isMobile ? 10 : 12,
+                  minWidth: isMobile ? 16 : 20,
+                  height: isMobile ? 16 : 20,
+                }
+              }}
+            >
+              <EventIcon sx={{ fontSize: isMobile ? 24 : 28 }} />
+            </Badge>
+          </IconButton>
+
+          {/* User Menu */}
+          {isAuthenticated ? (
+            <>
+              <IconButton 
+                onClick={handleUserMenuOpen}
+                sx={{
+                  color: "primary.main",
+                  transition: "all 0.3s ease",
+                  "&:hover": {
+                    transform: "scale(1.1)",
+                    backgroundColor: "rgba(102, 126, 234, 0.1)",
+                  }
+                }}
+              >
+                <Avatar sx={{ width: 32, height: 32, bgcolor: 'primary.main' }}>
+                  {user?.username?.charAt(0).toUpperCase()}
+                </Avatar>
+              </IconButton>
+              <Menu
+                anchorEl={userMenuAnchor}
+                open={Boolean(userMenuAnchor)}
+                onClose={handleUserMenuClose}
+                transformOrigin={{ horizontal: 'right', vertical: 'top' }}
+                anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+              >
+                <MenuItem disabled>
+                  <PersonIcon sx={{ mr: 1 }} />
+                  {user?.username}
+                </MenuItem>
+                <MenuItem onClick={handleLogout}>
+                  <LogoutIcon sx={{ mr: 1 }} />
+                  Logout
+                </MenuItem>
+              </Menu>
+            </>
+          ) : (
+            <IconButton 
+              onClick={() => navigate("/auth")}
+              sx={{
+                color: "primary.main",
+                transition: "all 0.3s ease",
+                "&:hover": {
+                  transform: "scale(1.1)",
+                  backgroundColor: "rgba(102, 126, 234, 0.1)",
+                }
+              }}
+            >
+              <PersonIcon sx={{ fontSize: isMobile ? 24 : 28 }} />
+            </IconButton>
+          )}
+        </Box>
       </Box>
 
       {/* Menu Overlay */}
@@ -225,11 +324,26 @@ const HomePage = () => {
                     sx={{
                       color: "rgba(255, 255, 255, 0.9)",
                       fontWeight: 300,
-                      marginBottom: 3,
+                      marginBottom: isAuthenticated ? 2 : 3,
                     }}
                   >
                     Your favorite meals, delivered fresh
                   </Typography>
+                  {isAuthenticated && (
+                    <Typography
+                      variant="body2"
+                      sx={{
+                        color: "rgba(255, 255, 255, 0.8)",
+                        background: "rgba(76, 175, 80, 0.2)",
+                        padding: "8px 16px",
+                        borderRadius: "20px",
+                        display: "inline-block",
+                        marginBottom: 1,
+                      }}
+                    >
+                      Welcome back, {user?.username}! 👋
+                    </Typography>
+                  )}
                 </Box>
               </Slide>
             </Paper>
@@ -249,23 +363,29 @@ const HomePage = () => {
                   variant="contained"
                   size="large"
                   startIcon={<RestaurantIcon />}
-                  onClick={() => navigate("/restaurants")}
+                  onClick={handleStartOrdering}
                   sx={{
-                    background: "linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)",
+                    background: isAuthenticated 
+                      ? "linear-gradient(45deg, #4CAF50 30%, #66BB6A 90%)"
+                      : "linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)",
                     borderRadius: "50px",
                     height: isMobile ? "56px" : "64px",
                     fontSize: isMobile ? "1.1rem" : "1.3rem",
                     fontWeight: 600,
                     textTransform: "none",
-                    boxShadow: "0 8px 30px rgba(255, 105, 135, 0.4)",
+                    boxShadow: isAuthenticated 
+                      ? "0 8px 30px rgba(76, 175, 80, 0.4)"
+                      : "0 8px 30px rgba(255, 105, 135, 0.4)",
                     transition: "all 0.3s ease",
                     "&:hover": {
                       transform: "translateY(-3px)",
-                      boxShadow: "0 12px 40px rgba(255, 105, 135, 0.5)",
+                      boxShadow: isAuthenticated 
+                        ? "0 12px 40px rgba(76, 175, 80, 0.5)"
+                        : "0 12px 40px rgba(255, 105, 135, 0.5)",
                     },
                   }}
                 >
-                  Start Ordering
+                  {isAuthenticated ? "Start Ordering" : "Login to Order"}
                 </Button>
 
                 <Button
