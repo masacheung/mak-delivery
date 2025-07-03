@@ -201,6 +201,7 @@ const DishForm = ({ restaurant, quantities, onQuantityChange, onAddDish, onClose
         sx={{
           flex: 1,
           padding: isMobile ? "16px" : "24px",
+          paddingBottom: isMobile ? "32px" : "40px",
           display: "flex",
           flexDirection: "column",
           gap: 2,
@@ -229,7 +230,7 @@ const DishForm = ({ restaurant, quantities, onQuantityChange, onAddDish, onClose
             maxHeight: "calc(100vh - 200px)",
             overflowY: "auto",
             paddingRight: 1,
-            paddingBottom: 2,
+            paddingBottom: isMobile ? "32px" : "24px",
           }}
           className="custom-scroll"
         >
@@ -467,6 +468,7 @@ const DishForm = ({ restaurant, quantities, onQuantityChange, onAddDish, onClose
                   sx={{
                     padding: isMobile ? "16px" : "24px",
                     paddingTop: 0,
+                    paddingBottom: isMobile ? "20px" : "24px",
                     justifyContent: "center",
                   }}
                 >
