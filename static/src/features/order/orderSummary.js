@@ -61,8 +61,8 @@ const OrderSummary = ({ orderState, updateOrderState, onClose, onSubmit, updateT
   return (
     <Box
       sx={{
-        minHeight: isMobile ? "50vh" : "60vh",
-        maxHeight: "85vh",
+        minHeight: isMobile ? "60vh" : "70vh",
+        maxHeight: "90vh",
         display: "flex",
         flexDirection: "column",
         background: "linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)",
@@ -113,7 +113,8 @@ const OrderSummary = ({ orderState, updateOrderState, onClose, onSubmit, updateT
           display: "flex",
           flexDirection: "column",
           gap: 2,
-          overflow: "hidden",
+          overflow: "visible",
+          paddingBottom: isMobile ? "24px" : "32px",
         }}
       >
         {!hasItems ? (
@@ -340,13 +341,12 @@ const OrderSummary = ({ orderState, updateOrderState, onClose, onSubmit, updateT
             <Card
               className="modern-card"
               sx={{
-                position: "sticky",
-                bottom: 0,
                 background: "rgba(255, 255, 255, 0.95)",
                 backdropFilter: "blur(10px)",
                 border: "1px solid rgba(255, 255, 255, 0.2)",
                 borderRadius: 3,
-                zIndex: 10,
+                marginTop: "auto",
+                flexShrink: 0,
               }}
             >
               <CardContent sx={{ padding: isMobile ? "16px" : "20px" }}>
@@ -436,6 +436,8 @@ const OrderSummary = ({ orderState, updateOrderState, onClose, onSubmit, updateT
                     textTransform: "none",
                     boxShadow: "0 6px 20px rgba(255, 105, 135, 0.4)",
                     transition: "all 0.3s ease",
+                    marginTop: 1,
+                    marginBottom: isMobile ? 1 : 0,
                     "&:hover": {
                       transform: "translateY(-2px)",
                       boxShadow: "0 8px 25px rgba(255, 105, 135, 0.5)",
