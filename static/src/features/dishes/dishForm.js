@@ -35,17 +35,22 @@ const DishForm = ({ restaurant, quantities, onQuantityChange, onAddDish, onClose
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
+  // Debug logging
+  console.log('DishForm - Restaurant:', restaurant);
+  console.log('DishForm - Dishes:', restaurant?.dishes);
+  console.log('DishForm - Quantities:', quantities);
+
   const calculateTotal = (dish) => {
     let total = dish.price === 'SP' ? 0 : dish.price;
 
-    if (selectedOptions[dish.id]) {
+    if (selectedOptions[dish.id] && dish.options) {
       const selectedOptionsKeys = Object.keys(selectedOptions[dish.id]);
 
       for (let key of selectedOptionsKeys) {
           const optionData = dish.options[key];
           const selectedOptionsValues = selectedOptions[dish.id][key];
 
-          if (!selectedOptionsValues) continue;
+          if (!selectedOptionsValues || !optionData) continue;
 
           if (optionData?.adjustable) {
               for (let value of selectedOptionsValues) {
@@ -230,7 +235,8 @@ const DishForm = ({ restaurant, quantities, onQuantityChange, onAddDish, onClose
           }}
           className="custom-scroll"
         >
-          {restaurant.dishes.map((dish, index) => (
+          {restaurant?.dishes?.length > 0 ? (
+            restaurant.dishes.map((dish, index) => (
             <Fade key={dish.id} in={true} timeout={300 + index * 100}>
               <Card
                 className="dish-card"
@@ -492,7 +498,32 @@ const DishForm = ({ restaurant, quantities, onQuantityChange, onAddDish, onClose
                 </CardActions>
               </Card>
             </Fade>
-          ))}
+          ))
+          ) : (
+            <Paper
+              elevation={0}
+              sx={{
+                padding: 4,
+                textAlign: "center",
+                background: "rgba(255, 255, 255, 0.9)",
+                backdropFilter: "blur(10px)",
+                borderRadius: 3,
+              }}
+            >
+              <Typography
+                variant="h6"
+                sx={{
+                  color: "text.secondary",
+                  marginBottom: 1,
+                }}
+              >
+                No dishes available
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
+                This restaurant currently has no dishes in the menu.
+              </Typography>
+            </Paper>
+          )}
         </Box>
       </Container>
     </Box>
