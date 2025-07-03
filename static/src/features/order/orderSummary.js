@@ -21,6 +21,7 @@ import {
   Fade
 } from "@mui/material";
 import CloseIcon from '@mui/icons-material/Close';
+import ClearIcon from '@mui/icons-material/Clear';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import ReceiptIcon from '@mui/icons-material/Receipt';
 import LocalShippingIcon from '@mui/icons-material/LocalShipping';
@@ -57,6 +58,21 @@ const OrderSummary = ({ orderState, updateOrderState, onClose, onSubmit, updateT
   }, [total]);
 
   const hasItems = Object.values(addedDishes).some(dishes => dishes.length > 0);
+
+  const handleRemoveDish = (restaurantId, dishId) => {
+    const updatedAddedDishes = { ...addedDishes };
+    if (updatedAddedDishes[restaurantId]) {
+      updatedAddedDishes[restaurantId] = updatedAddedDishes[restaurantId].filter(dish => dish.id !== dishId);
+      
+      // Clean up empty restaurant arrays
+      if (updatedAddedDishes[restaurantId].length === 0) {
+        delete updatedAddedDishes[restaurantId];
+      }
+    }
+
+    // Update the order state
+    updateOrderState('addedDishes', updatedAddedDishes);
+  };
 
   return (
     <Box
@@ -289,6 +305,27 @@ const OrderSummary = ({ orderState, updateOrderState, onClose, onSubmit, updateT
                                     </Box>
                                   }
                                 />
+                                <ListItemSecondaryAction>
+                                  <IconButton
+                                    edge="end"
+                                    aria-label="remove"
+                                    size="small"
+                                    onClick={() => handleRemoveDish(restaurantId, dish.id)}
+                                    sx={{
+                                      color: "#ff6b6b",
+                                      backgroundColor: "rgba(255, 107, 107, 0.1)",
+                                      border: "1px solid rgba(255, 107, 107, 0.3)",
+                                      width: 28,
+                                      height: 28,
+                                      "&:hover": {
+                                        backgroundColor: "rgba(255, 107, 107, 0.2)",
+                                        transform: "scale(1.1)",
+                                      },
+                                    }}
+                                  >
+                                    <ClearIcon sx={{ fontSize: 16 }} />
+                                  </IconButton>
+                                </ListItemSecondaryAction>
                               </ListItem>
                             ))}
                           </List>
