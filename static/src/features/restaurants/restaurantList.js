@@ -135,12 +135,8 @@ const RestaurantList = () => {
   };
 
   const getAvailableRestaurants = (events) => {
-    const filtered = restaurants.filter(restaurant =>
+    return restaurants.filter(restaurant =>
       events.some(event => event.restaurants.includes(restaurant.name)));
-    console.log('All restaurants:', restaurants);
-    console.log('Events:', events);
-    console.log('Filtered available restaurants:', filtered);
-    return filtered;
   };
   
   const handleSearch = async (date) => {
@@ -180,10 +176,6 @@ const RestaurantList = () => {
   };
 
   const handleSelectRestaurant = (restaurant) => {
-    console.log('Selected restaurant:', restaurant);
-    console.log('Restaurant dishes:', restaurant.dishes);
-    console.log('Restaurant dishes length:', restaurant.dishes?.length);
-    
     if (orderState.selectedRestaurant?.id === restaurant.id) {
       updateOrderState("isDishFormVisible", false);
       setTimeout(() => {
