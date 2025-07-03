@@ -728,9 +728,10 @@ const RestaurantList = () => {
         onClose={handleClose}
         PaperProps={{
           sx: {
-            maxHeight: "80vh",
+            maxHeight: "90vh",
             borderTopLeftRadius: 20,
             borderTopRightRadius: 20,
+            overflow: "visible",
           },
         }}
       >
