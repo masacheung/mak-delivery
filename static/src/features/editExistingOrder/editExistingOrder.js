@@ -1,21 +1,41 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import {
-  Box,
+  AppBar,
+  Toolbar,
   Typography,
   Button,
-  List,
-  ListItem,
-  ListItemText,
-  Chip,
+  Badge,
+  IconButton,
+  Container,
+  Grid,
+  Card,
+  CardContent,
+  CardMedia,
+  Box,
   TextField,
   MenuItem,
-  IconButton,
-  Badge
+  Chip,
+  Alert,
+  CircularProgress,
+  Drawer,
+  Fade,
+  useTheme,
+  useMediaQuery,
+  Paper,
 } from "@mui/material";
-import ClearIcon from '@mui/icons-material/Clear';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import {
+  ShoppingCart as ShoppingCartIcon,
+  Home as HomeIcon,
+  Restaurant as RestaurantIcon,
+  Edit as EditIcon,
+  Close as CloseIcon,
+  Clear as ClearIcon,
+  CalendarToday as CalendarIcon,
+  LocationOn as LocationIcon,
+  Person as PersonIcon,
+  Notes as NotesIcon,
+} from "@mui/icons-material";
 import { v4 as uuidv4 } from 'uuid';
 import DishForm from "../dishes/dishForm";
 import OrderSummary from "../order/orderSummary";
@@ -34,7 +54,25 @@ import NOODLES_TIME from "../../constant/restaurants/noodlesTimes";
 import NEW_DA_NOODLES from "../../constant/restaurants/newDaNoodles";
 import YO_DESSERT_US from "../../constant/restaurants/yoDessert";
 
+// Import restaurant images
+import chefGeImage from "../../image/chef.webp";
+import hkAlleyImage from "../../image/hk_alley.webp";
+import jiBeiChuanImage from "../../image/jiBeiChuan.webp";
+import meeTuImage from "../../image/meeTu.webp";
+import missFlowerHotpotImage from "../../image/missFlowerHotpot.webp";
+import newDaNoodlesImage from "../../image/newDaNoodles.webp";
+import ninetyEightKImage from "../../image/nineEightk.webp";
+import noodlesTimeImage from "../../image/noodlesTime.webp";
+import spiceTwentyFourImage from "../../image/spiceTwentyFour.webp";
+import syMiniHotpotImage from "../../image/syMiniHotpot.webp";
+import tastyMomentImage from "../../image/tastyMoment.webp";
+import wontonGuyImage from "../../image/wontonGuy.webp";
+import yoDessertImage from "../../image/yoDessert.webp";
+import youGardenImage from "../../image/youGarden.webp";
+
 const EditExistingOrder = () => {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const navigate = useNavigate();
   const location = useLocation();
   const orderData = location.state?.orderData;
@@ -56,6 +94,24 @@ const EditExistingOrder = () => {
     NEW_DA_NOODLES
   ];
 
+  // Create image mapping using restaurant names from constants
+  const imageMap = {
+    '葛师傅': chefGeImage,
+    '港茶巷 HK ALLEY': hkAlleyImage,
+    '蜀香缘火锅': jiBeiChuanImage,
+    '遇图': meeTuImage,
+    '花小姐音乐火锅': missFlowerHotpotImage,
+    '兰州拉面': newDaNoodlesImage,
+    '九八堂': ninetyEightKImage,
+    '面时代': noodlesTimeImage,
+    '麻辣二十四': spiceTwentyFourImage,
+    '思悦迷你火锅': syMiniHotpotImage,
+    '香味时刻': tastyMomentImage,
+    '馄饨先生': wontonGuyImage,
+    '优の甜品': yoDessertImage,
+    '又一村': youGardenImage,
+  };
+
   const [orderState, setOrderState] = useState({
     orderId: null,
     selectedRestaurant: null,
@@ -73,29 +129,16 @@ const EditExistingOrder = () => {
   const [pickupLocations, setPickupLocations] = useState([]);
   const [availableRestaurants, setAvailableRestaurants] = useState([]);
   const [enableLocationsDropdown, setEnableLocationsDropdown] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-
-  const [isOpen, setIsOpen] = useState(false);
-  const handleOpen = () => setIsOpen(true);
-  const handleClose = () => setIsOpen(false);
-
-  useEffect(() => {
-    console.log("Updated orderState:", orderState);
-  }, [orderState]);
-
-  useEffect(() => {
-    console.log("Updated openEvents:", openEvents);
-  }, [openEvents]);
-
-  useEffect(() => {
-    console.log("Updated availableRestaurants:", availableRestaurants);
-  }, [availableRestaurants]);
+  const [isOrderSummaryOpen, setIsOrderSummaryOpen] = useState(false);
+  const [isDishFormOpen, setIsDishFormOpen] = useState(false);
 
   useEffect(() => {
     if (orderData) {
       console.log('Order data:', orderData);
-      updateOrderState('date', new Date(orderData.pick_up_date).toISOString().split("T")[0]);
-
+      const initialDate = new Date(orderData.pick_up_date).toISOString().split("T")[0];
+      
       setOrderState({
         orderId: orderData.id,
         selectedRestaurant: null,
@@ -104,11 +147,14 @@ const EditExistingOrder = () => {
         addedDishes: orderData.order_details,
         wechatId: orderData.wechat_id,
         pickupLocation: orderData.pick_up_location,
-        date: new Date(orderData.pick_up_date).toISOString().split("T")[0],
-        notes: orderData.notes,
+        date: initialDate,
+        notes: orderData.notes || "",
         errors: {},
         total: orderData.total,
       });
+      
+      // Initialize search with the order date
+      handleSearch(initialDate);
     }
   }, [orderData]);
 
@@ -118,16 +164,16 @@ const EditExistingOrder = () => {
     setAvailableRestaurants([]);
     setEnableLocationsDropdown(false);
     setOrderState((prevState) => ({
-      ...prevState,  // Spread the previous state to keep other properties unchanged
+      ...prevState,
       selectedRestaurant: null,
       quantities: {},
       isDishFormVisible: false,
-      addedDishes: {},
-      notes: orderData.notes,
-      total: orderData.total,
-      pickupLocation: orderData.pick_up_location,
+      addedDishes: orderData?.order_details || {},
+      notes: orderData?.notes || "",
+      total: orderData?.total || 0,
+      pickupLocation: orderData?.pick_up_location || "",
     }));
-  }
+  };
 
   const getUniqueOptions = (events, key) => {
     return [...new Set(events.flatMap(event => event[key]))];
@@ -139,21 +185,27 @@ const EditExistingOrder = () => {
   };
   
   const handleSearch = async (date) => {
+    if (!date) return;
+    
+    setLoading(true);
     resetEventsState();
+    
     try {
-      setError(null); // Clear previous errors
+      setError("");
       const response = await fetch(`/api/adminConfig/openEvents?date=${date}`);
       if (!response.ok) {
         throw new Error("Failed to fetch upcoming events");
       }
       const data = await response.json();
-      setOpenEvents(data); // Store events in state
+      setOpenEvents(data);
       setPickupLocations(getUniqueOptions(data, "pick_up_locations"));
       setAvailableRestaurants(getAvailableRestaurants(data));
       setEnableLocationsDropdown(true);
     } catch (err) {
       setError(err.message);
       resetEventsState();
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -165,39 +217,48 @@ const EditExistingOrder = () => {
   };
 
   const updateTotal = (total) => {
-      setOrderState((prevState) => ({
-        ...prevState,
-        total,
-      }));
-    };
+    setOrderState((prevState) => ({
+      ...prevState,
+      total,
+    }));
+  };
 
   const handleSelectRestaurant = (restaurant) => {
     if (orderState.selectedRestaurant?.id === restaurant.id) {
-      updateOrderState("isDishFormVisible", false);
-      setTimeout(() => {
-        updateOrderState("selectedRestaurant", restaurant);
-        updateOrderState("isDishFormVisible", true);
-      }, 0);
+      setOrderState((prev) => ({
+        ...prev,
+        isDishFormVisible: false,
+        selectedRestaurant: null,
+      }));
+      setIsDishFormOpen(false);
     } else {
-      updateOrderState("selectedRestaurant", restaurant);
-      updateOrderState("isDishFormVisible", true);
-    }
+      setOrderState((prev) => ({
+        ...prev,
+        selectedRestaurant: restaurant,
+        isDishFormVisible: true,
+      }));
+      setIsDishFormOpen(true);
 
-    if (!orderState.quantities[restaurant.id]) {
-      const initialQuantities = restaurant.dishes.reduce(
-        (acc, dish) => ({ ...acc, [dish.id]: 0 }),
-        {}
-      );
-      updateOrderState("quantities", {
-        ...orderState.quantities,
-        [restaurant.id]: initialQuantities,
-      });
+      if (!orderState.quantities[restaurant.id]) {
+        const initialQuantities = restaurant.dishes.reduce(
+          (acc, dish) => ({ ...acc, [dish.id]: 0 }),
+          {}
+        );
+        setOrderState((prev) => ({
+          ...prev,
+          quantities: { ...prev.quantities, [restaurant.id]: initialQuantities },
+        }));
+      }
     }
   };
 
   const handleCloseDishForm = () => {
-    updateOrderState("isDishFormVisible", false);
-    updateOrderState("selectedRestaurant", null);
+    setOrderState((prev) => ({
+      ...prev,
+      isDishFormVisible: false,
+      selectedRestaurant: null,
+    }));
+    setIsDishFormOpen(false);
   };
 
   const handleQuantityChange = (dishId, action, restaurantId) => {
@@ -212,7 +273,6 @@ const EditExistingOrder = () => {
         updatedQuantities[dishId] = 0;
       }
 
-      // Ensure addedDishes is updated correctly
       const updatedDishes = { ...prev.addedDishes };
       if (updatedQuantities[dishId] === 0) {
         updatedDishes[restaurantId] = updatedDishes[restaurantId]?.filter(dish => dish.id !== dishId) || [];
@@ -235,7 +295,7 @@ const EditExistingOrder = () => {
         updatedDishes[restaurantId].push({
           id: `${newDish.id}-${uuidv4()}`,
           name: newDish.name || "Unknown",
-          price: newDish.price === "SP" ? "SP" : newDish.price ?? 0, // 🔹 Ensure "SP" is preserved
+          price: newDish.price === "SP" ? "SP" : newDish.price ?? 0,
           quantity: newDish.quantity ?? 0,
           selectedOptions: newDish.selectedOptions || [],
         });
@@ -254,15 +314,16 @@ const EditExistingOrder = () => {
 
     const hasOrders = Object.values(orderState.addedDishes).some((dishes) => dishes.length > 0);
     if (!hasOrders) {
-      newErrors.noOrders = true; // ✅ Add an error flag for no orders
+      newErrors.noOrders = true;
     }
 
     updateOrderState("errors", newErrors);
 
     if (Object.values(newErrors).some((error) => error)) {
-      handleClose();
+      setIsOrderSummaryOpen(false);
       return;
     }
+
     const orderData = {
       orderId: orderState.orderId,
       wechatId: orderState.wechatId,
@@ -271,10 +332,10 @@ const EditExistingOrder = () => {
       orderDetails: JSON.stringify(
         Object.entries(orderState.addedDishes).reduce((acc, [restaurantId, dishes]) => {
           if (dishes.length > 0) {
-            const restaurant = restaurants.find((r) => r.id === Number(restaurantId)); // Get restaurant name
+            const restaurant = restaurants.find((r) => r.id === Number(restaurantId));
             acc[restaurantId] = dishes.map((dish) => ({
               ...dish,
-              restaurantName: restaurant ? restaurant.name : `Restaurant ${restaurantId}`, 
+              restaurantName: restaurant ? restaurant.name : `Restaurant ${restaurantId}`,
             }));
           }
           return acc;
@@ -287,15 +348,13 @@ const EditExistingOrder = () => {
     try {
       const response = await fetch(`/api/orders/update/${orderState.orderId}`, {
         method: "PUT",
-        headers: { "Content-Type": "application/json" }, 
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(orderData),
       });
 
       if (!response.ok) throw new Error("Failed to update order");
 
-      const result = await response.json(); // FIXED: Define result before using it
-
-      // Redirect to the ordered page with order details
+      const result = await response.json();
       navigate("/ordered", { state: { order: result.order } });
 
       setOrderState({
@@ -314,204 +373,495 @@ const EditExistingOrder = () => {
     }
   };
 
+  const getTotalItemsCount = () => {
+    return Object.values(orderState.addedDishes).reduce((total, dishes) => total + dishes.length, 0);
+  };
+
+  const handleRemoveDish = (restaurantId, dishId) => {
+    setOrderState((prev) => ({
+      ...prev,
+      addedDishes: {
+        ...prev.addedDishes,
+        [restaurantId]: prev.addedDishes[restaurantId]?.filter(dish => dish.id !== dishId) || []
+      }
+    }));
+  };
+
   return (
-    <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", width: "95%", maxWidth: 800, margin: "auto", overflowX: "hidden"}}>
-      <Box
-        sx={{
-          position: "fixed", // Keep header fixed at top
-          top: 0,
-          left: 0,
-          width: "100%",
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          backgroundColor: "white",
-          paddingTop: 2,
-          paddingBottom: 2,
-          boxShadow: 2,
-          zIndex: 1100, // Ensure header is above the content but below the overlay
+    <Box sx={{ 
+      minHeight: '100vh',
+      background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+      position: 'relative',
+      '&::before': {
+        content: '""',
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        background: 'radial-gradient(circle at 30% 50%, rgba(255, 255, 255, 0.1) 0%, transparent 50%)',
+        pointerEvents: 'none',
+      }
+    }}>
+      <AppBar 
+        position="fixed" 
+        sx={{ 
+          background: 'linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.8) 100%)',
+          backdropFilter: 'blur(10px)',
+          border: '1px solid rgba(255,255,255,0.2)',
+          boxShadow: '0 8px 32px rgba(0,0,0,0.1)',
+          color: 'black',
         }}
       >
-        {/* Left - Logo */}
-        <Box sx={{ display: "flex", alignItems: "center"}}>
-          <img src="/delivery-truck.png" alt="Logo" style={{ width: 40, height: 40 }} />
-        </Box>
-
-        <Box sx={{ flexGrow: 1, display: "flex", justifyContent: "center" }}>
-          <Typography
-            variant="h6"
-            sx={{
-              display: "inline-block", // Shrinks the clickable area
-              padding: "4px 8px", // Reduce padding to limit clickable area
-              fontWeight: "bold",
-              fontFamily: "Poppins, sans-serif",
-              cursor: "pointer",
-              transition: "color 0.3s ease, transform 0.2s ease",
-              "&:hover": {
-                color: "primary.main",
-                transform: "scale(1.05)",
-              },
+        <Toolbar>
+          <Box sx={{ display: 'flex', alignItems: 'center', mr: 2 }}>
+            <img 
+              src="/delivery-truck.png" 
+              alt="Logo" 
+              style={{ width: isMobile ? 30 : 40, height: isMobile ? 30 : 40 }} 
+            />
+          </Box>
+          
+          <Typography 
+            variant={isMobile ? "h6" : "h5"} 
+            component="div" 
+            sx={{ 
+              flexGrow: 1, 
+              textAlign: 'center',
+              fontWeight: 'bold',
+              background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+              backgroundClip: 'text',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              fontFamily: 'Poppins, sans-serif',
+              cursor: 'pointer',
+              '&:hover': {
+                transform: 'scale(1.05)',
+                transition: 'transform 0.2s ease',
+              }
             }}
             onClick={() => navigate("/")}
           >
-            Mak Delivery
+            {isMobile ? "Edit Order" : "Edit Order - Mak Delivery"}
           </Typography>
-        </Box>
 
-        {/* Right - Shopping Cart */}
-        <IconButton>
-          <Badge badgeContent={Object.keys(orderState.addedDishes).length > 0 ? Object.keys(orderState.addedDishes).length : null} color="error" sx={{ "& .MuiBadge-badge": { fontSize: 12, minWidth: 20, height: 20 } }}> 
-            <ShoppingCartIcon onClick={handleOpen} sx={{ fontSize: 30, color: "black" }}/>
-          </Badge>
-        </IconButton>
-      </Box>
-      {isOpen && (
-        <Box
-          sx={{
-            position: "fixed",  // Make sure it stays fixed at the top
-            width: "100%",      // Take the full width of the screen
-            height: "100vh",    // Take the full height of the screen
-            backgroundColor: "white",  // White background
-            zIndex: 1300,       // Ensure it's above all content including the header
-            display: "flex",     // Use flexbox to position the content
-            flexDirection: "column",  // Stack content vertically
-            alignItems: "center",     // Horizontally center content
-            overflowX: "hidden"
-          }}
-        >
-          <IconButton
-            onClick={handleClose}
-            sx={{
-              position: "absolute",
-              top: 10,
-              left: 20,
-              backgroundColor: "gray",
-              color: "white",
-              zIndex: 1100, // Ensure the button stays above all content
-            }}
-          >
-            <ArrowBackIcon />
-          </IconButton>
-          <OrderSummary addedDishes={orderState.addedDishes} updateTotal={updateTotal} handleSubmit={handleSubmit}/>
-      </Box>)}
-      <Box sx={{ width: "100%", paddingTop: (theme) => `calc(${theme.mixins.toolbar.minHeight}px + 16px)` }}>
-        <Typography variant="h4" gutterBottom sx={{ fontWeight: 'bold', fontFamily: 'Poppins, sans-serif' }}> 
-          Order
-        </Typography>
-        <Typography variant="h6" gutterBottom>
-          Order Information
-        </Typography>
-        <TextField fullWidth label="WeChat ID" value={orderState.wechatId} onChange={(e) => updateOrderState("wechatId", e.target.value)} margin="normal" required error={orderState.errors?.wechatId} helperText={orderState.errors?.wechatId ? "WeChat ID is required" : ""}/>
-        <TextField fullWidth label="Pick-up Date" type="date" value={orderState.date} onChange={(e) => updateOrderState("date", e.target.value)} margin="normal" required InputLabelProps={{ shrink: true }} error={orderState.errors?.date} helperText={orderState.errors?.date ? "Date is required" : ""}/>
-        <TextField select fullWidth label="Pick-up Location" value={orderState.pickupLocation} onChange={(e) => updateOrderState("pickupLocation", e.target.value)} margin="normal" required error={orderState.errors?.pickupLocation} helperText={orderState.errors?.pickupLocation ? "Pick-up Location is required" : ""} disabled={!enableLocationsDropdown}>
-          {pickupLocations.map((location, index) => (
-            <MenuItem key={index} value={location}>
-              {location}
-            </MenuItem>
-          ))}
-        </TextField>
-      </Box>
-
-      <Box sx={{ width: "100%" }}>
-        <Typography variant="h4" gutterBottom>
-          Restaurant List
-        </Typography>
-        <List>
-          {availableRestaurants.map((restaurant) => (
-            <ListItem
-              key={restaurant.id}
-              sx={{
-                marginBottom: 2,
-                border: "1px solid #ccc",
-                borderRadius: 2,
-                padding: 2,
-                flexDirection: "column",
-                width: "100%",
+          <Box sx={{ display: 'flex', gap: 1 }}>
+            <IconButton 
+              onClick={() => navigate("/")}
+              sx={{ 
+                color: 'inherit',
+                '&:hover': { 
+                  background: 'rgba(0,0,0,0.1)',
+                  transform: 'scale(1.1)',
+                }
               }}
             >
-              <Box sx={{ display: "flex", justifyContent: "space-between", width: "100%", alignItems: "center" }}>
-                <ListItemText primary={restaurant.name} />
-                <Button
-                  variant="contained"
-                  color="primary"
-                  onClick={() =>
-                    orderState.isDishFormVisible && orderState.selectedRestaurant?.id === restaurant.id
-                      ? handleCloseDishForm()
-                      : handleSelectRestaurant(restaurant)
+              <HomeIcon />
+            </IconButton>
+            
+            <IconButton
+              onClick={() => setIsOrderSummaryOpen(true)}
+              sx={{ 
+                color: 'inherit',
+                '&:hover': { 
+                  background: 'rgba(0,0,0,0.1)',
+                  transform: 'scale(1.1)',
+                }
+              }}
+            >
+              <Badge 
+                badgeContent={getTotalItemsCount()} 
+                color="error"
+                sx={{ 
+                  '& .MuiBadge-badge': { 
+                    fontSize: '0.75rem',
+                    minWidth: 20,
+                    height: 20,
+                    background: 'linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%)',
                   }
-                >
-                  {orderState.isDishFormVisible && orderState.selectedRestaurant?.id === restaurant.id ? "-" : "+"}
-                </Button>
+                }}
+              >
+                <ShoppingCartIcon />
+              </Badge>
+            </IconButton>
+          </Box>
+        </Toolbar>
+      </AppBar>
+
+      <Container maxWidth="lg" sx={{ pt: 10, pb: 4 }}>
+        <Fade in={true} timeout={1000}>
+          <Box>
+            {/* Hero Section */}
+            <Paper
+              elevation={8}
+              sx={{
+                p: 4,
+                mb: 4,
+                background: 'linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.8) 100%)',
+                backdropFilter: 'blur(10px)',
+                border: '1px solid rgba(255,255,255,0.2)',
+                borderRadius: 3,
+                textAlign: 'center',
+              }}
+            >
+              <EditIcon sx={{ fontSize: 60, color: '#667eea', mb: 2 }} />
+              <Typography 
+                variant="h4" 
+                component="h1" 
+                gutterBottom
+                sx={{ 
+                  fontWeight: 'bold',
+                  background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                  backgroundClip: 'text',
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                  fontFamily: 'Poppins, sans-serif',
+                  fontSize: isMobile ? '1.8rem' : '2.5rem',
+                }}
+              >
+                Edit Your Order
+              </Typography>
+              <Typography variant="h6" color="text.secondary" sx={{ mb: 3 }}>
+                Modify your existing order details and dishes
+              </Typography>
+            </Paper>
+
+            {/* Order Information Section */}
+            <Paper
+              elevation={8}
+              sx={{
+                p: 4,
+                mb: 4,
+                background: 'linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.8) 100%)',
+                backdropFilter: 'blur(10px)',
+                border: '1px solid rgba(255,255,255,0.2)',
+                borderRadius: 3,
+              }}
+            >
+              <Box sx={{ display: 'flex', alignItems: 'center', mb: 3 }}>
+                <PersonIcon sx={{ mr: 1, color: '#667eea' }} />
+                <Typography variant="h6" sx={{ fontWeight: 'bold', color: '#667eea' }}>
+                  Order Information
+                </Typography>
               </Box>
-
-              {orderState.addedDishes[restaurant.id]?.length > 0 && (
-                <Box sx={{ marginTop: 1, width: "100%" }}>
-                  <Typography variant="body2" color="textSecondary">
-                    Added Dishes:
-                  </Typography>
-                  <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1, alignItems: "center" }}>
-                    {orderState.addedDishes[restaurant.id].map((dish) => (
-                      <div key={dish.id}>
-                      <Chip
-                        key={dish.id}
-                        label={`${dish.name} ${
-                          dish.selectedOptions && Object.keys(dish.selectedOptions).length > 0
-                            ? ` (${Object.entries(dish.selectedOptions)
-                                .map(([optionKey, selected]) => selected.join(", "))
-                                .join("; ")})` // ✅ Display selected options for all option groups
-                            : ""
-                        } x${dish.quantity}`}
-                        sx={{ margin: "2px" }}
-                      />
-                      <IconButton size="small" onClick={() => handleQuantityChange(dish.id, "reset", restaurant.id)}>
-                        <ClearIcon fontSize="small" />
-                      </IconButton>
-                      </div>
-                    ))}
-                  </Box>
-                </Box>
-              )}
-
-              {orderState.isDishFormVisible && orderState.selectedRestaurant?.id === restaurant.id && (
-                <Box sx={{ width: "100%", maxHeight: "300px", overflowY: "auto", padding: 2, borderTop: "1px solid #ccc", marginTop: 2,
-                 "&::-webkit-scrollbar": {
-                       width: "8px",
-                     },
-                     "&::-webkit-scrollbar-track": {
-                       background: "#f1f1f1",
-                       borderRadius: "10px",
-                     },
-                     "&::-webkit-scrollbar-thumb": {
-                       background: "#888",
-                       borderRadius: "10px",
-                     },
-                     "&::-webkit-scrollbar-thumb:hover": {
-                       background: "#555",
-                     },
-                  }}>
-                  <DishForm
-                    restaurant={orderState.selectedRestaurant}
-                    quantities={orderState.quantities[orderState.selectedRestaurant.id]}
-                    onQuantityChange={handleQuantityChange}
-                    onClose={handleCloseDishForm}
-                    onAddDish={handleAddDish}
+              
+              <Grid container spacing={3}>
+                <Grid item xs={12} md={6}>
+                  <TextField
+                    fullWidth
+                    label="WeChat ID"
+                    value={orderState.wechatId}
+                    onChange={(e) => updateOrderState("wechatId", e.target.value)}
+                    required
+                    error={orderState.errors?.wechatId}
+                    helperText={orderState.errors?.wechatId ? "WeChat ID is required" : ""}
+                    InputProps={{
+                      startAdornment: <PersonIcon sx={{ mr: 1, color: 'text.secondary' }} />,
+                    }}
+                    sx={{
+                      '& .MuiOutlinedInput-root': {
+                        '&:hover fieldset': { borderColor: '#667eea' },
+                        '&.Mui-focused fieldset': { borderColor: '#667eea' },
+                      },
+                    }}
                   />
+                </Grid>
+                
+                <Grid item xs={12} md={6}>
+                  <TextField
+                    fullWidth
+                    label="Pick-up Date"
+                    type="date"
+                    value={orderState.date}
+                    onChange={(e) => updateOrderState("date", e.target.value)}
+                    required
+                    InputLabelProps={{ shrink: true }}
+                    error={orderState.errors?.date}
+                    helperText={orderState.errors?.date ? "Date is required" : ""}
+                    InputProps={{
+                      startAdornment: <CalendarIcon sx={{ mr: 1, color: 'text.secondary' }} />,
+                    }}
+                    sx={{
+                      '& .MuiOutlinedInput-root': {
+                        '&:hover fieldset': { borderColor: '#667eea' },
+                        '&.Mui-focused fieldset': { borderColor: '#667eea' },
+                      },
+                    }}
+                  />
+                </Grid>
+                
+                <Grid item xs={12}>
+                  <TextField
+                    select
+                    fullWidth
+                    label="Pick-up Location"
+                    value={orderState.pickupLocation}
+                    onChange={(e) => updateOrderState("pickupLocation", e.target.value)}
+                    required
+                    error={orderState.errors?.pickupLocation}
+                    helperText={orderState.errors?.pickupLocation ? "Pick-up Location is required" : ""}
+                    disabled={!enableLocationsDropdown}
+                    InputProps={{
+                      startAdornment: <LocationIcon sx={{ mr: 1, color: 'text.secondary' }} />,
+                    }}
+                    sx={{
+                      '& .MuiOutlinedInput-root': {
+                        '&:hover fieldset': { borderColor: '#667eea' },
+                        '&.Mui-focused fieldset': { borderColor: '#667eea' },
+                      },
+                    }}
+                  >
+                    {pickupLocations.map((location, index) => (
+                      <MenuItem key={index} value={location}>
+                        {location}
+                      </MenuItem>
+                    ))}
+                  </TextField>
+                </Grid>
+                
+                <Grid item xs={12}>
+                  <TextField
+                    fullWidth
+                    label="Additional Notes"
+                    multiline
+                    rows={3}
+                    value={orderState.notes}
+                    onChange={(e) => setOrderState(prev => ({ ...prev, notes: e.target.value }))}
+                    InputProps={{
+                      startAdornment: <NotesIcon sx={{ mr: 1, color: 'text.secondary', alignSelf: 'flex-start', mt: 1 }} />,
+                    }}
+                    sx={{
+                      '& .MuiOutlinedInput-root': {
+                        '&:hover fieldset': { borderColor: '#667eea' },
+                        '&.Mui-focused fieldset': { borderColor: '#667eea' },
+                      },
+                    }}
+                  />
+                </Grid>
+              </Grid>
+            </Paper>
+
+            {/* Loading State */}
+            {loading && (
+              <Box sx={{ display: 'flex', justifyContent: 'center', my: 4 }}>
+                <CircularProgress sx={{ color: '#667eea' }} />
+              </Box>
+            )}
+
+            {/* Error State */}
+            {error && (
+              <Alert severity="error" sx={{ mb: 4 }}>
+                {error}
+              </Alert>
+            )}
+
+            {/* Restaurant List */}
+            {availableRestaurants.length > 0 && (
+              <Paper
+                elevation={8}
+                sx={{
+                  p: 4,
+                  background: 'linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.8) 100%)',
+                  backdropFilter: 'blur(10px)',
+                  border: '1px solid rgba(255,255,255,0.2)',
+                  borderRadius: 3,
+                }}
+              >
+                <Box sx={{ display: 'flex', alignItems: 'center', mb: 3 }}>
+                  <RestaurantIcon sx={{ mr: 1, color: '#667eea' }} />
+                  <Typography variant="h6" sx={{ fontWeight: 'bold', color: '#667eea' }}>
+                    Available Restaurants
+                  </Typography>
                 </Box>
-              )}
-            </ListItem>
-          ))}
-        </List>
-        <TextField
-          label="Additional Notes"
-          variant="outlined"
-          multiline
-          rows={3}
-          fullWidth
-          value={orderState.notes}
-          onChange={(e) => setOrderState({ ...orderState, notes: e.target.value })}
-          sx={{ marginTop: 2 }}
-        />
-      </Box>
+
+                <Grid container spacing={3}>
+                  {availableRestaurants.map((restaurant) => (
+                    <Grid item xs={12} sm={6} md={4} key={restaurant.id}>
+                      <Card
+                        sx={{
+                          height: '100%',
+                          display: 'flex',
+                          flexDirection: 'column',
+                          cursor: 'pointer',
+                          transition: 'all 0.3s ease',
+                          background: 'linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.8) 100%)',
+                          backdropFilter: 'blur(10px)',
+                          border: '1px solid rgba(255,255,255,0.2)',
+                          '&:hover': {
+                            transform: 'translateY(-8px)',
+                            boxShadow: '0 20px 40px rgba(0,0,0,0.15)',
+                          },
+                        }}
+                        onClick={() => handleSelectRestaurant(restaurant)}
+                      >
+                        <CardMedia
+                          component="img"
+                          height="200"
+                          image={imageMap[restaurant.name] || "/delivery-truck.png"}
+                          alt={restaurant.name}
+                          sx={{
+                            objectFit: 'cover',
+                            borderRadius: '8px 8px 0 0',
+                          }}
+                        />
+                        <CardContent sx={{ flexGrow: 1, p: 3 }}>
+                          <Typography 
+                            variant="h6" 
+                            component="h2" 
+                            sx={{ 
+                              fontWeight: 'bold',
+                              color: '#333',
+                              mb: 2,
+                              textAlign: 'center',
+                            }}
+                          >
+                            {restaurant.name}
+                          </Typography>
+                          
+                          {/* Show added dishes */}
+                          {orderState.addedDishes[restaurant.id]?.length > 0 && (
+                            <Box sx={{ mt: 2 }}>
+                              <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
+                                Added Dishes:
+                              </Typography>
+                              <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
+                                {orderState.addedDishes[restaurant.id].map((dish) => (
+                                  <Box key={dish.id} sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+                                    <Chip
+                                      label={`${dish.name} x${dish.quantity}`}
+                                      size="small"
+                                      sx={{
+                                        background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                                        color: 'white',
+                                        fontSize: '0.7rem',
+                                      }}
+                                    />
+                                    <IconButton
+                                      size="small"
+                                      onClick={(e) => {
+                                        e.stopPropagation();
+                                        handleRemoveDish(restaurant.id, dish.id);
+                                      }}
+                                      sx={{ 
+                                        width: 20, 
+                                        height: 20,
+                                        color: '#ff6b6b',
+                                        '&:hover': { 
+                                          background: 'rgba(255, 107, 107, 0.1)',
+                                        }
+                                      }}
+                                    >
+                                      <ClearIcon sx={{ fontSize: 14 }} />
+                                    </IconButton>
+                                  </Box>
+                                ))}
+                              </Box>
+                            </Box>
+                          )}
+                        </CardContent>
+                      </Card>
+                    </Grid>
+                  ))}
+                </Grid>
+              </Paper>
+            )}
+
+            {/* Empty State */}
+            {!loading && availableRestaurants.length === 0 && orderState.date && (
+              <Paper
+                elevation={8}
+                sx={{
+                  p: 6,
+                  textAlign: 'center',
+                  background: 'linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.8) 100%)',
+                  backdropFilter: 'blur(10px)',
+                  border: '1px solid rgba(255,255,255,0.2)',
+                  borderRadius: 3,
+                }}
+              >
+                <RestaurantIcon sx={{ fontSize: 80, color: '#ddd', mb: 2 }} />
+                <Typography variant="h6" color="text.secondary" sx={{ mb: 2 }}>
+                  No restaurants available for this date
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                  Please select a different date or check back later
+                </Typography>
+              </Paper>
+            )}
+          </Box>
+        </Fade>
+      </Container>
+
+      {/* Order Summary Drawer */}
+      <Drawer
+        anchor="bottom"
+        open={isOrderSummaryOpen}
+        onClose={() => setIsOrderSummaryOpen(false)}
+        PaperProps={{
+          sx: {
+            maxHeight: '90vh',
+            borderRadius: '20px 20px 0 0',
+            background: 'linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.9) 100%)',
+            backdropFilter: 'blur(10px)',
+          }
+        }}
+      >
+        <Box sx={{ p: 2 }}>
+          <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
+            <Typography variant="h6" sx={{ fontWeight: 'bold', color: '#667eea' }}>
+              Order Summary
+            </Typography>
+            <IconButton onClick={() => setIsOrderSummaryOpen(false)}>
+              <CloseIcon />
+            </IconButton>
+          </Box>
+          <OrderSummary 
+            addedDishes={orderState.addedDishes} 
+            updateTotal={updateTotal} 
+            handleSubmit={handleSubmit}
+            wechatId={orderState.wechatId}
+            pickupLocation={orderState.pickupLocation}
+            date={orderState.date}
+            notes={orderState.notes}
+            errors={orderState.errors}
+          />
+        </Box>
+      </Drawer>
+
+      {/* Dish Form Drawer */}
+      <Drawer
+        anchor="bottom"
+        open={isDishFormOpen}
+        onClose={handleCloseDishForm}
+        PaperProps={{
+          sx: {
+            maxHeight: '90vh',
+            borderRadius: '20px 20px 0 0',
+            background: 'linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.9) 100%)',
+            backdropFilter: 'blur(10px)',
+          }
+        }}
+      >
+        <Box sx={{ p: 2 }}>
+          <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
+            <Typography variant="h6" sx={{ fontWeight: 'bold', color: '#667eea' }}>
+              {orderState.selectedRestaurant?.name} - Menu
+            </Typography>
+            <IconButton onClick={handleCloseDishForm}>
+              <CloseIcon />
+            </IconButton>
+          </Box>
+          {orderState.selectedRestaurant && (
+            <DishForm
+              restaurant={orderState.selectedRestaurant}
+              quantities={orderState.quantities[orderState.selectedRestaurant.id]}
+              onQuantityChange={handleQuantityChange}
+              onClose={handleCloseDishForm}
+              onAddDish={handleAddDish}
+            />
+          )}
+        </Box>
+      </Drawer>
     </Box>
   );
 };
