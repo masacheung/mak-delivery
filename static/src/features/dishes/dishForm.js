@@ -35,10 +35,7 @@ const DishForm = ({ restaurant, quantities, onQuantityChange, onAddDish, onClose
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
-  // Debug logging
-  console.log('DishForm - Restaurant:', restaurant);
-  console.log('DishForm - Dishes:', restaurant?.dishes);
-  console.log('DishForm - Quantities:', quantities);
+
 
   const calculateTotal = (dish) => {
     let total = dish.price === 'SP' ? 0 : dish.price;
@@ -232,6 +229,7 @@ const DishForm = ({ restaurant, quantities, onQuantityChange, onAddDish, onClose
             maxHeight: "calc(100vh - 200px)",
             overflowY: "auto",
             paddingRight: 1,
+            paddingBottom: 2,
           }}
           className="custom-scroll"
         >
@@ -241,19 +239,27 @@ const DishForm = ({ restaurant, quantities, onQuantityChange, onAddDish, onClose
               <Card
                 className="dish-card"
                 sx={{
-                  background: "rgba(255, 255, 255, 0.9)",
+                  background: "rgba(255, 255, 255, 0.95)",
                   backdropFilter: "blur(10px)",
-                  border: "1px solid rgba(255, 255, 255, 0.2)",
+                  border: "1px solid rgba(102, 126, 234, 0.2)",
                   borderRadius: 3,
-                  overflow: "hidden",
+                  overflow: "visible",
                   transition: "all 0.3s ease",
+                  minHeight: "120px",
+                  marginBottom: 2,
                   "&:hover": {
                     transform: "translateY(-2px)",
                     boxShadow: "0 8px 25px rgba(0, 0, 0, 0.15)",
                   },
                 }}
               >
-                <CardContent sx={{ padding: isMobile ? 2 : 3 }}>
+                <CardContent sx={{ 
+                  padding: isMobile ? 2 : 3,
+                  minHeight: "80px",
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "space-between"
+                }}>
                   {/* Dish Header */}
                   <Box
                     sx={{
@@ -261,6 +267,8 @@ const DishForm = ({ restaurant, quantities, onQuantityChange, onAddDish, onClose
                       justifyContent: "space-between",
                       alignItems: "flex-start",
                       marginBottom: 2,
+                      minHeight: "60px",
+                      width: "100%",
                     }}
                   >
                     <Box sx={{ flex: 1 }}>
@@ -268,8 +276,11 @@ const DishForm = ({ restaurant, quantities, onQuantityChange, onAddDish, onClose
                         variant={isMobile ? "h6" : "h5"}
                         sx={{
                           fontWeight: 600,
-                          color: "primary.main",
+                          color: "#1976d2",
                           marginBottom: 1,
+                          fontSize: isMobile ? "1rem" : "1.1rem",
+                          lineHeight: 1.2,
+                          wordBreak: "break-word",
                         }}
                       >
                         {dish.name}
@@ -277,10 +288,13 @@ const DishForm = ({ restaurant, quantities, onQuantityChange, onAddDish, onClose
                       <Chip
                         icon={<LocalOfferIcon />}
                         label={dish.price === 'SP' ? 'Special Price' : `$${dish.price}`}
+                        size="small"
                         sx={{
                           backgroundColor: dish.price === 'SP' ? '#FF6B6B' : '#4CAF50',
                           color: 'white',
                           fontWeight: 600,
+                          height: "28px",
+                          fontSize: "0.75rem",
                         }}
                       />
                     </Box>
@@ -294,6 +308,8 @@ const DishForm = ({ restaurant, quantities, onQuantityChange, onAddDish, onClose
                         backgroundColor: "rgba(102, 126, 234, 0.1)",
                         borderRadius: 3,
                         padding: "8px 12px",
+                        minWidth: "120px",
+                        height: "44px",
                       }}
                     >
                       <IconButton
@@ -319,7 +335,8 @@ const DishForm = ({ restaurant, quantities, onQuantityChange, onAddDish, onClose
                           fontWeight: 600,
                           minWidth: 24,
                           textAlign: "center",
-                          color: "primary.main",
+                          color: "#1976d2",
+                          fontSize: "1rem",
                         }}
                       >
                         {quantities[dish.id] || 0}
