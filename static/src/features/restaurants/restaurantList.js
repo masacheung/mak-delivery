@@ -319,7 +319,31 @@ const RestaurantList = () => {
     }
   };
 
-  // ... rest of the existing handler functions ...
+  const getCartItemCount = () => {
+    return Object.values(orderState.addedDishes).reduce((total, restaurantDishes) => {
+      return total + restaurantDishes.reduce((subtotal, dish) => subtotal + dish.quantity, 0);
+    }, 0);
+  };
+
+  const getRestaurantImage = (restaurantName) => {
+    const imageMap = {
+      'Tasty Moment': '/static/media/tastyMoment.webp',
+      'Chef Ge': '/static/media/chef.webp',
+      'Spice Twenty Four': '/static/media/spiceTwentyFour.webp',
+      'Wonton Guy': '/static/media/wontonGuy.webp',
+      'Ji Bei Chuan': '/static/media/jiBeiChuan.webp',
+      'Miss Flower Hotpot': '/static/media/missFlowerHotpot.webp',
+      'S&Y Mini Hotpot': '/static/media/syMiniHotpot.webp',
+      'You Garden': '/static/media/youGarden.webp',
+      'Ninety Eight K': '/static/media/nineEightk.webp',
+      'HK Alley': '/static/media/hk_alley.webp',
+      'Mee Tu': '/static/media/meeTu.webp',
+      'Yo Dessert': '/static/media/yoDessert.webp',
+      'Noodles Time': '/static/media/noodlesTime.webp',
+      'New Da Noodles': '/static/media/newDaNoodles.webp'
+    };
+    return imageMap[restaurantName] || '/static/media/chef.webp';
+  };
 
   return (
     <Box
