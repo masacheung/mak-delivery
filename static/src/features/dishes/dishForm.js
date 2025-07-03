@@ -227,7 +227,7 @@ const DishForm = ({ restaurant, quantities, onQuantityChange, onAddDish, onClose
             display: "flex",
             flexDirection: "column",
             gap: 2,
-            maxHeight: "calc(100vh - 200px)",
+            // Remove maxHeight constraint to allow cards to expand
             overflowY: "auto",
             paddingRight: 1,
             paddingBottom: isMobile ? "32px" : "24px",
@@ -247,7 +247,7 @@ const DishForm = ({ restaurant, quantities, onQuantityChange, onAddDish, onClose
                   overflow: "visible",
                   transition: "all 0.3s ease",
                   height: "auto",
-                  minHeight: isMobile ? "200px" : "180px",
+                  // Remove minHeight to allow full expansion based on content
                   marginBottom: 2,
                   display: "flex",
                   flexDirection: "column",
@@ -259,10 +259,11 @@ const DishForm = ({ restaurant, quantities, onQuantityChange, onAddDish, onClose
               >
                 <CardContent sx={{ 
                   padding: isMobile ? 2 : 3,
-                  height: "100%",
+                  // Remove height constraint to allow natural content flow
                   display: "flex",
                   flexDirection: "column",
-                  justifyContent: "flex-start"
+                  justifyContent: "flex-start",
+                  flex: 1
                 }}>
                   {/* Dish Header */}
                   <Box
@@ -271,7 +272,7 @@ const DishForm = ({ restaurant, quantities, onQuantityChange, onAddDish, onClose
                       justifyContent: "space-between",
                       alignItems: "flex-start",
                       marginBottom: 2,
-                      minHeight: "60px",
+                      // Remove minHeight to allow natural sizing
                       width: "100%",
                     }}
                   >
