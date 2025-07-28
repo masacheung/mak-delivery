@@ -452,11 +452,11 @@ const HK_ALLEY = {
                 }
          }},
         { id: 229, name: '迷你菠蘿包(1PC) ', price:3.00 },
-        { id: 230, name: '迷你菠蘿包(COMBO) ', price:2.00 },
+        
         { id: 231, name: '迷你芋泥菠蘿包(1PC) ', price:3.00 },
-        { id: 232, name: '迷你芋泥菠蘿包(COMBO) ', price:2.00 },
+       
         { id: 233, name: '迷你鹹蛋黃菠蘿包(1PC) ', price:3.00 },
-        { id: 234, name: '迷你鹹蛋黃菠蘿包(1PC) ', price:2.00 },
+        
         { id: 235, name: '芋泥肉鬆葡撻(1PC) ', price:2.99 },
         { id: 236, name: '葡撻(1PC) ', price:2.49 },
     ]
