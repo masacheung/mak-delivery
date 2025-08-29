@@ -51,78 +51,78 @@ import youGarden from "../../image/youGarden.webp";
 const restaurants = [
   {
     name: "Chef Ge 葛师傅私房菜",
-    englishName: "Chef Ge Private Kitchen",
-    menu: "order.chefgetogo.com",
+    englishName: "Chef Ge ",
+    menu: "https://order.chefgetogo.com/order/main",
     image: chefImage,
     cuisine: "Chinese Cuisine",
-    specialty: "Private Kitchen Dishes",
-    description: "Authentic private kitchen style Chinese dishes"
+    specialty: "Sichuan Cuisine",
+    description: ""
   },
   {
     name: "HK Alley 港茶巷",
     englishName: "HK Alley",
-    menu: "Dumplings, Noodles, Bubble Tea",
+    menu: "",
     image: hkAlley,
-    cuisine: "Hong Kong Style",
-    specialty: "Tea & Dumplings",
-    description: "Hong Kong style tea house and dim sum"
+    cuisine: "Hong Kong Style cafe",
+    specialty: "Hong Kong Milktea, Bake rice & Pineapple Bun",
+    description: "Hong Kong–style diner serving a mix of Chinese and Western comfort food"
   },
   {
     name: "Ji Bei Chuan Noodles 季北川",
     englishName: "Ji Bei Chuan Noodles",
-    menu: "Mapo Tofu, Hotpot, Spicy Wontons",
+    menu: "https://jibeichuan.menucc.com/",
     image: jiBeiChuan,
-    cuisine: "Sichuan Cuisine",
-    specialty: "Spicy Noodles",
-    description: "Authentic Sichuan noodles and spicy dishes"
+    cuisine: "Chinese-style rice noodle soups and ramen",
+    specialty: "Supreme Fish Maw Chicken Soup Rice Noodle",
+    description: "Chinese-style rice noodle soups and ramen, blending traditional Chinese flavors feature a variety of broths, including fish maw chicken soup, mala spicy broth, and tom yum"
   },
   {
-    name: "MeeTU 遇图",
-    englishName: "MeeTU",
-    menu: "order.chefgetogo.com",
+    name: "MeeTU",
+    englishName: "MeeTU Flower & Tea",
+    menu: "https://www.meetu.us/",
     image: meeTu,
-    cuisine: "Modern Asian",
-    specialty: "Fusion Dishes",
-    description: "Modern Asian fusion cuisine"
+    cuisine: "Drinks",
+    specialty: "Coconut Teas & Fruit Teas",
+    description: "specializing in a curated selection of fresh blooms, eternal blossoms, and exquisite tea blends."
   },
   {
     name: "Miss Flower Hotpot 花小娇金汤花胶鸡",
     englishName: "Miss Flower Hotpot",
-    menu: "Dumplings, Noodles, Bubble Tea",
+    menu: "https://missflowerhotpot.shop/",
     image: missFlowerHotpot,
     cuisine: "Hotpot",
-    specialty: "Premium Hotpot",
-    description: "Premium hotpot with fresh ingredients"
+    specialty: "Chicken soup with fish maw ",
+    description: "Premium hotpot with flavorful chicken soup and fresh ingredients"
   },
   {
     name: "NewDa Noodles 牛大（兰州牛肉面）",
     englishName: "NewDa Noodles",
-    menu: "Mapo Tofu, Hotpot, Spicy Wontons",
+    menu: "https://order.peblla.com/newdanoodles/order?sid=1088756473349984128",
     image: newDaNoodles,
     cuisine: "Lanzhou Style",
-    specialty: "Beef Noodles",
-    description: "Traditional Lanzhou beef noodle soup"
+    specialty: "authentic Lanzhou hand-pulled noodles.",
+    description: "beef noodle soup, spicy noodles, and dry-tossed noodles,"
   },
   {
     name: "98K Fried Chicken & Sandwich (Edison)",
     englishName: "98K Fried Chicken",
-    menu: "order.chefgetogo.com",
+    menu: "http://www.98kedison.com/",
     image: nineEightk,
-    cuisine: "Korean Fried Chicken",
+    cuisine: "Chinese style Fried Chicken",
     specialty: "Fried Chicken",
-    description: "Korean style fried chicken and sandwiches"
+    description: "Chinese style fried chicken and sandwiches"
   },
   {
     name: "Noodle's Time 面缘",
     englishName: "Noodle's Time",
-    menu: "Dumplings, Noodles, Bubble Tea",
+    menu: "https://www.noodletimesedison.com/",
     image: noodlesTime,
     cuisine: "Chinese Noodles",
     specialty: "Hand-pulled Noodles",
     description: "Fresh hand-pulled noodles and traditional dishes"
   },
   {
-    name: "Spice 24 麻辣二十四",
+    name: "Spice 24 二十四味",
     englishName: "Spice 24",
     menu: "Mapo Tofu, Hotpot, Spicy Wontons",
     image: spiceTwentyFour,
