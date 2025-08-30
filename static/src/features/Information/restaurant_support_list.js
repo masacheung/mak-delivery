@@ -50,7 +50,7 @@ import youGarden from "../../image/youGarden.webp";
 
 const restaurants = [
   {
-    name: "Chef Ge 葛师傅私房菜",
+    name: "葛师傅私房菜",
     englishName: "Chef Ge ",
     menu: "https://order.chefgetogo.com/order/main",
     image: chefImage,
@@ -59,7 +59,7 @@ const restaurants = [
     description: ""
   },
   {
-    name: "HK Alley 港茶巷",
+    name: "港茶巷",
     englishName: "HK Alley",
     menu: "",
     image: hkAlley,
@@ -68,7 +68,7 @@ const restaurants = [
     description: "Hong Kong–style diner serving a mix of Chinese and Western comfort food"
   },
   {
-    name: "Ji Bei Chuan Noodles 季北川",
+    name: "季北川",
     englishName: "Ji Bei Chuan Noodles",
     menu: "https://jibeichuan.menucc.com/",
     image: jiBeiChuan,
@@ -86,7 +86,7 @@ const restaurants = [
     description: "specializing in a curated selection of fresh blooms, eternal blossoms, and exquisite tea blends."
   },
   {
-    name: "Miss Flower Hotpot 花小娇金汤花胶鸡",
+    name: "花小娇金汤花胶鸡",
     englishName: "Miss Flower Hotpot",
     menu: "https://missflowerhotpot.shop/",
     image: missFlowerHotpot,
@@ -95,7 +95,7 @@ const restaurants = [
     description: "Premium hotpot with flavorful chicken soup and fresh ingredients"
   },
   {
-    name: "NewDa Noodles 牛大（兰州牛肉面）",
+    name: "牛大（兰州牛肉面）",
     englishName: "NewDa Noodles",
     menu: "https://order.peblla.com/newdanoodles/order?sid=1088756473349984128",
     image: newDaNoodles,
@@ -117,54 +117,54 @@ const restaurants = [
     englishName: "Noodle's Time",
     menu: "https://www.noodletimesedison.com/",
     image: noodlesTime,
-    cuisine: "Chinese Noodles",
-    specialty: "Hand-pulled Noodles",
-    description: "Fresh hand-pulled noodles and traditional dishes"
+    cuisine: "Guangxi-style Chinese noodle sou",
+    specialty: "Lizhou spicy noodles (also known as river snail noodles, Luosifen",
+    description: "specializes in Guangxi-style Chinese noodle soups celebrated for their harmonious blend of spicy, sour, and savory notes"
   },
   {
-    name: "Spice 24 二十四味",
+    name: "24 味",
     englishName: "Spice 24",
-    menu: "Mapo Tofu, Hotpot, Spicy Wontons",
+    menu: "https://order.toasttab.com/online/spice-24-edisons",
     image: spiceTwentyFour,
-    cuisine: "Spicy Sichuan",
-    specialty: "Spicy Dishes",
-    description: "24-hour spicy Sichuan cuisine"
+    cuisine: "Szechuan Chinese cuisine",
+    specialty: "create-your-own stir-fry" dry pot",
+    description: "It offers a modern twist on classic styles with customizable stir-fry dishes and a variety of flavor bases."
   },
   {
-    name: "S&Y Mini HotPot 蜀世冒菜",
+    name: "蜀世冒菜",
     englishName: "S&Y Mini HotPot",
-    menu: "order.chefgetogo.com",
+    menu: "http://syminihotpot.com/",
     image: syMiniHotpot,
-    cuisine: "Mini Hotpot",
-    specialty: "Individual Hotpot",
-    description: "Individual portion mini hotpot experience"
+    cuisine: "Szechuan Cuisine",
+    specialty: "Spicy, sour, and numbing—typical of Sichuan hot pot",
+    description: "pick ingredients and a broth base, and everything is cooked together and served in one bowl"
   },
   {
-    name: "Tasty Moment 香味时刻",
+    name: "小食代",
     englishName: "Tasty Moment",
-    menu: "Dumplings, Noodles, Bubble Tea",
+    menu: "https://dimsumedison.com/",
     image: tastyMoment,
-    cuisine: "Chinese Comfort Food",
-    specialty: "Comfort Dishes",
-    description: "Delicious comfort food for every moment"
+    cuisine: "Shanghainese cuisine",
+    specialty: "Soup Dumplings",
+    description: "combining both the delicate flavors of Shanghai-style cooking with the classic dim sum tradition"
   },
   {
-    name: "Wonton Guy 馄饨先生",
+    name: "雲吞佳",
     englishName: "Wonton Guy",
-    menu: "Mapo Tofu, Hotpot, Spicy Wontons",
+    menu: "http://www.wontonguy.com/",
     image: wontonGuy,
-    cuisine: "Wonton Specialist",
-    specialty: "Fresh Wontons",
-    description: "Handmade wontons and traditional soups"
+    cuisine: "Hong Kong-style wantan mee",
+    specialty: "Wonton Noodle Soup",
+    description: "thin egg noodles served in a light, flavorful broth topped with generous shrimp-filled wontons and optional toppings like beef brisket or fish ball"
   },
   {
-    name: "Yo Dessert 优の甜品",
+    name: "Yo Dessert",
     englishName: "Yo Dessert",
-    menu: "order.chefgetogo.com",
+    menu: "https://yodessertus.com/",
     image: yoDessert,
-    cuisine: "Asian Desserts",
-    specialty: "Sweet Treats",
-    description: "Authentic Asian desserts and sweet treats"
+    cuisine: "Yogurt",
+    specialty: "Yogurt drink and Soymilk,
+    description: "yogurt-based beverages with various favors and dessert"
   },
   {
     name: "Shanghai You Garden 又一村",
