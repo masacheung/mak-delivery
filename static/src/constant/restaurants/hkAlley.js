@@ -38,9 +38,24 @@ const HK_ALLEY = {
                 name: "Drinks", choices: [ "金磚港式奶茶 Hong Kong Milk Tea", "金磚鴛鴦奶茶 Coffee HK Milktea","金磚港式檸檬 HK Lemon Tea","草莓布蕾鮮乳 Strawberry Cream Brulee Milk(M)","紅柚鮮橙綠茶 Grapefruit Orange Green Tea","Deluxe Passionfruit Green Tea 豪華百果香蜜綠茶+0.99 "], selectedOptions: [], limit: 1, adjustable: true
             },
              }},
-         
-         
-        { id: 21, name: '金磚港式奶茶 Hong Kong Milk Tea', price:"SP",
+        { id: 241, name: '招牌黯然銷魂飯 Char Siu(BBQ Pork) Rice', price:16.99},
+        { id: 242, name: '招牌叉燒滑蛋飯 Slippery Egg Char Siu Over Rice', price:16.99},
+        { id: 243, name: '黑椒牛扒意粉 Black Pepper Steak Over Pasta ', price:21.99},
+        { id: 244, name: '茄汁牛扒意粉 Tomato Sauce Steak Over Pasta', price:21.99},
+        { id: 245, name: '茄汁豬扒意粉 Tomato Sauce porkChop Over Pasta', price:13.49},
+        { id: 246, name: '茄汁雞扒意粉 Tomato Sauce Chicken Over Pasta', price:13.49},
+        { id: 247, name: '咖哩雞扒蓋飯 Curry Chicken Over Rice', price:13.49},
+        { id: 248, name: '雞扒滑蛋蓋飯 Slippery Egg Chicken Over Rice', price:14.49},
+        { id: 249, name: '雞扒滑蛋蓋飯 Slippery Egg Chicken Over Rice', price:14.49},
+        { id: 250, name: '黑椒雞扒意粉 Black Pepper Chicken Over Pasta', price:14.49},
+        { id: 251, name: '黑椒豬扒意粉 Black Pepper PorkChop Over Pasta', price:13.49},
+        { id: 229, name: '招牌原味菠蘿包(1PC) Butter Pineapple Bun', price:2.99 },
+        { id: 231, name: '鹹蛋黃菠蘿包 Salted Egg Pineapple Bun', price:3.49 },
+        { id: 232, name: '芋泥菠蘿包(1PC) Taro Pineapple Bun ', price:2.99 },
+        { id: 233, name: '招牌叉燒 BBQ Pork', price:9.99 },
+        
+        
+         { id: 21, name: '金磚港式奶茶 Hong Kong Milk Tea', price:"SP",
          options: {
             optionSize: {
                 name: "Size", choices: ["M $6.00", "L $7.00"], selectedOptions: [], limit: 1, adjustable: true
@@ -466,14 +481,10 @@ const HK_ALLEY = {
                 choices: [ "Creme Brulee +$1.00", "Cheese Foam +$1.00"], selectedOptions: [], limit: 100
                 }
          }},
-        { id: 229, name: '迷你菠蘿包(1PC) ', price:3.00 },
+    
         
-        { id: 231, name: '迷你芋泥菠蘿包(1PC) ', price:3.00 },
-       
-        { id: 233, name: '迷你鹹蛋黃菠蘿包(1PC) ', price:3.00 },
         
-        { id: 235, name: '芋泥肉鬆葡撻(1PC) ', price:2.99 },
-        { id: 236, name: '葡撻(1PC) ', price:2.49 },
+    
     ]
 };
 
