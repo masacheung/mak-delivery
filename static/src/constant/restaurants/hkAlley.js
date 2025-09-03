@@ -2,29 +2,44 @@ const HK_ALLEY = {
     id: 2,
     name: '港茶巷 HK ALLEY',
     dishes: [
-         { id: 239, name: 'Make your own plate (Tomato Sauce) Come with egg and vegetable ', price:"SP",
-         options: {
-            optionSize: {
-                name: "Meat Choices", choices: [" Chicken Cutlet12.99", "Pork Chop $14.49","Steak $21.99"], selectedOptions: [], limit: 1, adjustable: true
-            },
+         { id: 237, name: 'Combo A', price:21.99,
+        options: {
             option1: {
-                 name: "Starch Choices",
-                 choices: [ "Rice", "Pasta"], selectedOptions: [], limit: 1
+                name: "Meal", choices: ["招牌黯然銷魂飯 Char Siu(BBQ Pork) Rice ", "招牌叉燒滑蛋飯 Slippery Egg Char Siu Over Rice"], selectedOptions: [], limit: 1
             },
-         }},
-        { id: 238, name: '牛扒意粉 Black Pepper Steak Pasta', price:"SP",
-         options: {
             optionSize: {
-                name: "entree/combo(drink's price is not include)", choices: ["21.99", "Combo $20.49"], selectedOptions: [], limit: 1, adjustable: true
-            }
-         }},
-         { id: 237, name: '黯然銷魂飯 HongKong Style Barbecued Pork with veggie egg and rice', price:"SP",
-         options: {
+                name: "Drinks", choices: [ "金磚港式奶茶 Hong Kong Milk Tea", "金磚鴛鴦奶茶 Coffee HK Milktea","金磚港式檸檬 HK Lemon Tea","草莓布蕾鮮乳 Strawberry Cream Brulee Milk(M)","紅柚鮮橙綠茶 Grapefruit Orange Green Tea","Deluxe Passionfruit Green Tea 豪華百果香蜜綠茶+0.99 "], selectedOptions: [], limit: 1, adjustable: true
+            },
+             }},
+          { id: 238, name: 'Combo B', price:26.99,
+        options: {
+            option1: {
+                name: "Meal", choices: ["黑椒牛扒意粉 Black Pepper Steak Over Pasta ", "茄汁牛扒意粉 Tomato Sauce Steak Over Pasta"], selectedOptions: [], limit: 1
+            },
             optionSize: {
-                name: "entree/combo(drink's price is not include)", choices: ["17.49", "Combo $15.99"], selectedOptions: [], limit: 1, adjustable: true
-            }
-         }},
-        
+                name: "Drinks", choices: [ "金磚港式奶茶 Hong Kong Milk Tea", "金磚鴛鴦奶茶 Coffee HK Milktea","金磚港式檸檬 HK Lemon Tea","草莓布蕾鮮乳 Strawberry Cream Brulee Milk(M)","紅柚鮮橙綠茶 Grapefruit Orange Green Tea","Deluxe Passionfruit Green Tea 豪華百果香蜜綠茶+0.99 "], selectedOptions: [], limit: 1, adjustable: true
+            },
+             }},
+        { id: 239, name: 'Combo C', price:18.99,
+        options: {
+            option1: {
+                name: "Meal", choices: ["黑椒豬扒意粉 Black Pepper PorkChop Over Pasta ", "茄汁豬扒意粉 Tomato Sauce PorkChop Over Pasta", "茄汁雞扒意粉 Tomato Sauce Chicken Over Pasta", "黑椒雞扒意粉 Black Pepper Chicken Over Pasta", "咖喱雞扒蓋飯 Curry Chicken Over Rice", "雞扒滑蛋蓋飯 Slippery Egg Chicken Over Rice"], selectedOptions: [], limit: 1
+            },
+            optionSize: {
+                name: "Drinks", choices: [ "金磚港式奶茶 Hong Kong Milk Tea", "金磚鴛鴦奶茶 Coffee HK Milktea","金磚港式檸檬 HK Lemon Tea","草莓布蕾鮮乳 Strawberry Cream Brulee Milk(M)","紅柚鮮橙綠茶 Grapefruit Orange Green Tea","Deluxe Passionfruit Green Tea 豪華百果香蜜綠茶+0.99 "], selectedOptions: [], limit: 1, adjustable: true
+            },
+             }},
+         { id: 240, name: 'Combo D', price:20.99,
+        options: {
+            option1: {
+                name: "Meal", choices: ["茄汁豬扒芝士焗意粉 Tomato Sauce PorkChop Pasta Gratin ", "茄汁雞扒芝士焗意粉 Tomato Sauce Chicken Pasta Gratin", "咖喱豬扒芝士焗飯 Curry porkchop Over Rice Gratin", "咖喱雞扒芝士飯 Curry Chicken Rice Gratin"], selectedOptions: [], limit: 1
+            },
+            optionSize: {
+                name: "Drinks", choices: [ "金磚港式奶茶 Hong Kong Milk Tea", "金磚鴛鴦奶茶 Coffee HK Milktea","金磚港式檸檬 HK Lemon Tea","草莓布蕾鮮乳 Strawberry Cream Brulee Milk(M)","紅柚鮮橙綠茶 Grapefruit Orange Green Tea","Deluxe Passionfruit Green Tea 豪華百果香蜜綠茶+0.99 "], selectedOptions: [], limit: 1, adjustable: true
+            },
+             }},
+         
+         
         { id: 21, name: '金磚港式奶茶 Hong Kong Milk Tea', price:"SP",
          options: {
             optionSize: {
