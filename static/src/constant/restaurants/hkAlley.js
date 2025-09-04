@@ -70,7 +70,7 @@ const HK_ALLEY = {
                 {
                 name: "add-ons (0.85 each)",
                 price: 0.85,
-                choices: [ "Oreo +$0.85", "Boba +$0.85", "Coconut Lychee Jelly +$0.85", "White Boba +$0.85", "Herb Jelly +$0.85"], selectedOptions: [], limit: 100
+                choices: [ "Oreo +$0.85", "Boba +$0.85", "Coconut Lychee Jelly +$0.85", "White Boba +$0.85"], selectedOptions: [], limit: 100
                 },
             option3:
                 {
@@ -79,7 +79,7 @@ const HK_ALLEY = {
                 choices: [ "Creme Brulee +$1.00", "Cheese Foam +$1.00"], selectedOptions: [], limit: 100
                 }
          }},
-        { id: 23, name: '冰凍港奶 Chilled HK Milk Tea(bottle)(M)', price:6.00,
+        { id: 23, name: '布蕾打冷震 Creme Brulee Milk Tea Frappe(L)', price:7.99,
           options: {
               option1:
                  {
@@ -91,7 +91,7 @@ const HK_ALLEY = {
                  {
                  name: "add-ons (0.85 each)",
                  price: 0.85,
-                 choices: [ "Oreo +$0.85", "Boba +$0.85", "Coconut Lychee Jelly +$0.85", "White Boba +$0.85", "Herb Jelly +$0.85"], selectedOptions: [], limit: 100
+                 choices: [ "Oreo +$0.85", "Boba +$0.85", "Coconut Lychee Jelly +$0.85", "White Boba +$0.85"], selectedOptions: [], limit: 100
                  },
             option3:
                 {
@@ -100,10 +100,10 @@ const HK_ALLEY = {
                 choices: [ "Creme Brulee +$1.00", "Cheese Foam +$1.00"], selectedOptions: [], limit: 100
                 }
           }},
-        { id: 24, name: '金磚港式茶走 HongKong Milktea (condensed milk)', price:"SP",
+        { id: 24, name: ' 金磚布蕾奶茶 Creme Brulee Milk Tea', price:"SP",
          options: {
             optionSize: {
-                name: "Size", choices: ["M $6.50", "L $7.50"], selectedOptions: [], limit: 1, adjustable: true
+                name: "Size", choices: ["M $6.00", "L $6.99"], selectedOptions: [], limit: 1, adjustable: true
             },
             option1:
                  {
@@ -115,7 +115,7 @@ const HK_ALLEY = {
                  {
                  name: "add-ons (0.85 each)",
                  price: 0.85,
-                 choices: [ "Oreo +$0.85", "Boba +$0.85", "Coconut Lychee Jelly +$0.85", "White Boba +$0.85", "Herb Jelly +$0.85"], selectedOptions: [], limit: 100
+                 choices: [ "Oreo +$0.85", "Boba +$0.85", "Coconut Lychee Jelly +$0.85", "White Boba +$0.85"], selectedOptions: [], limit: 100
                  },
             option3:
                 {
@@ -139,7 +139,7 @@ const HK_ALLEY = {
                  {
                  name: "add-ons (0.85 each)",
                  price: 0.85,
-                 choices: [ "Oreo +$0.85", "Boba +$0.85", "Coconut Lychee Jelly +$0.85", "White Boba +$0.85", "Herb Jelly +$0.85"], selectedOptions: [], limit: 100
+                 choices: [ "Oreo +$0.85", "Boba +$0.85", "Coconut Lychee Jelly +$0.85", "White Boba +$0.85"], selectedOptions: [], limit: 100
                  },
             option3:
                 {
@@ -148,10 +148,10 @@ const HK_ALLEY = {
                 choices: [ "Creme Brulee +$1.00", "Cheese Foam +$1.00"], selectedOptions: [], limit: 100
                 }
         }},
-        { id: 28, name: '金磚布蕾奶茶 Cream Brulee Milktea', price:"SP",
+        { id: 28, name: '奧利奧咖啡慕斯拿鐵 Oreo Coffee Mousse Latte', price:"SP",
          options: {
             optionSize: {
-                name: "Size", choices: ["M $6.00", "L $7.00"], selectedOptions: [], limit: 1, adjustable: true
+                name: "Size", choices: ["M $6.49", "L $7.99"], selectedOptions: [], limit: 1, adjustable: true
             },
              option1:
                  {
@@ -163,7 +163,7 @@ const HK_ALLEY = {
                  {
                  name: "add-ons (0.85 each)",
                  price: 0.85,
-                 choices: [ "Oreo +$0.85", "Boba +$0.85", "Coconut Lychee Jelly +$0.85", "White Boba +$0.85", "Herb Jelly +$0.85"], selectedOptions: [], limit: 100
+                 choices: [ "Oreo +$0.85", "Boba +$0.85", "Coconut Lychee Jelly +$0.85", "White Boba +$0.85"], selectedOptions: [], limit: 100
                  },
             option3:
                 {
@@ -172,180 +172,12 @@ const HK_ALLEY = {
                 choices: [ "Creme Brulee +$1.00", "Cheese Foam +$1.00"], selectedOptions: [], limit: 100
                 }
          }},
-        { id: 210, name: '布蕾打冷震奶茶(L) Creme Brulee Milk Tea Frappe', price:7.99,
-         options: {
-             option1:
-                 {
-                 name: "Sugar Level",
-                 choices: ["Little Sugar (30%)", "1/2 Sugar (50%)", "Less Sugar (70%)", "Regular Sugar (100%)"],
-                 selectedOptions: [], limit: 1
-                 },
-             option2:
-                 {
-                 name: "add-ons (0.85 each)",
-                 price: 0.85,
-                 choices: [ "Oreo +$0.85", "Boba +$0.85", "Coconut Lychee Jelly +$0.85", "White Boba +$0.85", "Herb Jelly +$0.85"], selectedOptions: [], limit: 100
-                 },
-            option3:
-                {
-                name: "add-ons (1.00 each)",
-                price: 1.00,
-                choices: [ "Creme Brulee +$1.00", "Cheese Foam +$1.00"], selectedOptions: [], limit: 100
-                }
-         }},
-        { id: 211, name: '港式檸檬(L) HongKong Lemon Tea', price:6.50,
-         options: {
-             option1:
-                 {
-                 name: "Sugar Level",
-                 choices: ["Little Sugar (30%)", "1/2 Sugar (50%)", "Less Sugar (70%)", "Regular Sugar (100%)"],
-                 selectedOptions: [], limit: 1
-                 },
-             option2:
-                 {
-                 name: "add-ons (0.85 each)",
-                 price: 0.85,
-                 choices: [ "Oreo +$0.85", "Boba +$0.85", "Coconut Lychee Jelly +$0.85", "White Boba +$0.85", "Herb Jelly +$0.85"], selectedOptions: [], limit: 100
-                 },
-            option3:
-                {
-                name: "add-ons (1.00 each)",
-                price: 1.00,
-                choices: [ "Creme Brulee +$1.00", "Cheese Foam +$1.00"], selectedOptions: [], limit: 100
-                }
-         }},
-        { id: 212, name: '陳皮檸檬(L) Aged Tangerine Hk Lemon Tea', price:7.00,
-         options: {
-             option1:
-                 {
-                 name: "Sugar Level",
-                 choices: ["Little Sugar (30%)", "1/2 Sugar (50%)", "Less Sugar (70%)", "Regular Sugar (100%)"],
-                 selectedOptions: [], limit: 1
-                 },
-             option2:
-                 {
-                 name: "add-ons (0.85 each)",
-                 price: 0.85,
-                 choices: [ "Oreo +$0.85", "Boba +$0.85", "Coconut Lychee Jelly +$0.85", "White Boba +$0.85", "Herb Jelly +$0.85"], selectedOptions: [], limit: 100
-                 },
-            option3:
-                {
-                name: "add-ons (1.00 each)",
-                price: 1.00,
-                choices: [ "Creme Brulee +$1.00", "Cheese Foam +$1.00"], selectedOptions: [], limit: 100
-                }
-         }},
-        { id: 213, name: '陳檸樂 Aged Tangerine Lemon Cola', price:7.00,
-         options: {
-             option1:
-                 {
-                 name: "Sugar Level",
-                 choices: ["Little Sugar (30%)", "1/2 Sugar (50%)", "Less Sugar (70%)", "Regular Sugar (100%)"],
-                 selectedOptions: [], limit: 1
-                 },
-             option2:
-                 {
-                 name: "add-ons (0.85 each)",
-                 price: 0.85,
-                 choices: [ "Oreo +$0.85", "Regular Bubble +$0.85", "Coconut Lychee Jelly +$0.85", "Add Aloe +$0.85", "Herb Jelly +$0.85"], selectedOptions: [], limit: 100
-                 },
-            option3:
-                {
-                name: "add-ons (1.00 each)",
-                price: 1.00,
-                choices: [ "Creme Brulee +$1.00", "Cheese Foam +$1.00"], selectedOptions: [], limit: 100
-                }
-         }},
-        { id: 214, name: '紅油鮮橙綠茶(L) Grapefruit Orange Green Tea', price:7.00,
-         options: {
-             option1:
-                 {
-                 name: "Sugar Level",
-                 choices: ["Little Sugar (30%)", "1/2 Sugar (50%)", "Less Sugar (70%)", "Regular Sugar (100%)"],
-                 selectedOptions: [], limit: 1
-                 },
-             option2:
-                 {
-                 name: "add-ons (0.85 each)",
-                 price: 0.85,
-                 choices: [ "Oreo +$0.85", "Boba +$0.85", "Coconut Lychee Jelly +$0.85", "White Boba +$0.85", "Herb Jelly +$0.85"], selectedOptions: [], limit: 100
-                 },
-            option3:
-                {
-                name: "add-ons (1.00 each)",
-                price: 1.00,
-                choices: [ "Creme Brulee +$1.00", "Cheese Foam +$1.00"], selectedOptions: [], limit: 100
-                }
-         }},
-        { id: 215, name: '石榴凍檸(L) Pomegranate HK Lemon Tea', price:7.00,
-         options: {
-             option1:
-                 {
-                 name: "Sugar Level",
-                 choices: ["Little Sugar (30%)", "1/2 Sugar (50%)", "Less Sugar (70%)", "Regular Sugar (100%)"],
-                 selectedOptions: [], limit: 1
-                 },
-             option2:
-                 {
-                 name: "add-ons (0.85 each)",
-                 price: 0.85,
-                 choices: [ "Oreo +$0.85", "Boba +$0.85", "Coconut Lychee Jelly +$0.85", "White Boba +$0.85", "Herb Jelly +$0.85"], selectedOptions: [], limit: 100
-                 },
-            option3:
-                {
-                name: "add-ons (1.00 each)",
-                price: 1.00,
-                choices: [ "Creme Brulee +$1.00", "Cheese Foam +$1.00"], selectedOptions: [], limit: 100
-                }
-         }},
-        { id: 216, name: '百香果蜜綠茶(L) Passion Fruit Green Tea', price:7.00,
-         options: {
-             option1:
-                 {
-                 name: "Sugar Level",
-                 choices: ["Little Sugar (30%)", "1/2 Sugar (50%)", "Less Sugar (70%)", "Regular Sugar (100%)"],
-                 selectedOptions: [], limit: 1
-                 },
-             option2:
-                 {
-                 name: "add-ons (0.85 each)",
-                 price: 0.85,
-                 choices: [ "Oreo +$0.85", "Boba +$0.85", "Coconut Lychee Jelly +$0.85", "White Boba +$0.85", "Herb Jelly +$0.85"], selectedOptions: [], limit: 100
-                 },
-            option3:
-                {
-                name: "add-ons (1.00 each)",
-                price: 1.00,
-                choices: [ "Creme Brulee +$1.00", "Cheese Foam +$1.00"], selectedOptions: [], limit: 100
-                }
-         }},
-        { id: 217, name: '奇異果蜜綠茶(L) Kiwi Mango Green Tea', price:7.00,
-         options: {
-             option1:
-                 {
-                 name: "Sugar Level",
-                 choices: ["Little Sugar (30%)", "1/2 Sugar (50%)", "Less Sugar (70%)", "Regular Sugar (100%)"],
-                 selectedOptions: [], limit: 1
-                 },
-             option2:
-                 {
-                 name: "add-ons (0.85 each)",
-                 price: 0.85,
-                 choices: [ "Oreo +$0.85", "Boba +$0.85", "Coconut Lychee Jelly +$0.85", "White Boba +$0.85", "Herb Jelly +$0.85"], selectedOptions: [], limit: 100
-                 },
-            option3:
-                {
-                name: "add-ons (1.00 each)",
-                price: 1.00,
-                choices: [ "Creme Brulee +$1.00", "Cheese Foam +$1.00"], selectedOptions: [], limit: 100
-                }
-         }},
-       { id: 219, name: '阿薩姆奶茶 Assam Milk Tea', price: "SP",
-         options: {
+         { id: 29, name: '草莓布蕾鮮乳 Strawberry Creme Brulee Milk', price:"SP",
+       options: {
             optionSize: {
-                name: "Size", choices: ["M $5.50", "L $6.50"], selectedOptions: [], limit: 1, adjustable: true
+                name: "Size", choices: ["M $6.49", "L $7.99"], selectedOptions: [], limit: 1, adjustable: true
             },
-             option1:
+            option1:
                  {
                  name: "Sugar Level",
                  choices: ["Little Sugar (30%)", "1/2 Sugar (50%)", "Less Sugar (70%)", "Regular Sugar (100%)"],
@@ -355,7 +187,7 @@ const HK_ALLEY = {
                  {
                  name: "add-ons (0.85 each)",
                  price: 0.85,
-                 choices: [ "Oreo +$0.85", "Boba +$0.85", "Coconut Lychee Jelly +$0.85", "White Boba +$0.85", "Herb Jelly +$0.85"], selectedOptions: [], limit: 100
+                 choices: [ "Oreo +$0.85", "Boba +$0.85", "Coconut Lychee Jelly +$0.85", "White Boba +$0.85"], selectedOptions: [], limit: 100
                  },
             option3:
                 {
@@ -363,13 +195,13 @@ const HK_ALLEY = {
                 price: 1.00,
                 choices: [ "Creme Brulee +$1.00", "Cheese Foam +$1.00"], selectedOptions: [], limit: 100
                 }
-         }},
-        { id: 221, name: '茉莉奶綠 Jasmine Milk Tea', price:"SP",
-         options: {
+        }},
+        { id: 29, name: '厚芋泥鮮乳 Real Rich Taro Milk', price:"SP",
+       options: {
             optionSize: {
-                name: "Size", choices: ["M $5.50", "L $6.50"], selectedOptions: [], limit: 1, adjustable: true
+                name: "Size", choices: ["M $6.49", "L $7.99"], selectedOptions: [], limit: 1, adjustable: true
             },
-             option1:
+            option1:
                  {
                  name: "Sugar Level",
                  choices: ["Little Sugar (30%)", "1/2 Sugar (50%)", "Less Sugar (70%)", "Regular Sugar (100%)"],
@@ -379,7 +211,7 @@ const HK_ALLEY = {
                  {
                  name: "add-ons (0.85 each)",
                  price: 0.85,
-                 choices: [ "Oreo +$0.85", "Boba +$0.85", "Coconut Lychee Jelly +$0.85", "White Boba +$0.85", "Herb Jelly +$0.85"], selectedOptions: [], limit: 100
+                 choices: [ "Oreo +$0.85", "Boba +$0.85", "Coconut Lychee Jelly +$0.85", "White Boba +$0.85"], selectedOptions: [], limit: 100
                  },
             option3:
                 {
@@ -388,11 +220,33 @@ const HK_ALLEY = {
                 choices: [ "Creme Brulee +$1.00", "Cheese Foam +$1.00"], selectedOptions: [], limit: 100
                 }
          }},
-        { id: 223, name: '深焙烏龍 Deep Roasted Oolong Mlke Tea', price:"SP",
-         options: {
+        { id: 29, name: '金磚港式凍檸 HK Lemon Tea', price:"SP",
+       options: {
             optionSize: {
-                name: "Size", choices: ["M $5.50", "L $6.50"], selectedOptions: [], limit: 1, adjustable: true
+                name: "Size", choices: ["L $6.49", "XL $7.99"], selectedOptions: [], limit: 1, adjustable: true
             },
+            option1:
+                 {
+                 name: "Sugar Level",
+                 choices: ["Little Sugar (30%)", "1/2 Sugar (50%)", "Less Sugar (70%)", "Regular Sugar (100%)"],
+                 selectedOptions: [], limit: 1
+                 },
+             option2:
+                 {
+                 name: "add-ons (0.85 each)",
+                 price: 0.85,
+                 choices: [ "Oreo +$0.85", "Boba +$0.85", "Coconut Lychee Jelly +$0.85", "White Boba +$0.85"], selectedOptions: [], limit: 100
+                 },
+            option3:
+                {
+                name: "add-ons (1.00 each)",
+                price: 1.00,
+                choices: [ "Creme Brulee +$1.00", "Cheese Foam +$1.00"], selectedOptions: [], limit: 100
+                }
+         }},
+        
+        { id: 211, name: '大枝凍檸冰沙 Jumbo HK Leomon Tea Slush', price:7.99,
+         options: {
              option1:
                  {
                  name: "Sugar Level",
@@ -403,7 +257,7 @@ const HK_ALLEY = {
                  {
                  name: "add-ons (0.85 each)",
                  price: 0.85,
-                 choices: [ "Oreo +$0.85", "Boba +$0.85", "Coconut Lychee Jelly +$0.85", "White Boba +$0.85", "Herb Jelly +$0.85"], selectedOptions: [], limit: 100
+                 choices: [ "Oreo +$0.85", "Boba +$0.85", "Coconut Lychee Jelly +$0.85", "White Boba +$0.85"], selectedOptions: [], limit: 100
                  },
             option3:
                 {
@@ -412,12 +266,12 @@ const HK_ALLEY = {
                 choices: [ "Creme Brulee +$1.00", "Cheese Foam +$1.00"], selectedOptions: [], limit: 100
                 }
          }},
-        { id: 225, name: 'Coffe Mousse Latte', price:"SP",
-         options: {
+         { id: 29, name: '豪華百香果綠茶 Deluxe Passion Fruit Green Tea', price:"SP",
+       options: {
             optionSize: {
-                name: "Size", choices: ["M $5.99", "L $6.99"], selectedOptions: [], limit: 1, adjustable: true
+                name: "Size", choices: ["M $7.99", "L $.99"], selectedOptions: [], limit: 1, adjustable: true
             },
-             option1:
+            option1:
                  {
                  name: "Sugar Level",
                  choices: ["Little Sugar (30%)", "1/2 Sugar (50%)", "Less Sugar (70%)", "Regular Sugar (100%)"],
@@ -427,7 +281,7 @@ const HK_ALLEY = {
                  {
                  name: "add-ons (0.85 each)",
                  price: 0.85,
-                 choices: [ "Oreo +$0.85", "Boba +$0.85", "Coconut Lychee Jelly +$0.85", "White Boba +$0.85", "Herb Jelly +$0.85"], selectedOptions: [], limit: 100
+                 choices: [ "Oreo +$0.85", "Boba +$0.85", "Coconut Lychee Jelly +$0.85", "White Boba +$0.85"], selectedOptions: [], limit: 100
                  },
             option3:
                 {
@@ -436,12 +290,12 @@ const HK_ALLEY = {
                 choices: [ "Creme Brulee +$1.00", "Cheese Foam +$1.00"], selectedOptions: [], limit: 100
                 }
          }},
-        { id: 227, name: 'Strawberry Creme Brulee Latte', price:"SP",
-         options: {
+        { id: 29, name: '金磚陳皮檸檬 Aged Tangerine Hk Lemon Tea', price:"SP",
+       options: {
             optionSize: {
-                name: "Size", choices: ["M $6.50", "L $7.50"], selectedOptions: [], limit: 1, adjustable: true
+                name: "Size", choices: ["L $6.99", "XL $8.99"], selectedOptions: [], limit: 1, adjustable: true
             },
-             option1:
+            option1:
                  {
                  name: "Sugar Level",
                  choices: ["Little Sugar (30%)", "1/2 Sugar (50%)", "Less Sugar (70%)", "Regular Sugar (100%)"],
@@ -451,7 +305,7 @@ const HK_ALLEY = {
                  {
                  name: "add-ons (0.85 each)",
                  price: 0.85,
-                 choices: [ "Oreo +$0.85", "Boba +$0.85", "Coconut Lychee Jelly +$0.85", "White Boba +$0.85", "Herb Jelly +$0.85"], selectedOptions: [], limit: 100
+                 choices: [ "Oreo +$0.85", "Boba +$0.85", "Coconut Lychee Jelly +$0.85", "White Boba +$0.85"], selectedOptions: [], limit: 100
                  },
             option3:
                 {
@@ -460,19 +314,22 @@ const HK_ALLEY = {
                 choices: [ "Creme Brulee +$1.00", "Cheese Foam +$1.00"], selectedOptions: [], limit: 100
                 }
          }},
-         { id: 218, name: 'Real Taro Latte', price:"SP",
-         options: {
-             optionsize:
+        { id: 29, name: '陳皮檸檬可樂 Aged Tangerine Lemon Cola', price:"SP",
+       options: {
+            optionSize: {
+                name: "Size", choices: ["L $6.99", "XL $8.99"], selectedOptions: [], limit: 1, adjustable: true
+            },
+            option1:
                  {
-                 name: "Size",
-                 choices: ["M $6.50", "L $7.50"],
-                 selectedOptions: [], limit: 1 , adjustable: true
+                 name: "Sugar Level",
+                 choices: ["Little Sugar (30%)", "1/2 Sugar (50%)", "Less Sugar (70%)", "Regular Sugar (100%)"],
+                 selectedOptions: [], limit: 1
                  },
              option2:
                  {
                  name: "add-ons (0.85 each)",
                  price: 0.85,
-                 choices: [ "Oreo +$0.85", "Boba +$0.85", "Coconut Lychee Jelly +$0.85", "White Boba +$0.85", "Herb Jelly +$0.85"], selectedOptions: [], limit: 100
+                 choices: [ "Oreo +$0.85", "Boba +$0.85", "Coconut Lychee Jelly +$0.85", "White Boba +$0.85"], selectedOptions: [], limit: 100
                  },
             option3:
                 {
@@ -481,7 +338,31 @@ const HK_ALLEY = {
                 choices: [ "Creme Brulee +$1.00", "Cheese Foam +$1.00"], selectedOptions: [], limit: 100
                 }
          }},
-    
+        { id: 29, name: '紅油鮮橙綠茶(L) Grapefruit Orange Green Tea', price:"SP",
+       options: {
+            optionSize: {
+                name: "Size", choices: ["L $6.99", "XL $8.99"], selectedOptions: [], limit: 1, adjustable: true
+            },
+            option1:
+                 {
+                 name: "Sugar Level",
+                 choices: ["Little Sugar (30%)", "1/2 Sugar (50%)", "Less Sugar (70%)", "Regular Sugar (100%)"],
+                 selectedOptions: [], limit: 1
+                 },
+             option2:
+                 {
+                 name: "add-ons (0.85 each)",
+                 price: 0.85,
+                 choices: [ "Oreo +$0.85", "Boba +$0.85", "Coconut Lychee Jelly +$0.85", "White Boba +$0.85"], selectedOptions: [], limit: 100
+                 },
+            option3:
+                {
+                name: "add-ons (1.00 each)",
+                price: 1.00,
+                choices: [ "Creme Brulee +$1.00", "Cheese Foam +$1.00"], selectedOptions: [], limit: 100
+                }
+         }},
+       
         
         
     
