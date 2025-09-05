@@ -2,7 +2,17 @@ const NEW_DA_NOODLES = {
   id: 13,
   name: '牛大 NewDa Noodles',
   dishes: [
-      { id: 131, name: '纯汤牛肉面 Lanzhou Beef Noodle Soup', price:13.95,
+     { id: 1329, name: '孜然炒羊肉配兩塊月牙餅 Sizzling Cumin Lamb Platter w 2 Bread', price: 20.5},
+     { id: 1330, name: '孜然羊肉肉夾饃 Xian Lamb Burger', price: 6.80 },
+    { id: 1331, name: '孜然羊肉拌麵 Stir Fried Cumin lamb Noodles', price:13.95,
+        options: {
+          option1:
+            {
+              name: "Noodle Types",
+              choices: ["二細 Thick","韭叶 Flat ","小宽 Wide","大宽 Extra Wide","刀削 Knife Sliced" ,], selectedOptions: [], limit: 1
+            },
+      }},
+     { id: 131, name: '纯汤牛肉面 Lanzhou Beef Noodle Soup', price:13.95,
         options: {
           option1:
             {
