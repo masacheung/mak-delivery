@@ -70,15 +70,15 @@ const CHEF_GE = {
         { id: 675, name: '西紅柿炒雞蛋 fried egg with Tomato', price:14.99  },
         { id: 677, name: '濃湯娃娃菜 baby cabbage in broth', price:16.99  },
         { id: 678, name: '蒜炒西蘭花 Sauteed broccoli with garlic', price:14.99  },
-        { id: 679, name: '紅燒牛肉麵 Roasted Beef Noodle', price:11.99 ,
-        { id: 680, name: '炸醬麵 jjajangmyon', price:8.99 ,
+        { id: 679, name: '紅燒牛肉麵 Roasted Beef Noodle', price:11.99 },
+        { id: 680, name: '炸醬麵 jjajangmyon', price:8.99 },
         { id: 681, name: '擔擔麵 Tantan Noodle', price:8.99  },
         { id: 683, name: '麻辣小龍蝦蓋飯 Spicy Crawfish over Rice', price:15.99  },
         { id: 684, name: '蒜蓉小龍蝦蓋飯 Garlic Crawfish over Rice', price:15.99  },
         { id: 685, name: '藕椒雞丁蓋飯 Lotus root and pepper diced chicken over rice', price:11.99  },
         { id: 687, name: '魚香肉絲蓋飯 sweet and sour pork with veg over rice', price:11.99  },
         { id: 689, name: '蛋炒飯 Scallion%Egg Fried Rice', price:9.99  },
-        { id: 690, name: '蕃茄雞蛋蓋飯 Scrambled egg with Tomato over Rice', price:11.99  },
+        { id: 690, name: '蕃茄雞蛋蓋飯 Scrambled egg with Tomato over Rice', price:11.99  }
     ]
 }
 
