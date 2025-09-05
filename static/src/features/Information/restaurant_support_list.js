@@ -127,7 +127,7 @@ const restaurants = [
     menu: "https://order.toasttab.com/online/spice-24-edisons",
     image: spiceTwentyFour,
     cuisine: "Szechuan Chinese cuisine",
-    specialty: "create-your-own stir-fry" dry pot",
+    specialty: "create-your-own stir-fry dry pot",
     description: "It offers a modern twist on classic styles with customizable stir-fry dishes and a variety of flavor bases."
   },
   {
