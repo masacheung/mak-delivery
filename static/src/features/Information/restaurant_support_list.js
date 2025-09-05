@@ -163,7 +163,7 @@ const restaurants = [
     menu: "https://yodessertus.com/",
     image: yoDessert,
     cuisine: "Yogurt",
-    specialty: "Yogurt drink and Soymilk,
+    specialty: "Yogurt drink and Soymilk",
     description: "yogurt-based beverages with various favors and dessert"
   },
   {
