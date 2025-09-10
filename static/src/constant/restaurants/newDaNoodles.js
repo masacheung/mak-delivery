@@ -2,7 +2,7 @@ const NEW_DA_NOODLES = {
   id: 13,
   name: '牛大 NewDa Noodles',
   dishes: [
-     { id: 1329, name: '孜然炒羊肉配兩塊月牙餅 Sizzling Cumin Lamb Platter w 2 Bread', price: 20.5},
+     { id: 1329, name: '孜然炒羊肉配兩塊月牙餅 Sizzling Cumin Lamb Platter w 2 Bread', price: 20.99},
      { id: 1330, name: '孜然羊肉肉夾饃 Xian Lamb Burger', price: 6.95 },
     { id: 1331, name: '孜然羊肉拌麵 Stir Fried Cumin lamb Noodles', price:13.95,
         options: {
