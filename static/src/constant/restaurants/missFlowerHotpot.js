@@ -261,7 +261,7 @@ const MISS_FLOWER_HOTPOT = {
         { id: 11105, name: "桂花玫瑰冰汤圆 Sweet Osmanthus and Rose Iced Rice Ball", price: 5.99 },
         { id: 11106, name: "原味椰子冻 Coconut Jelly", price: 12.99 },
         { id: 11107, name: "桃胶雪燕炖木瓜 Papaya Soup with Peach Gum & Snow Lotus", price: 6.99 },
-        { id: 11108, name: "手打鲜奶米麻薯", price: 7.99,
+        { id: 11108, name: "手打鲜奶米麻薯 Handcrafted Fresh Milk Mochi Double Flavor", price: 8.99,
             options: {
                 option1: {
                     name: "Combo",
