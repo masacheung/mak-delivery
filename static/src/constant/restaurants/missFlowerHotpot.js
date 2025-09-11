@@ -30,40 +30,40 @@ const MISS_FLOWER_HOTPOT = {
                 }
             }
         },        
-        { id: 111, name: "花胶鸡汤", price: "SP",
+        { id: 111, name: "花胶鸡汤 Chicken soup with Fish MaW", price: "SP",
             options: {
                 option1: {
-                    name: "份量",
-                    choices: ["2人份 $49.99", "4人份 $89.99"],
+                    name: "servings",
+                    choices: ["2servings $49.99", "4 servings $89.99"],
                     selectedOptions: [],
                     limit: 1,
                     adjustable: true
                 }
             }
         },
-        { id: 112, name: "鲍鱼花胶鸡汤", price: "SP",
+        { id: 112, name: "鲍鱼花胶鸡汤 Chicken soup with Fish Maw and Abalone", price: "SP",
             options: {
                 option1: {
-                    name: "份量",
-                    choices: ["2人份 $69.99", "4人份 $109.99"],
+                    name: "servings",
+                    choices: ["2 servings $69.99", "4 servings $109.99"],
                     selectedOptions: [],
                     limit: 1,
                     adjustable: true
                 }
             }
         },
-        { id: 113, name: "榴槤花胶鸡", price: "SP",
+        { id: 113, name: "野生珍菌菇 Wild Mushroom Soup base ", price: "SP",
             options: {
                 option1: {
                     name: "份量",
-                    choices: ["2人份 $68.99", "4人份 $108.99"],
+                    choices: ["2人份 $15.99", "4人份 $30.99"],
                     selectedOptions: [],
                     limit: 1,
                     adjustable: true
                 }
             }
         },
-        { id: 114, name: "椰子鸡汤", price: "SP",
+        { id: 114, name: "椰子雞湯 Chicken with Coconut Soup", price: "SP",
             options: {
                 option1: {
                     name: "份量",
@@ -74,71 +74,85 @@ const MISS_FLOWER_HOTPOT = {
                 }
             }
         },
-        { id: 115, name: "彩菌鮮雞湯 Stewed Chicken & Mushroom", price: "SP",
+        { id: 115, name: "酸辣金湯鍋 Sour and Spicy Golden Soup Base", price: "SP",
             options: {
                 option1: {
-                    name: "份量",
-                    choices: ["2人份 $49.99", "4人份 $89.99"],
+                    name: "servings",
+                    choices: ["2 servings $15.99","4 servings $30.99"],
                     selectedOptions: [],
                     limit: 1,
                     adjustable: true
                 }
             }
         },
-        { id: 116, name: "芋儿香辣鸡煲", price: "SP",
+            { id: 11110, name: "壽喜燒鍋 Teriyaki Soup Base", price: "SP",
             options: {
                 option1: {
-                    name: "份量",
-                    choices: ["2人份 $46.99", "4人份 $86.99"],
+                    name: "servings",
+                    choices: ["2servings $15.99", "4 servings $30.99"],
                     selectedOptions: [],
                     limit: 1,
                     adjustable: true
                 }
             }
         },
-        { id: 117, name: "素食锅底", price: "SP",
+        { id: 116, name: "芋儿香辣鸡煲 Spicy Chicken Hot Pot with Taro", price: "SP",
             options: {
                 option1: {
-                    name: "份量",
-                    choices: ["2人份 $15.99", "4人份 $30.99"],
+                    name: "servings",
+                    choices: ["2 servings $46.99", "4 servings $86.99"],
+                    selectedOptions: [],
+                    limit: 1,
+                    adjustable: true
+                }
+            }
+        },
+        { id: 117, name: "素食锅底 Vegetarian Soup Base", price: "SP",
+            options: {
+                option1: {
+                    name: "servings",
+                    choices: ["2 servings $15.99", "4 servings $30.99"],
                     selectedOptions: [],
                     limit: 1,
                     adjustable: true
                 },
                 option2: {
-                    name: "汤底类型",
-                    choices: ["野生菌汤底", "素油麻辣汤底", "海椰椰子水汤底"],
+                    name: "Soup Types",
+                    choices: ["素油麻辣汤底 Vegeterian Spicy oil Soup Base ", "海椰椰子水汤底 Pure Coconut Water Soup Base"],
                     selectedOptions: [],
                     limit: 1
                 }
             }
         },
-        { id: 118, name: "鸳鸯锅底", price: "SP",
+        { id: 118, name: "鸳鸯锅底 YuanYang Hot Pot For 2 people ", price: "SP",
             options: {
                 option1: {
-                    name: "主汤底",
+                    name: "主汤底 Pot base",
                     choices: [
-                        "花胶鸡汤 $49.99",
-                        "鲍鱼花胶鸡汤 $69.99",
-                        "榴槤花胶鸡 $68.99",
-                        "椰子鸡汤 $46.99",
-                        "胡椒猪肚鸡汤 $46.99",
-                        "芋儿香辣鸡煲 $46.99",
-                        "素食锅底 $15.99"
+                        "花胶鸡汤 Chicken Soup with Fish Maw $49.99",
+                        "鲍鱼花胶鸡汤 Chicken Soup with Fish Maw and Abalone $69.99",
+                        "榴槤花胶鸡 Golden Chicken Soup with Durian Fish Maw $68.99",
+                        "椰子鸡汤 Chicken with Coconut Soup $46.99",
+                        "胡椒猪肚鸡汤 Pork Tripe with Chicken Soup $46.99",
+                        "芋儿香辣鸡煲 Spicy Chicken Hotpot with Taro $46.99",
+                    
                     ],
                     selectedOptions: [],
                     limit: 1,
                     adjustable: true
                 },
                 option2: {
-                    name: "附加汤底",
+                    name: "附加汤底 addition soup base without ingredients",
                     choices: [
-                        "胡椒猪肚鸡汤 $8.99",
-                        "芋儿香辣鸡煲 $8.99",
-                        "野生菌汤底 $5.99",
-                        "清油麻辣汤底 $5.99",
-                        "花胶鸡汤 $15.99",
-                        "海椰椰子汤底 $15.99"
+                        "胡椒猪肚鸡汤 Pork Stripe with Chicken Soup $8.99",
+                        "芋儿香辣鸡煲 Spicy Chicken Hotpot with Taro $8.99",
+                        "野生菌汤底 Wild Mushroom Soup Base $5.99",
+                        "清油麻辣汤底 Vegeterian Spicy oil Soup Base $5.99",
+                        "花胶鸡汤 Chicken Soup with Fish Maw $15.99",
+                        "海椰椰子汤底 Pure Coconut Water Soup Base $15.99"
+                        "酸辣金湯鍋 Sour and Spicy Golden Soup Base $15.99"
+                        "壽喜燒鍋 Teriyaki Soup Base $15.99"
+                        
                     ],
                     selectedOptions: [],
                     limit: 1,
@@ -146,11 +160,11 @@ const MISS_FLOWER_HOTPOT = {
                 }
             }
         },
-        { id: 119, name: "黄鱼花胶", price: 9.99 },
-        { id: 1110, name: "海参", price: 12.99 },
+        { id: 119, name: "黄鱼花胶 Yellow Croaker Fish Maw", price: 9.99 },
+        { id: 1110, name: "海参 Sea cucumber/pc ", price: 12.99 },
         { id: 1111,  name: "香菇酿鱼籽虾滑Shiitake mushroom stuffed shrimp paste with Roe", price: 14.99 },
-        { id: 1112, name: "有机菌菇拼盘", price: 21.99 },
-        { id: 1113, name: "和牛虾滑壽司", price: 19.99 },
+        { id: 1112, name: "有机菌菇拼盘 Oragnic nine Fresh Mushroom Platter", price: 21.99 },
+
         { id: 1114, name: "贵妃泡饭 Rice with Abalone Sea Cucumber, Bacon, Peas, Corn, Mushroom and egg", price: 21.99 },
         { id: 1115, name: "风生水起撈汁贵妃鸡 Poached Chicken with Special Sauce", price: 19.99},
         { id: 1116, name: "功夫黑鱼片 Fresh Boneless Fish Fillet", price: 13.99},
@@ -224,7 +238,9 @@ const MISS_FLOWER_HOTPOT = {
         { id: 1184, name: "冬瓜 Winter Melon", price: 3.99 },
         { id: 1185, name: "广东点心拼盘 Cantonese Dim Sum Platter", price: 14.99 },
         { id: 1186, name: "九层塔盐酥鸡 Crispy Salted Chicken", price: 9.99 },
-      
+        
+        { id: 11111, name: "陳皮蕃茄烏梅 Tangerine Peel, Tomato & Smoked Plum/pit", price: 9.99 },
+        { id: 11112, name: "梅果杏棗茶 Plum, Apricot & Jujube Tea/pit", price: 9.99 },
         { id: 1188, name: "小酥肉 Thai Fried Pork", price: 10.99 },
         { id: 1189, name: "荔枝虾球 Lychee Fried Shrimp Meatballs", price: 10.99 },
         { id: 1190, name: "风生水起捞汁贵妃鸡 Poached Chicken with Special Sauce", price: 19.99 },
