@@ -2,7 +2,7 @@ const MISS_FLOWER_HOTPOT = {
     id: 11,
     name: '花小娇金汤花胶鸡',
     dishes: [
-        { id: 11109, name: "花小嬌午市套餐", price: 19.99,
+        { id: 11109, name: "花小嬌午市套餐 Lunch Set", price: 19.99,
             options: {
                 option1: {
                     name: "Choose 锅底 SOUP BASE",
