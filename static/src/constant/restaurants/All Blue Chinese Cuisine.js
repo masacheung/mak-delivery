@@ -14,7 +14,7 @@ const ALL BLUE CHINESE CUISINE = {
                     choices: ["Beef", "Beef Tripe"],
                     selectedOptions: [],
                     limit: 1,
-                    adjustable: true
+        
                 }
             }
         },
