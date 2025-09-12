@@ -1,6 +1,6 @@
-const All Blue Chinese Cuisine = {
+const ALL BLUE CHINESE CUISINE = {
     id: 15,
-    name: '四海',
+    name: '四海 All Blue Chinese Cuisine',
     dishes: [
         { id: 61, name: '魚頭泡餅 Fish Head Pot with Pancakes ', price:33.99  },
         { id: 691, name: '酸菜全鱼 Fresh Fish Pot with Sauerkraut', price:38.99 },
