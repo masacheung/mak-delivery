@@ -149,10 +149,9 @@ const MISS_FLOWER_HOTPOT = {
                         "野生菌汤底 Wild Mushroom Soup Base $5.99",
                         "清油麻辣汤底 Vegeterian Spicy oil Soup Base $5.99",
                         "花胶鸡汤 Chicken Soup with Fish Maw $15.99",
-                        "海椰椰子汤底 Pure Coconut Water Soup Base $15.99"
-                        "酸辣金湯鍋 Sour and Spicy Golden Soup Base $15.99"
+                        "海椰椰子汤底 Pure Coconut Water Soup Base $15.99",
+                        "酸辣金湯鍋 Sour and Spicy Golden Soup Base $15.99",
                         "壽喜燒鍋 Teriyaki Soup Base $15.99"
-                        
                     ],
                     selectedOptions: [],
                     limit: 1,
