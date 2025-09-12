@@ -30,3 +30,8 @@ const ALL BLUE CHINESE CUISINE = {
         }},
         
         { id: 158, name: '沙薑豬肚 Pork Tripe with Sand Ginger', price:26.99 },
+        { id: 159, name: '甜皮鸭 Sweet Skin Duck ', price:24.99 },
+        { id: 160, name: '冒烤鸭 Stewed Roasted Duck', price:40.99 },
+        { id: 161, name: '蒜蓉粉丝开背虾 Steamed Shrimps w. Garlic Sauce', price:28.99 },
+        { id: 162, name: '粉蒸牛肉 🌶 Steamed Beef in Rice Flour', price:22.99 },
+        { id: 163, name: '肝腰合炒 🌶 Pork Kidney Liver Stir Fry - $19.99', price:19.99 },
