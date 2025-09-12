@@ -4,15 +4,19 @@ const ALL BLUE CHINESE CUISINE = {
     dishes: [
         { id: 151, name: '辣子雞翅 Chill Chicken Wings', price:19.99},
         { id: 152, name: '鮮椒燉牛肉 Braised Beef with Fresh Chili Green Peppers', price:32.99 },
-        { id: 153, name: '香酥鴨  ', price:38.99 },
+        { id: 153, name: '香酥鴨 Cripsy Mala Duck ', price:24.99 },
         { id: 154, name: '燒乳鴿 Roast Pigeon', price:22.99  },
-        { id: 156, name: "烤鴨 Roast Duck", price: "34.99",
-            options: {
-                option1: {
-                    name: "Choice of Meat",
-                    choices: ["Beef", "Beef Tripe"],
-                    selectedOptions: [],
-                    limit: 1,
+        { id: 155, name: "烤鴨 Roast Duck", price:"SP",
+                options: {
+                    optionSize:
+                        {
+                        name: "Sizes ",
+                        choices: [
+                            "半隻 Half 25.99",
+                            "一隻 Whole 47.99",
+                            
+                        ], selectedOptions: [], limit: 1, adjustable: true
+                    },
        }
         }},
         { id: 157, name: "沙茶粉絲煲 Vermicelli Clay Pot with Satay Sauce", price: "34.99",
@@ -25,4 +29,4 @@ const ALL BLUE CHINESE CUISINE = {
        }
         }},
         
-        { id: 158, name: '沙薑豬肚 Pork Tripe with Sand Ginger', price:26.99 ,
+        { id: 158, name: '沙薑豬肚 Pork Tripe with Sand Ginger', price:26.99 },
