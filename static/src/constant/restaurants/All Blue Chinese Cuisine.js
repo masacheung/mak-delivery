@@ -7,4 +7,15 @@ const ALL BLUE CHINESE CUISINE = {
         { id: 153, name: '香酥鴨  ', price:38.99 },
         { id: 154, name: '燒乳鴿 Roast Pigeon', price:22.99  },
         { id: 156, name: '烤鴨 Roast Duck', price:22.99 },
+        { id: 157, name: "沙茶粉絲煲", price: "34.99",
+            options: {
+                option1: {
+                    name: "Meat Choices",
+                    choices: ["Beef", "Beef Tripe"],
+                    selectedOptions: [],
+                    limit: 1,
+                    adjustable: true
+                }
+            }
+        },
         { id: 693, name: '一特色羊蝎子 Special lamb spine hotpot', price:38.99 ,
