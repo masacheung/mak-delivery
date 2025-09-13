@@ -83,3 +83,7 @@ const ALL BLUE CHINESE CUISINE = {
        { id: 1559, name: '红油猪耳 Pig Ears in Chili Oil', price: 10.99 },
        { id: 1560, name: '干拌牛肉 Sliced Beef w. Chili Seasoning', price: 15.99 },
        { id: 1561, name: '夫妻肺片 Sliced Beef and Tripe in Chili Oil', price: 15.99 },
+    ]
+}
+
+export default ALL BLUE CHINESE CUISINE;
