@@ -69,12 +69,17 @@ const ALL BLUE CHINESE CUISINE = {
         { id: 1545, name: '香辣花蛤 Spicy Clams', price:18.99 },
         { id: 1546, name: '沙姜焗花螺 Sea Snails w. Dry Ginger', price:23.99 },
         { id: 1547, name: '花雕香辣花螺 Spicy Sea Snails in Huadiao Wine', price:23.99 },
-        { id: 1548, name: '姜葱炒双龙 Stir Fry Lobster w. Ginger and Scallion', price:'S.P' },
-
-// Stir Fry Dry Pot
+        { id: 1548, name: '姜葱炒双龙 Stir Fry Lobster w. Ginger and Scallion', price:'S.P' }, 
        { id: 1549, name: '干锅肥肠 Pork Intestines', price:26.99 },
        { id: 1550, name: '干锅花菜 Cauliflower', price:15.99 },
        { id: 1551, name: '干锅排骨虾 Pork Ribs with Shrimps', price:28.99 },
        { id: 1552, name: '干锅牛蛙 Sichuan Spicy Frog', price:32.99 },
        { id: 1553, name: '干锅猪蹄虾 Pork Feet with Shrimps', price:32.99 },
-        
+       { id: 1554, name: '酸辣土豆丝 Hot & Sour Shredded Potato', price: 6.99 },
+       { id: 1555, name: '红油肚丝 Shredded Pork Tripe in Chili Oil', price: 10.99 },
+       { id: 1556, name: '四海手撕鸡 All Blue Cold Shredded Chicken', price: 12.99 },
+       { id: 1557, name: '麻辣兔丁 Diced Rabbit in Spiced Chili Oil', price: 14.99 },
+       { id: 1558, name: '麻辣牛百叶 Spicy Beef Tripe', price: 16.99 },
+       { id: 1559, name: '红油猪耳 Pig Ears in Chili Oil', price: 10.99 },
+       { id: 1560, name: '干拌牛肉 Sliced Beef w. Chili Seasoning', price: 15.99 },
+       { id: 1561, name: '夫妻肺片 Sliced Beef and Tripe in Chili Oil', price: 15.99 },
