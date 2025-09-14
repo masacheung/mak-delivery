@@ -54,6 +54,7 @@ import MISS_FLOWER_HOTPOT from "../../constant/restaurants/missFlowerHotpot";
 import NOODLES_TIME from "../../constant/restaurants/noodlesTimes";
 import NEW_DA_NOODLES from "../../constant/restaurants/newDaNoodles";
 import YO_DESSERT_US from "../../constant/restaurants/yoDessert";
+import ALL_BLUE_CHINESE_CUISINE from "../../constant/restaurants/allBlueChineseCuisine";
 
 // Import restaurant images
 import chefGeImage from "../../image/chef.webp";
@@ -93,7 +94,8 @@ const EditExistingOrder = () => {
     MEE_TU,
     YO_DESSERT_US,
     NOODLES_TIME,
-    NEW_DA_NOODLES
+    NEW_DA_NOODLES,
+    ALL_BLUE_CHINESE_CUISINE
   ];
 
   // Create image mapping using restaurant names from constants

@@ -1,4 +1,4 @@
-const ALL BLUE CHINESE CUISINE = {
+const ALL_BLUE_CHINESE_CUISINE = {
     id: 15,
     name: '四海 All Blue Chinese Cuisine',
     dishes: [
@@ -17,8 +17,8 @@ const ALL BLUE CHINESE CUISINE = {
                             
                         ], selectedOptions: [], limit: 1, adjustable: true
                     },
-       }
-        }},
+                }
+        },
         { id: 157, name: "沙茶粉絲煲 Vermicelli Clay Pot with Satay Sauce", price: "34.99",
             options: {
                 option1: {
@@ -26,9 +26,8 @@ const ALL BLUE CHINESE CUISINE = {
                     choices: ["Beef", "Beef Tripe"],
                     selectedOptions: [],
                     limit: 1,
-       }
+                }
         }},
-        
         { id: 158, name: '沙薑豬肚 Pork Tripe with Sand Ginger', price:26.99 },
         { id: 159, name: '甜皮鸭 Sweet Skin Duck ', price:24.99 },
         { id: 1510, name: '葱爆牛肉 Beef Stir Fry w. Green Onions', price:19.99 },
@@ -84,6 +83,6 @@ const ALL BLUE CHINESE CUISINE = {
        { id: 1560, name: '干拌牛肉 Sliced Beef w. Chili Seasoning', price: 15.99 },
        { id: 1561, name: '夫妻肺片 Sliced Beef and Tripe in Chili Oil', price: 15.99 },
     ]
-}
+};
 
-export default ALL BLUE CHINESE CUISINE;
+export default ALL_BLUE_CHINESE_CUISINE;
