@@ -151,7 +151,13 @@ const AdminOrdersLookup = () => {
                               <Typography color="error" variant="caption">
                                 SP (Check with restaurant)
                               </Typography>
-                            ) : `$${dish.price.toFixed(2)}`}
+                            ) : !isNaN(Number(dish.price)) ? (
+                              `$${Number(dish.price).toFixed(2)}`
+                            ) : (
+                              <Typography color="error" variant="caption">
+                                N/A
+                              </Typography>
+                            )}
                           </li>
                         ))}
                       </ul>
