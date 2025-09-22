@@ -124,7 +124,7 @@ const TASTY_MOMENT = {
     { id: 1118, name: ' XO酱小龙虾炒饭', price:18.95  },
     { id: 1119, name: '孜然牛肉炒饭', price:14.95  },
     { id: 1120, name: '上海菜饭', price:11.95  },
-    { id: 1121, name: '成都炒饭', price：11.95  },
+    { id: 1121, name: '成都炒饭', price:11.95  },
     { id: 1122, name: '卤肉饭', price:12.95  },
     { id: 1123, name: '排骨年糕', price:16.95  },
     { id: 1124, name: '上海粗炒面', price:12.95  },
