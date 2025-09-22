@@ -148,15 +148,15 @@ const TASTY_MOMENT = {
     { id: 1142, name: '泡椒牛杂米线', price:12.95  },
     { id: 1143, name: '川味大肠面', price:10.95  },
     { id: 1144, name: '麻酱凉面', price:5.95  },
-    { id: 1145, name: '葱油拌', price:5.50  },
-    { id: 1146, name: '重庆冷面', price:5.50 },
+    { id: 1145, name: '葱油拌麵', price:5.95  },
+    { id: 1146, name: '重庆冷面', price:11.95 },
     { id: 1147, name: '蟹粉拌面', price:17.95  },
     { id: 1148, name: '辣肉葱油拌面', price:10.95  },
     { id: 1149, name: '大肠葱油拌面', price:10.95  },
-    { id: 1150, name: '麻辣小龙虾拌面', price:17.95  },
-    { id: 1151, name: '茄汁牛肉滑蛋拌面', price:16.95  },
-    { id: 1152, name: '鱼香肉丝拌面', price:9.95  },
-    { id: 1155, name: '椒麻蟹粉燴豆腐', price:26.95  },
+    { id: 1150, name: '麻辣小龙虾拌面', price:18.95  },
+    { id: 1151, name: '茄汁牛肉滑蛋拌面', price:17.95  },
+    { id: 1152, name: '鱼香肉丝拌面', price:12.95  },
+
     
   ],
 };
