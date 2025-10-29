@@ -146,7 +146,7 @@ const pickupLocations = [
     area: "Millburn",
   },
   {
-    name: "1100-8100 Town Center Way, Livingston, NJ 07039",
+    name: "10 Robert H Harp Dr, Livingston, NJ 07039",
     lat: 40.7876,
     lng: -74.3228,
     area: "Livingston",
