@@ -7,7 +7,7 @@ const CHEF_GE = {
         { id: 692, name: '水煮全鱼 Spicy Whole fish in hot chill oil', price:38.99 },
         { id: 652, name: '水煮魚片（黑魚）Sizzling fish in Chilli oil(black fish)', price:22.99  },
         { id: 6116, name: '金汤椒麻鱼(黑鱼) Golfen Fish Fillet Soup', price:22.99 },
-        { id: 693, name: '一特色羊蝎子 Special lamb spine hotpot', price:38.99 ,
+        { id: 693, name: '羊肉鍋 Special lamb hotpot', price:38.99 ,
          options: {
             option1: {
                name: "Spice", choices: ["中辣 Medium Spicy", "原味 Original"], selectedOptions: [], limit: 1
