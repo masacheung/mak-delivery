@@ -45,7 +45,7 @@ const HK_ALLEY = {
         { id: 232, name: '芋泥菠蘿包(1PC) Taro Pineapple Bun ', price:2.99 },
         { id: 233, name: '招牌原味菠蘿包 Butter Pineapple Bun', price:2.99 },
         { id: 252, name: '鹹蛋黃菠蘿包 Salted Egg Pineapple Bun', price:3.49 },
-        { id: 253, name: '肉鬆黃菠蘿包 Pork Floss Pineapple Bun', price:3.49 },
+        { id: 253, name: '肉鬆黃菠蘿包 Pork Floss Pineapple Bun', price:4.49 },
         { id: 254, name: '咖喱魚蛋 Curry Fish Ball 8pc', price:6.49 },
         
          { id: 21, name: '金磚港式奶茶 Hong Kong Milk Tea', price:"SP",
