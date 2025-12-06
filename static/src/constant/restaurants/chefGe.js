@@ -2,6 +2,7 @@ const CHEF_GE = {
     id: 6,
     name: '葛师傅',
     dishes: [
+        { id: 6117, name: '羊杂汤 Signature Lamb Offal Soup', price:13.99  }
         { id: 61, name: '魚頭泡餅 Fish Head Pot with Pancakes ', price:33.99  },
         { id: 691, name: '酸菜全鱼 Fresh Fish Pot with Sauerkraut', price:38.99 },
         { id: 692, name: '水煮全鱼 Spicy Whole fish in hot chill oil', price:38.99 },
@@ -61,7 +62,7 @@ const CHEF_GE = {
         { id: 643, name: '菠蘿咕嚕肉 Pineapple and sweet and sour sauce', price:16.99  },
         { id: 636, name: '乾煸拆骨肉 Dry Stir Fry Pork', price:18.99},
         { id: 644, name: '紅燒肉 Braised Pork Belly Cube', price:17.99  },
-        { id: 6102, name: "农家小炒肉 Chef Ge's Special Pork", price:16.99 },
+        { id: 6102, name: "农家小炒肉 Chef Ge's Special Pork", price:17.99 },
         { id: 645, name: "葛师傅小炒 Chef Ge's Special Mix Veggie", price:16.99  },
         { id: 646, name: '笋尖肉絲 Stir Fried Bamboo Shoots and Pork', price:16.99  },
         { id: 640, name: '乾鍋干葉豆腐 Chiba Tofu Dry Pot', price:17.99  },
