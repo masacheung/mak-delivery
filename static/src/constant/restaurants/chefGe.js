@@ -2,7 +2,7 @@ const CHEF_GE = {
     id: 6,
     name: '葛师傅',
     dishes: [
-        { id: 6117, name: '羊杂汤 Signature Lamb Offal Soup', price:13.99  }
+        { id: 6117, name: '羊杂汤 Signature Lamb Offal Soup', price:13.99  },
         { id: 61, name: '魚頭泡餅 Fish Head Pot with Pancakes ', price:33.99  },
         { id: 691, name: '酸菜全鱼 Fresh Fish Pot with Sauerkraut', price:38.99 },
         { id: 692, name: '水煮全鱼 Spicy Whole fish in hot chill oil', price:38.99 },
