@@ -9,13 +9,14 @@ const UserAuth = () => {
     phoneNumber: '+1',
     verificationCode: '',
     resetCode: '',
-    newPassword: ''
+    newPassword: '',
+    confirmPassword: ''
   });
   const [message, setMessage] = useState('');
   const [messageType, setMessageType] = useState('info');
   const [isVerificationStep, setIsVerificationStep] = useState(false);
   const [isPasswordResetStep, setIsPasswordResetStep] = useState(false);
-  const [passwordResetStage, setPasswordResetStage] = useState('request'); // 'request', 'verify', 'update'
+  const [passwordResetStage, setPasswordResetStage] = useState('request'); // 'request', 'update'
   const [resendCooldown, setResendCooldown] = useState(0);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [user, setUser] = useState(null);
@@ -173,7 +174,8 @@ const UserAuth = () => {
           phoneNumber: '+1',
           verificationCode: '',
           resetCode: '',
-          newPassword: ''
+          newPassword: '',
+          confirmPassword: ''
         });
       } else {
         showMessage(data.message, 'error');
@@ -256,8 +258,8 @@ const UserAuth = () => {
     e.preventDefault();
     
     if (passwordResetStage === 'request') {
-      if (!formData.phoneNumber) {
-        showMessage('Please enter your phone number', 'error');
+      if (!formData.username || !formData.phoneNumber) {
+        showMessage('Please enter your username and phone number', 'error');
         return;
       }
 
@@ -273,6 +275,7 @@ const UserAuth = () => {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
+            username: formData.username,
             phoneNumber: formData.phoneNumber
           }),
         });
@@ -281,50 +284,17 @@ const UserAuth = () => {
 
         if (data.success) {
           showMessage(data.message, 'success');
-          setPasswordResetStage('verify');
-        } else {
-          showMessage(data.message, 'error');
-        }
-      } catch (error) {
-        console.error('Password reset request error:', error);
-        showMessage('Failed to send reset code. Please try again.', 'error');
-      }
-    } else if (passwordResetStage === 'verify') {
-      if (!formData.resetCode) {
-        showMessage('Please enter the reset code', 'error');
-        return;
-      }
-
-      try {
-        const response = await fetch('/api/users/reset-password-verify', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            phoneNumber: formData.phoneNumber,
-            resetCode: formData.resetCode
-          }),
-        });
-
-        const data = await response.json();
-        console.log('Password reset verify response:', data);
-
-        if (data.success) {
-          showMessage(data.message, 'success');
-          setTempResetToken(data.tempToken); // Store the temporary token
-          console.log('Stored temp token:', data.tempToken);
           setPasswordResetStage('update');
         } else {
           showMessage(data.message, 'error');
         }
       } catch (error) {
-        console.error('Password reset verification error:', error);
-        showMessage('Failed to verify reset code. Please try again.', 'error');
+        console.error('Password reset request error:', error);
+        showMessage('Failed to verify credentials. Please try again.', 'error');
       }
     } else if (passwordResetStage === 'update') {
-      if (!formData.newPassword) {
-        showMessage('Please enter your new password', 'error');
+      if (!formData.newPassword || !formData.confirmPassword) {
+        showMessage('Please enter your new password and confirm it', 'error');
         return;
       }
 
@@ -333,7 +303,10 @@ const UserAuth = () => {
         return;
       }
 
-      console.log('About to send password update with:', { phoneNumber: formData.phoneNumber, tempToken: tempResetToken, newPasswordLength: formData.newPassword.length });
+      if (formData.newPassword !== formData.confirmPassword) {
+        showMessage('Passwords do not match', 'error');
+        return;
+      }
 
       try {
         const response = await fetch('/api/users/reset-password-update', {
@@ -342,8 +315,8 @@ const UserAuth = () => {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
+            username: formData.username,
             phoneNumber: formData.phoneNumber,
-            tempToken: tempResetToken, // Use temporary token instead of resetCode
             newPassword: formData.newPassword
           }),
         });
@@ -362,7 +335,8 @@ const UserAuth = () => {
             phoneNumber: '+1',
             verificationCode: '',
             resetCode: '',
-            newPassword: ''
+            newPassword: '',
+            confirmPassword: ''
           });
         } else {
           showMessage(data.message, 'error');
@@ -386,7 +360,8 @@ const UserAuth = () => {
       phoneNumber: '+1',
       verificationCode: '',
       resetCode: '',
-      newPassword: ''
+      newPassword: '',
+      confirmPassword: ''
     });
     showMessage('Logged out successfully', 'success');
   };
@@ -436,11 +411,20 @@ const UserAuth = () => {
             {passwordResetStage === 'request' && (
               <>
                 <Typography variant="h6" gutterBottom>
-                  Enter Your Phone Number
+                  Reset Password
                 </Typography>
                 <Typography variant="body2" gutterBottom>
-                  Enter the phone number you used to create your account
+                  Enter your username and phone number to reset your password
                 </Typography>
+                  <TextField
+                    fullWidth
+                    label="Username"
+                    name="username"
+                    value={formData.username}
+                    onChange={handleInputChange}
+                    margin="normal"
+                    required
+                  />
                 <TextField
                   fullWidth
                   label="Phone Number"
@@ -457,36 +441,7 @@ const UserAuth = () => {
                   variant="contained"
                   sx={{ mt: 2, mb: 1 }}
                 >
-                  Send Reset Code
-                </Button>
-              </>
-            )}
-
-            {passwordResetStage === 'verify' && (
-              <>
-                <Typography variant="h6" gutterBottom>
-                  Enter Reset Code
-                </Typography>
-                <Typography variant="body2" gutterBottom>
-                  Please enter the 6-digit reset code sent to {formData.phoneNumber}
-                </Typography>
-                <TextField
-                  fullWidth
-                  label="Reset Code"
-                  name="resetCode"
-                  value={formData.resetCode}
-                  onChange={handleInputChange}
-                  margin="normal"
-                  required
-                  inputProps={{ maxLength: 6 }}
-                />
-                <Button
-                  type="submit"
-                  fullWidth
-                  variant="contained"
-                  sx={{ mt: 2, mb: 1 }}
-                >
-                  Verify Code
+                  Submit
                 </Button>
               </>
             )}
@@ -509,6 +464,16 @@ const UserAuth = () => {
                   margin="normal"
                   required
                 />
+                <TextField
+                  fullWidth
+                  label="Confirm Password"
+                  name="confirmPassword"
+                  type="password"
+                  value={formData.confirmPassword}
+                  onChange={handleInputChange}
+                  margin="normal"
+                  required
+                />
                 <Button
                   type="submit"
                   fullWidth
@@ -527,6 +492,13 @@ const UserAuth = () => {
                 setIsPasswordResetStep(false);
                 setPasswordResetStage('request');
                 setTempResetToken('');
+                setFormData({
+                  ...formData,
+                  username: '',
+                  newPassword: '',
+                  confirmPassword: '',
+                  phoneNumber: '+1'
+                });
               }}
             >
               Back to Login

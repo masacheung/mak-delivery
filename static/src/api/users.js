@@ -6,7 +6,8 @@ const pool = require('../db/connection.js');
 const { 
     createUser, 
     getUserByUsername, 
-    getUserByPhoneNumber, 
+    getUserByPhoneNumber,
+    getUserByUsernameAndPhone,
     verifyUser,
     verifyUserByPhone, 
     updateVerificationCode,
@@ -369,23 +370,24 @@ router.post('/login', async (req, res) => {
     }
 });
 
-// Password reset request
+// Password reset request - verify username and phone number
 router.post('/reset-password-request', async (req, res) => {
     try {
-        const { phoneNumber } = req.body;
+        const { username, phoneNumber } = req.body;
 
-        if (!phoneNumber) {
+        if (!username || !phoneNumber) {
             return res.status(400).json({ 
                 success: false, 
-                message: 'Phone number is required' 
+                message: 'Username and phone number are required' 
             });
         }
 
-        const user = await getUserByPhoneNumber(phoneNumber);
+        // Verify that username and phone number match in the database
+        const user = await getUserByUsernameAndPhone(username, phoneNumber);
         if (!user) {
             return res.status(404).json({ 
                 success: false, 
-                message: 'No account found with this phone number' 
+                message: 'No account found with this username and phone number combination' 
             });
         }
 
@@ -396,25 +398,9 @@ router.post('/reset-password-request', async (req, res) => {
             });
         }
 
-        // Send verification SMS using Twilio Verify API
-        const smsResult = await sendVerificationSMS(phoneNumber);
-
-        if (!smsResult.success) {
-            return res.status(500).json({ 
-                success: false, 
-                message: 'Failed to send reset code. Please try again.' 
-            });
-        }
-
-        // For fallback mode, store the code as reset token
-        if (smsResult.code) {
-            const resetExpiresAt = new Date(Date.now() + 10 * 60 * 1000); // 10 minutes
-            await setPasswordResetToken(phoneNumber, smsResult.code, resetExpiresAt);
-        }
-
         res.json({
             success: true,
-            message: 'Password reset code sent to your phone number'
+            message: 'User verified. You can now reset your password.'
         });
 
     } catch (error) {
@@ -426,105 +412,30 @@ router.post('/reset-password-request', async (req, res) => {
     }
 });
 
-// Verify password reset code
-router.post('/reset-password-verify', async (req, res) => {
-    try {
-        const { phoneNumber, resetCode } = req.body;
-        console.log('Password reset verify request:', { phoneNumber, resetCode });
-
-        if (!phoneNumber || !resetCode) {
-            return res.status(400).json({ 
-                success: false, 
-                message: 'Phone number and reset code are required' 
-            });
-        }
-
-        const user = await getUserByPhoneNumber(phoneNumber);
-        if (!user) {
-            return res.status(404).json({ 
-                success: false, 
-                message: 'User not found' 
-            });
-        }
-
-        let isValidCode = false;
-        
-        // Try Twilio Verify API first
-        const twilioResult = await verifyVerificationCode(phoneNumber, resetCode);
-        console.log('Twilio verification result:', twilioResult);
-        
-        if (twilioResult && twilioResult.success) {
-            isValidCode = true;
-        } else if (twilioResult && !twilioResult.success) {
-            // Twilio Verify API failed
-            return res.status(400).json({ 
-                success: false, 
-                message: 'Invalid or expired reset code' 
-            });
-        } else {
-            // Fallback to database verification
-            const verifiedUser = await verifyPasswordResetToken(phoneNumber, resetCode);
-            console.log('Database verification result:', verifiedUser);
-            if (verifiedUser) {
-                isValidCode = true;
-            }
-        }
-
-        if (!isValidCode) {
-            return res.status(400).json({ 
-                success: false, 
-                message: 'Invalid or expired reset code' 
-            });
-        }
-
-        // Generate a temporary reset token (valid for 10 minutes)
-        const tempResetToken = Math.floor(100000 + Math.random() * 900000).toString();
-        
-        console.log('Generated temp token:', tempResetToken);
-        
-        // Store the temporary token in the database using PostgreSQL's timestamp functions
-        await pool.query(
-            'UPDATE users SET verification_code = $1, verification_expires_at = NOW() + INTERVAL \'10 minutes\' WHERE phone_number = $2',
-            [tempResetToken, phoneNumber]
-        );
-
-        res.json({
-            success: true,
-            message: 'Reset code verified successfully',
-            canResetPassword: true,
-            tempToken: tempResetToken // Send this to frontend
-        });
-
-    } catch (error) {
-        console.error('Password reset verification error:', error);
-        res.status(500).json({ 
-            success: false, 
-            message: 'Internal server error' 
-        });
-    }
-});
+// Note: reset-password-verify endpoint is no longer needed in the new flow
+// Keeping it for backward compatibility but it won't be used
 
 // Update password after reset
 router.post('/reset-password-update', async (req, res) => {
     try {
-        const { phoneNumber, tempToken, newPassword } = req.body;
-        console.log('Password reset update request:', { phoneNumber, tempToken, newPasswordLength: newPassword?.length });
+        const { username, phoneNumber, newPassword } = req.body;
+        console.log('Password reset update request:', { username, phoneNumber, newPasswordLength: newPassword?.length });
 
-        if (!phoneNumber || !tempToken || !newPassword) {
+        if (!username || !phoneNumber || !newPassword) {
             return res.status(400).json({ 
                 success: false, 
-                message: 'Phone number, temp token, and new password are required' 
+                message: 'Username, phone number, and new password are required' 
             });
         }
 
-        // Verify the temporary token from database
-        const verifiedUser = await verifyPasswordResetToken(phoneNumber, tempToken);
-        console.log('Temp token verification result:', verifiedUser);
+        // Verify that username and phone number match in the database
+        const verifiedUser = await getUserByUsernameAndPhone(username, phoneNumber);
+        console.log('User verification result:', verifiedUser);
         
         if (!verifiedUser) {
             return res.status(400).json({ 
                 success: false, 
-                message: 'Invalid or expired reset session' 
+                message: 'Invalid username and phone number combination' 
             });
         }
 
