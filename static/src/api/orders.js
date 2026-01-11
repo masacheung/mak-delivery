@@ -73,108 +73,85 @@ router.get("/", async (req, res) => {
 
 // **NEW ROUTE: Search orders by pickup location and date**
 router.get("/search", async (req, res) => {
-  const { pick_up_location, pick_up_date, restaurantId } = req.query;
+  const { pick_up_location, pick_up_date, restaurantId, payment_status } = req.query;
 
   if (!pick_up_date) {
     return res.status(400).json({ error: "Date are required." });
   }
 
-  if (pick_up_location && restaurantId) {
-    try {
-      const result = await pool.query(
-        "SELECT * FROM orders WHERE pick_up_location = $1 AND pick_up_date = $2 AND order_details::jsonb ? $3 ORDER BY id ASC",
-        [pick_up_location, pick_up_date, restaurantId]
-      );
+  // Build query dynamically based on filters
+  let query = "SELECT * FROM orders WHERE pick_up_date = $1";
+  const params = [pick_up_date];
+  let paramIndex = 2;
 
-      if (result.rows.length === 0) {
-        return res.status(200).json({ message: "No orders found for the given criteria.", orders: [] });
-      }
+  if (pick_up_location) {
+    query += ` AND pick_up_location = $${paramIndex}`;
+    params.push(pick_up_location);
+    paramIndex++;
+  }
 
-      const orders = result.rows.map((order) => ({
-        id: order.id,
-        username: order.username,
-        order_details: typeof order.order_details === "string" ? JSON.parse(order.order_details) : order.order_details,
-        total: order.total,
-        notes: order.notes
-      }));
+  if (restaurantId) {
+    query += ` AND order_details::jsonb ? $${paramIndex}`;
+    params.push(restaurantId);
+    paramIndex++;
+  }
 
-      res.json(orders);
-    } catch (error) {
-      console.error("Error fetching orders:", error);
-      res.status(500).json({ error: "Database error" });
+  if (payment_status && payment_status !== 'All') {
+    query += ` AND payment_status = $${paramIndex}`;
+    params.push(payment_status);
+    paramIndex++;
+  }
+
+  query += " ORDER BY id ASC";
+
+  try {
+    const result = await pool.query(query, params);
+
+    if (result.rows.length === 0) {
+      return res.status(200).json([]);
     }
-  } else if (pick_up_location) {
-      try {
-          const result = await pool.query(
-            "SELECT * FROM orders WHERE pick_up_location = $1 AND pick_up_date = $2 ORDER BY id ASC",
-            [pick_up_location, pick_up_date]
-          );
 
-          if (result.rows.length === 0) {
-            return res.status(200).json({ message: "No orders found for the given criteria.", orders: [] });
-          }
+    const orders = result.rows.map((order) => ({
+      id: order.id,
+      username: order.username,
+      order_details: typeof order.order_details === "string" ? JSON.parse(order.order_details) : order.order_details,
+      total: order.total,
+      notes: order.notes,
+      payment_status: order.payment_status || 'Unpaid'
+    }));
 
-          const orders = result.rows.map((order) => ({
-            id: order.id,
-            username: order.username,
-            order_details: typeof order.order_details === "string" ? JSON.parse(order.order_details) : order.order_details,
-            total: order.total,
-            notes: order.notes
-          }));
+    res.json(orders);
+  } catch (error) {
+    console.error("Error fetching orders:", error);
+    res.status(500).json({ error: "Database error" });
+  }
+});
 
-          res.json(orders);
-        } catch (error) {
-          console.error("Error fetching orders:", error);
-          res.status(500).json({ error: "Database error" });
-        }
-  } else if (restaurantId) {
-    try {
-      const result = await pool.query(
-        "SELECT * FROM orders WHERE order_details::jsonb ? $1 AND pick_up_date = $2 ORDER BY id ASC",
-        [restaurantId, pick_up_date]
-      );
+// Update payment status for an order
+router.put("/payment/:orderId", async (req, res) => {
+  const { orderId } = req.params;
+  const { payment_status } = req.body;
 
-      if (result.rows.length === 0) {
-        return res.status(200).json({ message: "No orders found for the given criteria.", orders: [] });
-      }
+  const validStatuses = ['Unpaid', 'Zelle', 'Venmo', 'Cash'];
+  
+  if (!payment_status || !validStatuses.includes(payment_status)) {
+    return res.status(400).json({ error: "Invalid payment status. Must be one of: Unpaid, Zelle, Venmo, Cash" });
+  }
 
-      const orders = result.rows.map((order) => ({
-        id: order.id,
-        username: order.username,
-        order_details: typeof order.order_details === "string" ? JSON.parse(order.order_details) : order.order_details,
-        total: order.total,
-        notes: order.notes
-      }));
+  try {
+    const result = await pool.query(
+      "UPDATE orders SET payment_status = $1 WHERE id = $2 RETURNING *",
+      [payment_status, orderId]
+    );
 
-      res.json(orders);
-    } catch (error) {
-      console.error("Error fetching orders:", error);
-      res.status(500).json({ error: "Database error" });
+    if (result.rows.length === 0) {
+      return res.status(404).json({ error: "Order not found" });
     }
-  } else {
-    try {
-      const result = await pool.query(
-        "SELECT * FROM orders WHERE pick_up_date = $1 ORDER BY id ASC",
-        [pick_up_date]
-      );
 
-      if (result.rows.length === 0) {
-        return res.status(200).json({ message: "No orders found for the given criteria.", orders: [] });
-      }
-
-      const orders = result.rows.map((order) => ({
-        id: order.id,
-        username: order.username,
-        order_details: typeof order.order_details === "string" ? JSON.parse(order.order_details) : order.order_details,
-        total: order.total,
-        notes: order.notes
-      }));
-
-      res.json(orders);
-    } catch (error) {
-      console.error("Error fetching orders:", error);
-      res.status(500).json({ error: "Database error" });
-    }
+    res.status(200).json({ message: "Payment status updated", order: result.rows[0] });
+  } catch (error) {
+    console.error("Error updating payment status:", error);
+    res.status(500).json({ error: "Database error" });
   }
 });
 

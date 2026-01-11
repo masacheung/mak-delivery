@@ -12,7 +12,9 @@ const AdminOrdersLookup = () => {
   const [pickUpLocation, setPickUpLocation] = useState("");
   const [pickUpDate, setPickUpDate] = useState("");
   const [restaurant, setRestaurant] = useState("");
+  const [paymentFilter, setPaymentFilter] = useState("All");
   const [orders, setOrders] = useState([]);
+  const [filteredOrders, setFilteredOrders] = useState([]);
   const [sumTotal, setSumTotal] = useState(0);
   const [isFieldsVisible, setIsFieldsVisible] = useState(false);
 
@@ -22,25 +24,76 @@ const AdminOrdersLookup = () => {
 
   const handleSearch = async () => {
     const encodePickUpLocation = encodeURIComponent(pickUpLocation);
+    const paymentStatusParam = paymentFilter !== "All" ? `&payment_status=${paymentFilter}` : "";
 
     try {
-      const response = await fetch(`/api/orders/search?pick_up_location=${encodePickUpLocation}&pick_up_date=${pickUpDate}&restaurantId=${restaurant}`);
+      const response = await fetch(`/api/orders/search?pick_up_location=${encodePickUpLocation}&pick_up_date=${pickUpDate}&restaurantId=${restaurant}${paymentStatusParam}`);
       if (!response.ok) {
         throw new Error("Failed to fetch orders");
       }
       const data = await response.json();
-      const sum = data.reduce((acc, item) => acc + parseFloat(item.total || 0), 0);;
+      const sum = data.reduce((acc, item) => acc + parseFloat(item.total || 0), 0);
 
       setOrders(data);
+      setFilteredOrders(data);
       setSumTotal(parseFloat(sum.toFixed(2)));
     } catch (error) {
       console.error("Error fetching orders:", error);
       setOrders([]);
+      setFilteredOrders([]);
     }
   };
 
+  const handlePaymentStatusChange = async (orderId, newStatus) => {
+    try {
+      const response = await fetch(`/api/orders/payment/${orderId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ payment_status: newStatus }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to update payment status");
+      }
+
+      // Update local state
+      const updatedOrders = orders.map(order => 
+        order.id === orderId ? { ...order, payment_status: newStatus } : order
+      );
+      setOrders(updatedOrders);
+      
+      // Apply filter to updated orders
+      applyFilter(updatedOrders, paymentFilter);
+    } catch (error) {
+      console.error("Error updating payment status:", error);
+      alert("Failed to update payment status. Please try again.");
+    }
+  };
+
+  const applyFilter = (ordersToFilter, filter) => {
+    let filtered = ordersToFilter;
+    
+    if (filter !== "All") {
+      filtered = ordersToFilter.filter(order => 
+        (order.payment_status || 'Unpaid') === filter
+      );
+    }
+    
+    setFilteredOrders(filtered);
+    const sum = filtered.reduce((acc, item) => acc + parseFloat(item.total || 0), 0);
+    setSumTotal(parseFloat(sum.toFixed(2)));
+  };
+
+  const handlePaymentFilterChange = (e) => {
+    const newFilter = e.target.value;
+    setPaymentFilter(newFilter);
+    applyFilter(orders, newFilter);
+  };
+
   const exportToWord = async () => {
-    if (orders.length === 0) {
+    if (filteredOrders.length === 0) {
       alert("No orders to export. Please search for orders first.");
       return;
     }
@@ -72,7 +125,7 @@ const AdminOrdersLookup = () => {
         new Paragraph({
           children: [
             new TextRun({ text: "Total Orders: ", bold: true }),
-            new TextRun({ text: orders.length.toString() }),
+            new TextRun({ text: filteredOrders.length.toString() }),
           ],
           spacing: { after: 100 },
         })
@@ -151,7 +204,7 @@ const AdminOrdersLookup = () => {
       );
 
       // Add order rows
-      orders.forEach((order) => {
+      filteredOrders.forEach((order) => {
         const orderDetailsParagraphs = [];
         
         if (order.order_details && Object.keys(order.order_details).length > 0) {
@@ -356,6 +409,25 @@ const AdminOrdersLookup = () => {
           onChange={(e) => setPickUpDate(e.target.value)}
         />
 
+        {/* Payment Filter Dropdown */}
+        <FormControl sx={{ minWidth: 300, mb: 2 }}>
+          <InputLabel shrink htmlFor="payment-filter-select">
+            Filter by Payment Status
+          </InputLabel>
+          <Select
+            id="payment-filter-select"
+            value={paymentFilter}
+            onChange={handlePaymentFilterChange}
+            displayEmpty
+          >
+            <MenuItem value="All">All</MenuItem>
+            <MenuItem value="Unpaid">Unpaid</MenuItem>
+            <MenuItem value="Zelle">Zelle</MenuItem>
+            <MenuItem value="Venmo">Venmo</MenuItem>
+            <MenuItem value="Cash">Cash</MenuItem>
+          </Select>
+        </FormControl>
+
         <Button variant="contained" color="primary" onClick={handleSearch}>
           Search Orders
         </Button>
@@ -375,14 +447,31 @@ const AdminOrdersLookup = () => {
                 Export to Word
               </Button>
             </Box>
-            <Typography><strong>Total Orders:</strong> {orders.length}</Typography>
+            <Typography><strong>Total Orders:</strong> {filteredOrders.length}</Typography>
             <Typography><strong>Total :</strong> $ {sumTotal}</Typography>
             <Typography><strong>Location:</strong> {pickUpLocation}</Typography>
-            {orders.map((order) => (
+            {filteredOrders.map((order) => (
               <Card key={order.id} sx={{ mt: 2, p: 2 }}>
-                <Typography><strong>Order ID:</strong> {order.id}</Typography>
-                <Typography><strong>Username:</strong> {order.username}</Typography>
-                <Typography><strong>Total:</strong> ${isNaN(Number(order.total)) ? "N/A" : Number(order.total).toFixed(2)}</Typography>
+                <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 1 }}>
+                  <Box>
+                    <Typography><strong>Order ID:</strong> {order.id}</Typography>
+                    <Typography><strong>Username:</strong> {order.username}</Typography>
+                    <Typography><strong>Total:</strong> ${isNaN(Number(order.total)) ? "N/A" : Number(order.total).toFixed(2)}</Typography>
+                  </Box>
+                  <FormControl sx={{ minWidth: 150 }}>
+                    <InputLabel shrink>Payment Status</InputLabel>
+                    <Select
+                      value={order.payment_status || 'Unpaid'}
+                      onChange={(e) => handlePaymentStatusChange(order.id, e.target.value)}
+                      label="Payment Status"
+                    >
+                      <MenuItem value="Unpaid">Unpaid</MenuItem>
+                      <MenuItem value="Zelle">Zelle</MenuItem>
+                      <MenuItem value="Venmo">Venmo</MenuItem>
+                      <MenuItem value="Cash">Cash</MenuItem>
+                    </Select>
+                  </FormControl>
+                </Box>
 
                 <Typography variant="h6" mt={2}><strong>Order Details:</strong></Typography>
                 {order.order_details && Object.keys(order.order_details).length > 0 ? (
