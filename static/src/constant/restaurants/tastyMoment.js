@@ -64,7 +64,7 @@ const TASTY_MOMENT = {
     { id: 162, name: '红烧鱼头烩豆腐', price:29.95  },
     { id: 163, name: '清炒虾仁', price:19.95 },
     { id: 164, name: '油爆虾', price:19.95  },
-    { id: 165, name: '八宝辣酱', price:18.95  },
+    { id: 165, name: '八宝辣酱', price:22.95  },
     { id: 166, name: '苔條黃魚', price:23.95 },
     { id: 167, name: '黑椒牛仔粒', price:36.95  },
     { id: 168, name: '蟹粉豆腐', price:23.95  },
