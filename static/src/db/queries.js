@@ -33,6 +33,14 @@ const getUserByPhoneNumber = async (phoneNumber) => {
     return result.rows[0];
 };
 
+const getUserByUsernameAndPhone = async (username, phoneNumber) => {
+    const result = await pool.query(
+        'SELECT * FROM users WHERE username = $1 AND phone_number = $2',
+        [username, phoneNumber]
+    );
+    return result.rows[0];
+};
+
 const verifyUser = async (phoneNumber, verificationCode) => {
     // Handle Twilio Verify workflow
     if (verificationCode === 'twilio-verified') {
@@ -102,7 +110,8 @@ module.exports = {
     createOrder, 
     createUser, 
     getUserByUsername, 
-    getUserByPhoneNumber, 
+    getUserByPhoneNumber,
+    getUserByUsernameAndPhone,
     verifyUser, 
     verifyUserByPhone,
     updateVerificationCode,
