@@ -522,4 +522,39 @@ router.get('/profile', verifyToken, async (req, res) => {
     }
 });
 
+// Find username by phone number
+router.post('/find-username', async (req, res) => {
+    try {
+        const { phoneNumber } = req.body;
+
+        if (!phoneNumber) {
+            return res.status(400).json({ 
+                success: false, 
+                message: 'Phone number is required' 
+            });
+        }
+
+        const user = await getUserByPhoneNumber(phoneNumber);
+        if (!user) {
+            return res.status(404).json({ 
+                success: false, 
+                message: 'No account found with this phone number' 
+            });
+        }
+
+        res.json({
+            success: true,
+            username: user.username,
+            message: 'Username found successfully'
+        });
+
+    } catch (error) {
+        console.error('Find username error:', error);
+        res.status(500).json({ 
+            success: false, 
+            message: 'Internal server error' 
+        });
+    }
+});
+
 module.exports = router; 

@@ -16,11 +16,14 @@ const UserAuth = () => {
   const [messageType, setMessageType] = useState('info');
   const [isVerificationStep, setIsVerificationStep] = useState(false);
   const [isPasswordResetStep, setIsPasswordResetStep] = useState(false);
+  const [isFindUsernameStep, setIsFindUsernameStep] = useState(false);
   const [passwordResetStage, setPasswordResetStage] = useState('request'); // 'request', 'update'
   const [resendCooldown, setResendCooldown] = useState(0);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [user, setUser] = useState(null);
   const [tempResetToken, setTempResetToken] = useState('');
+  const [foundUsername, setFoundUsername] = useState('');
+  const [findUsernamePhoneNumber, setFindUsernamePhoneNumber] = useState('+1');
 
   // Check if user is already logged in
   useEffect(() => {
@@ -45,9 +48,12 @@ const UserAuth = () => {
     setMessage('');
     setIsVerificationStep(false);
     setIsPasswordResetStep(false);
+    setIsFindUsernameStep(false);
     setPasswordResetStage('request');
     setResendCooldown(0);
     setTempResetToken('');
+    setFoundUsername('');
+    setFindUsernamePhoneNumber('+1');
     setFormData({
       username: '',
       password: '',
@@ -348,6 +354,68 @@ const UserAuth = () => {
     }
   };
 
+  const handleFindUsername = async (e) => {
+    e.preventDefault();
+    
+    if (!findUsernamePhoneNumber) {
+      showMessage('Please enter your phone number', 'error');
+      return;
+    }
+
+    if (!validatePhoneNumber(findUsernamePhoneNumber)) {
+      showMessage('Please enter a valid US phone number (+1 followed by 10 digits)', 'error');
+      return;
+    }
+
+    try {
+      const response = await fetch('/api/users/find-username', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          phoneNumber: findUsernamePhoneNumber
+        }),
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        setFoundUsername(data.username);
+        showMessage(data.message, 'success');
+      } else {
+        showMessage(data.message, 'error');
+        setFoundUsername('');
+      }
+    } catch (error) {
+      console.error('Find username error:', error);
+      showMessage('Failed to find username. Please try again.', 'error');
+      setFoundUsername('');
+    }
+  };
+
+  const handleFindUsernamePhoneChange = (e) => {
+    const { value } = e.target;
+    
+    // Always maintain +1 prefix and format phone number
+    let formattedValue = value;
+    
+    // Remove all non-digit characters except +
+    formattedValue = formattedValue.replace(/[^\d+]/g, '');
+    
+    // Ensure it starts with +1
+    if (!formattedValue.startsWith('+1')) {
+      formattedValue = '+1' + formattedValue.replace(/^\+?1?/, '');
+    }
+    
+    // Limit to +1 + 10 digits
+    if (formattedValue.length > 12) {
+      formattedValue = formattedValue.substring(0, 12);
+    }
+    
+    setFindUsernamePhoneNumber(formattedValue);
+  };
+
   const handleLogout = () => {
     localStorage.removeItem('authToken');
     localStorage.removeItem('userData');
@@ -397,7 +465,7 @@ const UserAuth = () => {
     <Box sx={{ maxWidth: 400, margin: '0 auto', padding: 3 }}>
       <Paper elevation={3} sx={{ padding: 3 }}>
         <Typography variant="h4" component="h1" gutterBottom align="center">
-          {isPasswordResetStep ? 'Reset Password' : 'User Authentication'}
+          {isPasswordResetStep ? 'Reset Password' : isFindUsernameStep ? 'Find Username' : 'User Authentication'}
         </Typography>
         
         {message && (
@@ -406,7 +474,55 @@ const UserAuth = () => {
           </Alert>
         )}
 
-        {isPasswordResetStep ? (
+        {isFindUsernameStep ? (
+          <Box component="form" onSubmit={handleFindUsername} sx={{ mt: 2 }}>
+            <Typography variant="h6" gutterBottom>
+              Find Your Username
+            </Typography>
+            <Typography variant="body2" gutterBottom>
+              Enter your phone number to retrieve your username
+            </Typography>
+            <TextField
+              fullWidth
+              label="Phone Number"
+              name="findUsernamePhoneNumber"
+              value={findUsernamePhoneNumber}
+              onChange={handleFindUsernamePhoneChange}
+              margin="normal"
+              placeholder="+1234567890"
+              required
+            />
+            {foundUsername && (
+              <Box sx={{ mt: 2, p: 2, backgroundColor: '#e3f2fd', borderRadius: 1 }}>
+                <Typography variant="body2" color="text.secondary">
+                  Your username is:
+                </Typography>
+                <Typography variant="h6" sx={{ mt: 1, fontWeight: 'bold' }}>
+                  {foundUsername}
+                </Typography>
+              </Box>
+            )}
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              sx={{ mt: 2, mb: 1 }}
+            >
+              Find Username
+            </Button>
+            <Button
+              fullWidth
+              variant="text"
+              onClick={() => {
+                setIsFindUsernameStep(false);
+                setFoundUsername('');
+                setFindUsernamePhoneNumber('+1');
+              }}
+            >
+              Back to Login
+            </Button>
+          </Box>
+        ) : isPasswordResetStep ? (
           <Box component="form" onSubmit={handlePasswordReset} sx={{ mt: 2 }}>
             {passwordResetStage === 'request' && (
               <>
@@ -588,8 +704,16 @@ const UserAuth = () => {
                     <Button
                       fullWidth
                       variant="text"
-                      onClick={() => setIsPasswordResetStep(true)}
+                      onClick={() => setIsFindUsernameStep(true)}
                       sx={{ mt: 1 }}
+                    >
+                      Forget Username?
+                    </Button>
+                    <Button
+                      fullWidth
+                      variant="text"
+                      onClick={() => setIsPasswordResetStep(true)}
+                      sx={{ mt: 0.5 }}
                     >
                       Forgot Password?
                     </Button>
