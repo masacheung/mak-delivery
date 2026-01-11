@@ -152,13 +152,35 @@ const AdminOrdersLookup = () => {
 
       // Add order rows
       orders.forEach((order) => {
-        let orderDetailsText = "";
+        const orderDetailsParagraphs = [];
         
         if (order.order_details && Object.keys(order.order_details).length > 0) {
-          Object.entries(order.order_details).forEach(([restaurantId, dishes]) => {
+          const restaurantEntries = Object.entries(order.order_details);
+          
+          restaurantEntries.forEach(([restaurantId, dishes], index) => {
             const restaurantName = RESTAURANT_NAME[restaurantId] || `Restaurant ${restaurantId}`;
-            orderDetailsText += `${restaurantName}:\n`;
             
+            // Add separator line before each restaurant (except the first one)
+            if (index > 0) {
+              orderDetailsParagraphs.push(
+                new Paragraph({
+                  text: "─────────────────────────────────────",
+                  spacing: { before: 200, after: 200 },
+                })
+              );
+            }
+            
+            // Restaurant name as a paragraph
+            orderDetailsParagraphs.push(
+              new Paragraph({
+                children: [
+                  new TextRun({ text: restaurantName, bold: true }),
+                ],
+                spacing: { after: 100 },
+              })
+            );
+            
+            // Add dishes
             dishes.forEach((dish) => {
               let dishText = `  - ${dish.name}`;
               
@@ -179,13 +201,30 @@ const AdminOrdersLookup = () => {
                 dishText += " - N/A";
               }
               
-              orderDetailsText += dishText + "\n";
+              orderDetailsParagraphs.push(
+                new Paragraph({
+                  text: dishText,
+                  spacing: { after: 50 },
+                })
+              );
             });
             
-            orderDetailsText += "\n";
+            // Add extra spacing after each restaurant
+            if (index < restaurantEntries.length - 1) {
+              orderDetailsParagraphs.push(
+                new Paragraph({
+                  text: "",
+                  spacing: { after: 100 },
+                })
+              );
+            }
           });
         } else {
-          orderDetailsText = "No order details available.";
+          orderDetailsParagraphs.push(
+            new Paragraph({
+              text: "No order details available.",
+            })
+          );
         }
 
         const orderTotal = isNaN(Number(order.total)) 
@@ -205,7 +244,7 @@ const AdminOrdersLookup = () => {
                 children: [new Paragraph({ text: orderTotal })],
               }),
               new TableCell({
-                children: [new Paragraph({ text: orderDetailsText })],
+                children: orderDetailsParagraphs,
               }),
               new TableCell({
                 children: [new Paragraph({ text: order.notes || "N/A" })],
