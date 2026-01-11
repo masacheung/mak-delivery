@@ -2,217 +2,36 @@ const HK_ALLEY = {
     id: 2,
     name: '港茶巷 HK ALLEY',
     dishes: [
-        { id: 238, name: 'Combo A', price:26.99,
+        { id: 239, name: 'Combo A', price:20.49,
         options: {
             option1: {
-                name: "Meal", choices: ["黑椒牛扒意粉 Black Pepper Steak Over Pasta ", "茄汁牛扒意粉 Tomato Sauce Steak Over Pasta"], selectedOptions: [], limit: 1
+                name: "Meal", choices: ["牛肉滑蛋蓋飯 Slippery Egg Chicken Over Rice +0.99", "豬扒滑蛋蓋飯 Slippery Egg Chicken"], selectedOptions: [], limit: 1
             },
             optionSize: {
-                name: "Drinks", choices: [ "金磚港式奶茶 Hong Kong Milk Tea", "金磚鴛鴦奶茶 Coffee HK Milktea","金磚港式檸檬 HK Lemon Tea","草莓布蕾鮮乳 Strawberry Cream Brulee Milk(M)","紅柚鮮橙綠茶 Grapefruit Orange Green Tea","招牌楊技甘露 Mango Pomelo +0.99 "], selectedOptions: [], limit: 1, adjustable: true
+                name: "Drinks", choices: ["陳皮凍檸 Aged Tangerine Hk Lemon Tea", "豪華百香果蜜綠茶 Deluxe Passion Fruit Green Tea","金磚港式檸檬 HK Lemon Tea","紅柚鮮橙綠茶 Grapefruit Orange Green Tea","百香果蜜綠茶 Passion Fruit Green Tea"], selectedOptions: [], limit: 1, adjustable: true
             },
              }},
-        { id: 239, name: 'Combo B', price:18.99,
+         { id: 240, name: 'Combo B', price:21.49,
         options: {
             option1: {
-                name: "Meal", choices: ["黑椒豬扒意粉 Black Pepper PorkChop Over Pasta ", "茄汁豬扒意粉 Tomato Sauce PorkChop Over Pasta", "茄汁雞扒意粉 Tomato Sauce Chicken Over Pasta", "黑椒雞扒意粉 Black Pepper Chicken Over Pasta", "咖喱雞扒蓋飯 Curry Chicken Over Rice", "雞扒滑蛋蓋飯 Slippery Egg Chicken Over Rice"], selectedOptions: [], limit: 1
+                name: "Meal", choices: ["茄汁牛肉芝士焗飯 Tomato Beef Pasta Gartin +0.99","咖喱牛肉芝士焗飯 Curry Beef Rice Gartin +0.99", "茄汁豬扒芝士焗意粉 Tomato Sauce PorkChop Pasta Gratin ", "茄汁雞扒芝士焗意粉 Tomato Sauce Chicken Pasta Gratin", "咖喱豬扒芝士焗飯 Curry porkchop Over Rice Gratin", "咖喱雞扒芝士飯 Curry Chicken Rice Gratin"], selectedOptions: [], limit: 1
             },
             optionSize: {
-                name: "Drinks", choices: [ "金磚港式奶茶 Hong Kong Milk Tea", "金磚鴛鴦奶茶 Coffee HK Milktea","金磚港式檸檬 HK Lemon Tea","草莓布蕾鮮乳 Strawberry Cream Brulee Milk(M)","紅柚鮮橙綠茶 Grapefruit Orange Green Tea","招牌楊技甘露 Mango Pomelo +0.99 "], selectedOptions: [], limit: 1, adjustable: true
+                name: "Drinks", choices: [ "陳皮凍檸 Aged Tangerine Hk Lemon Tea", "豪華百香果蜜綠茶 Deluxe Passion Fruit Green Tea","金磚港式檸檬 HK Lemon Tea","紅柚鮮橙綠茶 Grapefruit Orange Green Tea","百香果蜜綠茶 Passion Fruit Green Tea"], selectedOptions: [], limit: 1, adjustable: true
             },
              }},
-         { id: 240, name: 'Combo C', price:20.99,
-        options: {
-            option1: {
-                name: "Meal", choices: ["茄汁牛肉芝士焗飯 Tomato Beef Pasta Gartin +0.99","咖喱牛肉芝士焗飯 Curry Beef Rice Gartin +0.99","牛肉滑蛋蓋飯 Slippery Egg Beef Over Rice", "茄汁豬扒芝士焗意粉 Tomato Sauce PorkChop Pasta Gratin ", "茄汁雞扒芝士焗意粉 Tomato Sauce Chicken Pasta Gratin", "咖喱豬扒芝士焗飯 Curry porkchop Over Rice Gratin", "咖喱雞扒芝士飯 Curry Chicken Rice Gratin"], selectedOptions: [], limit: 1
-            },
-            optionSize: {
-                name: "Drinks", choices: [ "金磚港式奶茶 Hong Kong Milk Tea", "金磚鴛鴦奶茶 Coffee HK Milktea","金磚港式檸檬 HK Lemon Tea","草莓布蕾鮮乳 Strawberry Cream Brulee Milk(M)","紅柚鮮橙綠茶 Grapefruit Orange Green Tea","招牌楊技甘露 Mango Pomelo +0.99 "], selectedOptions: [], limit: 1, adjustable: true
-            },
-             }},
-        { id: 241, name: '咖喱牛肉芝士焗飯 Curry Beef Rice Gartin', price:17.49},
-        { id: 242, name: '咖喱豬扒芝士焗飯 Curry Pork Chop Rice Gartin', price:16.49},
-        { id: 243, name: '黑椒牛扒意粉 Black Pepper Steak Over Pasta ', price:21.99},
-        { id: 244, name: '茄汁牛扒意粉 Tomato Sauce Steak Over Pasta', price:21.99},
+        { id: 241, name: '咖喱牛肉芝士焗飯 Curry Beef Rice Gartin', price:17.79},
+        { id: 242, name: '咖喱豬扒芝士焗飯 Curry Pork Chop Rice Gartin', price:16.99},
+        { id: 243, name: '茄汁牛肉芝士焗意粉 Tomato Beef Pasta Gartin', price:17.79},
         { id: 245, name: '茄汁豬扒芝士焗意粉 Tomato Sauce porkChop pasta Gartin', price:17.49},
-        { id: 246, name: '茄汁牛肉芝士焗意粉 Tomato Beef Pasta Gartin', price:17.49},
-        { id: 247, name: '咖哩雞扒蓋飯 Curry Chicken Over Rice', price:14.49},
-        { id: 248, name: '雞扒滑蛋蓋飯 Slippery Egg Chicken Over Rice', price:14.99},
-        { id: 249, name: '牛肉滑蛋蓋飯 Slippery Egg Chicken Over Rice', price:16.49},
-        { id: 250, name: 'Spicy 黑椒雞扒意粉 Black Pepper Chicken Over Pasta', price:14.49},
-        { id: 251, name: 'Spicy 黑椒豬扒意粉 Black Pepper PorkChop Over Pasta', price:14.49},
-        { id: 229, name: '咖喱魚蛋撈丁 Curry Fish Ball Lo Ding', price:9.99 },
-        { id: 231, name: '鹹蛋黃菠蘿包 Salted Egg Pineapple Bun', price:3.49 },
-        { id: 232, name: '芋泥菠蘿包(1PC) Taro Pineapple Bun ', price:2.99 },
-        { id: 233, name: '招牌原味菠蘿包 Butter Pineapple Bun', price:2.99 },
+        { id: 246, name: '茄汁牛肉芝士焗意粉 Tomato Beef Pasta Gartin', price:17.79},
+        { id: 248, name: '雞扒滑蛋蓋飯 Slippery Egg Chicken Over Rice', price:15.49},
+        { id: 249, name: '牛肉滑蛋蓋飯 Slippery Egg Chicken Over Rice', price:16.79},
+         { id: 231, name: '鹹蛋黃菠蘿包 Salted Egg Pineapple Bun', price:3.59 },
+        { id: 232, name: '芋泥菠蘿包(1PC) Taro Pineapple Bun ', price:3.19 },
+        { id: 233, name: '招牌原味菠蘿包 Butter Pineapple Bun', price:3.19 },
         { id: 252, name: '鹹蛋黃菠蘿包 Salted Egg Pineapple Bun', price:3.49 },
-        { id: 253, name: '肉鬆黃菠蘿包 Pork Floss Pineapple Bun', price:4.49 },
         { id: 254, name: '咖喱魚蛋 Curry Fish Ball 8pc', price:6.49 },
-        
-         { id: 21, name: '金磚港式奶茶 Hong Kong Milk Tea', price:"SP",
-         options: {
-            optionSize: {
-                name: "Size", choices: ["M $6.00", "L $7.00"], selectedOptions: [], limit: 1, adjustable: true
-            },
-            option1:
-                {
-                name: "Sugar Level",
-                choices: ["Little Sugar (30%)", "1/2 Sugar (50%)", "Less Sugar (70%)", "Regular Sugar (100%)"],
-                selectedOptions: [], limit: 1
-                },
-            option2:
-                {
-                name: "add-ons (0.85 each)",
-                price: 0.85,
-                choices: [ "Oreo +$0.85", "Boba +$0.85", "Coconut Lychee Jelly +$0.85", "White Boba +$0.85"], selectedOptions: [], limit: 100
-                },
-            option3:
-                {
-                name: "add-ons (1.00 each)",
-                price: 1.00,
-                choices: [ "Creme Brulee +$1.00", "Cheese Foam +$1.00"], selectedOptions: [], limit: 100
-                }
-         }},
-        { id: 23, name: '布蕾打冷震 Creme Brulee Milk Tea Frappe(L)', price:7.99,
-          options: {
-              option1:
-                 {
-                 name: "Sugar Level",
-                 choices: ["Little Sugar (30%)", "1/2 Sugar (50%)", "Less Sugar (70%)", "Regular Sugar (100%)"],
-                 selectedOptions: [], limit: 1
-                 },
-             option2:
-                 {
-                 name: "add-ons (0.85 each)",
-                 price: 0.85,
-                 choices: [ "Oreo +$0.85", "Boba +$0.85", "Coconut Lychee Jelly +$0.85", "White Boba +$0.85"], selectedOptions: [], limit: 100
-                 },
-            option3:
-                {
-                name: "add-ons (1.00 each)",
-                price: 1.00,
-                choices: [ "Creme Brulee +$1.00", "Cheese Foam +$1.00"], selectedOptions: [], limit: 100
-                }
-          }},
-        { id: 24, name: ' 金磚布蕾奶茶 Creme Brulee Milk Tea', price:"SP",
-         options: {
-            optionSize: {
-                name: "Size", choices: ["M $6.00", "L $6.99"], selectedOptions: [], limit: 1, adjustable: true
-            },
-            option1:
-                 {
-                 name: "Sugar Level",
-                 choices: ["Little Sugar (30%)", "1/2 Sugar (50%)", "Less Sugar (70%)", "Regular Sugar (100%)"],
-                 selectedOptions: [], limit: 1
-                 },
-            option2:
-                 {
-                 name: "add-ons (0.85 each)",
-                 price: 0.85,
-                 choices: [ "Oreo +$0.85", "Boba +$0.85", "Coconut Lychee Jelly +$0.85", "White Boba +$0.85"], selectedOptions: [], limit: 100
-                 },
-            option3:
-                {
-                name: "add-ons (1.00 each)",
-                price: 1.00,
-                choices: [ "Creme Brulee +$1.00", "Cheese Foam +$1.00"], selectedOptions: [], limit: 100
-                }
-         }},
-        { id: 26, name: '金磚鴛鴦奶茶 Coffee HK Milktea', price:"SP",
-        options: {
-            optionSize: {
-                name: "Size", choices: ["M $6.00", "L $7.00"], selectedOptions: [], limit: 1, adjustable: true
-            },
-            option1:
-                 {
-                 name: "Sugar Level",
-                 choices: ["Little Sugar (30%)", "1/2 Sugar (50%)", "Less Sugar (70%)", "Regular Sugar (100%)"],
-                 selectedOptions: [], limit: 1
-                 },
-             option2:
-                 {
-                 name: "add-ons (0.85 each)",
-                 price: 0.85,
-                 choices: [ "Oreo +$0.85", "Boba +$0.85", "Coconut Lychee Jelly +$0.85", "White Boba +$0.85"], selectedOptions: [], limit: 100
-                 },
-            option3:
-                {
-                name: "add-ons (1.00 each)",
-                price: 1.00,
-                choices: [ "Creme Brulee +$1.00", "Cheese Foam +$1.00"], selectedOptions: [], limit: 100
-                }
-        }},
-        { id: 28, name: '奧利奧咖啡慕斯拿鐵 Oreo Coffee Mousse Latte', price:"SP",
-         options: {
-            optionSize: {
-                name: "Size", choices: ["M $6.49", "L $7.99"], selectedOptions: [], limit: 1, adjustable: true
-            },
-             option1:
-                 {
-                 name: "Sugar Level",
-                 choices: ["Little Sugar (30%)", "1/2 Sugar (50%)", "Less Sugar (70%)", "Regular Sugar (100%)"],
-                 selectedOptions: [], limit: 1
-                 },
-             option2:
-                 {
-                 name: "add-ons (0.85 each)",
-                 price: 0.85,
-                 choices: [ "Oreo +$0.85", "Boba +$0.85", "Coconut Lychee Jelly +$0.85", "White Boba +$0.85"], selectedOptions: [], limit: 100
-                 },
-            option3:
-                {
-                name: "add-ons (1.00 each)",
-                price: 1.00,
-                choices: [ "Creme Brulee +$1.00", "Cheese Foam +$1.00"], selectedOptions: [], limit: 100
-                }
-         }},
-         { id: 29, name: '草莓布蕾鮮乳 Strawberry Creme Brulee Milk', price:"SP",
-       options: {
-            optionSize: {
-                name: "Size", choices: ["M $6.49", "L $7.99"], selectedOptions: [], limit: 1, adjustable: true
-            },
-            option1:
-                 {
-                 name: "Sugar Level",
-                 choices: ["Little Sugar (30%)", "1/2 Sugar (50%)", "Less Sugar (70%)", "Regular Sugar (100%)"],
-                 selectedOptions: [], limit: 1
-                 },
-             option2:
-                 {
-                 name: "add-ons (0.85 each)",
-                 price: 0.85,
-                 choices: [ "Oreo +$0.85", "Boba +$0.85", "Coconut Lychee Jelly +$0.85", "White Boba +$0.85"], selectedOptions: [], limit: 100
-                 },
-            option3:
-                {
-                name: "add-ons (1.00 each)",
-                price: 1.00,
-                choices: [ "Creme Brulee +$1.00", "Cheese Foam +$1.00"], selectedOptions: [], limit: 100
-                }
-        }},
-        { id: 29, name: '厚芋泥鮮乳 Real Rich Taro Milk', price:"SP",
-       options: {
-            optionSize: {
-                name: "Size", choices: ["M $6.49", "L $7.99"], selectedOptions: [], limit: 1, adjustable: true
-            },
-            option1:
-                 {
-                 name: "Sugar Level",
-                 choices: ["Little Sugar (30%)", "1/2 Sugar (50%)", "Less Sugar (70%)", "Regular Sugar (100%)"],
-                 selectedOptions: [], limit: 1
-                 },
-             option2:
-                 {
-                 name: "add-ons (0.85 each)",
-                 price: 0.85,
-                 choices: [ "Oreo +$0.85", "Boba +$0.85", "Coconut Lychee Jelly +$0.85", "White Boba +$0.85"], selectedOptions: [], limit: 100
-                 },
-            option3:
-                {
-                name: "add-ons (1.00 each)",
-                price: 1.00,
-                choices: [ "Creme Brulee +$1.00", "Cheese Foam +$1.00"], selectedOptions: [], limit: 100
-                }
-         }},
         { id: 29, name: '金磚港式凍檸 HK Lemon Tea', price:"SP",
        options: {
             optionSize: {
