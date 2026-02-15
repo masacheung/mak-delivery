@@ -5,7 +5,7 @@ const HK_ALLEY = {
         { id: 239, name: 'Combo A', price:20.49,
         options: {
             option1: {
-                name: "Meal", choices: ["牛肉滑蛋蓋飯 Slippery Egg Chicken Over Rice +0.99", "豬扒滑蛋蓋飯 Slippery Egg Chicken"], selectedOptions: [], limit: 1
+                name: "Meal", choices: ["雞扒滑蛋蓋飯 Slippery Egg Chicken Over Rice", "豬扒滑蛋蓋飯 Slippery Egg Chicken"], selectedOptions: [], limit: 1
             },
             optionSize: {
                 name: "Drinks", choices: ["陳皮凍檸 Aged Tangerine Hk Lemon Tea", "豪華百香果蜜綠茶 Deluxe Passion Fruit Green Tea","金磚港式檸檬 HK Lemon Tea","紅柚鮮橙綠茶 Grapefruit Orange Green Tea","百香果蜜綠茶 Passion Fruit Green Tea"], selectedOptions: [], limit: 1, adjustable: true
@@ -14,7 +14,7 @@ const HK_ALLEY = {
          { id: 240, name: 'Combo B', price:21.49,
         options: {
             option1: {
-                name: "Meal", choices: ["茄汁牛肉芝士焗飯 Tomato Beef Pasta Gartin +0.99","咖喱牛肉芝士焗飯 Curry Beef Rice Gartin +0.99", "茄汁豬扒芝士焗意粉 Tomato Sauce PorkChop Pasta Gratin ", "茄汁雞扒芝士焗意粉 Tomato Sauce Chicken Pasta Gratin", "咖喱豬扒芝士焗飯 Curry porkchop Over Rice Gratin", "咖喱雞扒芝士飯 Curry Chicken Rice Gratin"], selectedOptions: [], limit: 1
+                name: "Meal", choices: ["茄汁豬扒芝士焗意粉 Tomato Sauce PorkChop Pasta Gratin ", "茄汁雞扒芝士焗意粉 Tomato Sauce Chicken Pasta Gratin", "咖喱豬扒芝士焗飯 Curry porkchop Over Rice Gratin", "咖喱雞扒芝士飯 Curry Chicken Rice Gratin"], selectedOptions: [], limit: 1
             },
             optionSize: {
                 name: "Drinks", choices: [ "陳皮凍檸 Aged Tangerine Hk Lemon Tea", "豪華百香果蜜綠茶 Deluxe Passion Fruit Green Tea","金磚港式檸檬 HK Lemon Tea","紅柚鮮橙綠茶 Grapefruit Orange Green Tea","百香果蜜綠茶 Passion Fruit Green Tea"], selectedOptions: [], limit: 1, adjustable: true
