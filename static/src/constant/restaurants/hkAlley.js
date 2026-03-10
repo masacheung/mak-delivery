@@ -20,7 +20,6 @@ const HK_ALLEY = {
                 name: "Drinks", choices: [ "陳皮凍檸 Aged Tangerine Hk Lemon Tea", "豪華百香果蜜綠茶 Deluxe Passion Fruit Green Tea","金磚港式檸檬 HK Lemon Tea","紅柚鮮橙綠茶 Grapefruit Orange Green Tea","百香果蜜綠茶 Passion Fruit Green Tea"], selectedOptions: [], limit: 1, adjustable: true
             },
              }},
-        { id: 241, name: '咖喱牛肉芝士焗飯 Curry Beef Rice Gartin', price:17.79},
         { id: 242, name: '咖喱豬扒芝士焗飯 Curry Pork Chop Rice Gartin', price:16.99},
         { id: 243, name: '茄汁牛肉芝士焗意粉 Tomato Beef Pasta Gartin', price:17.79},
         { id: 245, name: '茄汁豬扒芝士焗意粉 Tomato Sauce porkChop pasta Gartin', price:17.49},
