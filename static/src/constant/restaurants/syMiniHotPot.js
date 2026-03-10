@@ -9,7 +9,7 @@ const S_Y_MINI_HOTPOT = {
             },
             option2: {
                 name: "Option (6.49 each)",
-                choices: ["Black Beef Tripe 大片毛肚 ($6.49)", "Shrimp Paste 虾滑 ($6.49)", "Snowflake Beef 雪花牛肉 ($6.49)", "Pork Intestine 肥肠 ($6.49)", "Fried Pork Shin 炸猪皮 ($6.49)"], 
+                choices: ["Frog leg 牛蛙 ($6.49)","Black Beef Tripe 大片毛肚 ($6.49)", "Shrimp Paste 虾滑 ($6.49)", "Snowflake Beef 雪花牛肉 ($6.49)", "Pork Intestine 肥肠 ($6.49)", "Fried Pork Shin 炸猪皮 ($6.49)"], 
                 selectedOptions: [], 
                 limit: 100,
                 price: 6.49
@@ -97,17 +97,37 @@ const S_Y_MINI_HOTPOT = {
         { id: 417, name: 'Rice Stuffed Chicken Wing 鸡翅包饭', price:6.95 },
         { id: 418, name: 'Rice Stuffed Chicken Wing(2) 鸡翅包饭(2)', price:12.95 },
         { id: 419, name: 'Fried Chicken Cutlet with cheese 爆浆鸡排', price:9.95  },
-        { id: 420, name: 'Oyster Pancake 蚵仔煎', price:11.95  },
         { id: 421, name: 'Crispy Fried Pork 小酥肉', price:9.95  },
         { id: 422, name: 'Crispy Peanut 炒花生', price:5.00  },
         { id: 423, name: 'Cucumber in Hot and Sour Sauce 拍黄瓜', price:6.95  },
         { id: 424, name: 'Pickled Chicken Feet 泡椒凤爪', price:8.95  },
         { id: 425, name: 'Sliced Beef and OX Tongue in Chili Sauce 夫妻肺片', price:10.95  },
         { id: 426, name: 'Arctic Surf Clams w. Homemade Sauce 凉拌北极贝', price:15.95  },
-        { id: 427, name: 'Boiled Fish Filets in Hot Chili Oil 水煮鱼片', price:"SP",
+        { id: 427, name: 'whole fish in Hot Chili Oil 水煮活魚', price:"SP",
+            options: {
+                optionSize: {
+                    name: "Size", choices: ["M $28.95", "L $44.95"], selectedOptions: [], limit: 1, adjustable: true
+                }
+            }
+        },
+        { id: 428, name: 'Boiled Fish Filets in Hot Chili Oil 水煮魚片', price:"SP",
             options: {
                 optionSize: {
                     name: "Size", choices: ["M $24.95", "L $39.95"], selectedOptions: [], limit: 1, adjustable: true
+                }
+            }
+        },
+        { id: 420, name: 'Boiled Fish Filets in Hot Chili Oil 水煮田雞', price:"SP",
+            options: {
+                optionSize: {
+                    name: "Size", choices: ["M $25.95", "L $44.95"], selectedOptions: [], limit: 1, adjustable: true
+                }
+            }
+        },
+        { id: 451, name: 'Whole Fish w. Fish Filets 酸菜活魚', price:"SP",
+            options: {
+                optionSize: {
+                    name: "Size", choices: ["M $28.95", "L $44.95"], selectedOptions: [], limit: 1, adjustable: true
                 }
             }
         },
@@ -118,6 +138,13 @@ const S_Y_MINI_HOTPOT = {
                 }
             }
         },
+        { id: 452, name: 'Whole fish w. Pickled Pepper 泡椒活魚', price:"SP",
+            options: {
+                optionSize: {
+                    name: "Size", choices: ["M $28.95", "L $44.95"], selectedOptions: [], limit: 1, adjustable: true
+                }
+            }
+        },
         { id: 431, name: 'Live Fish Fillets w. Pickled Pepper 泡椒鱼片', price:"SP",
             options: {
                 optionSize: {
@@ -125,50 +152,37 @@ const S_Y_MINI_HOTPOT = {
                 }
             }
         },
-        { id: 433, name: 'Spicy Beef in Szechuan Style 水煮牛肉', price:30.95  },
-        { id: 434, name: 'Five Stars Mixed in Spicy Chili Sauce 五鲜烩 (毛肚,黄喉,肥牛,午餐肉,鱿鱼须) 菜类(青瓜,白菜,木耳,腐竹,魔芋) Black beef tripe, yellow throat, beef, spam meat, squid, cucumber, napa, earwood, bean curd stick, konjak', price:30.95  },
+        { id: 453, name: 'Frog with Pickled Pepper 泡椒田雞', price:"SP",
+            options: {
+                optionSize: {
+                    name: "Size", choices: ["M $25.95", "L $49.95"], selectedOptions: [], limit: 1, adjustable: true
+                }
+            }
+        },
+        { id: 433, name: 'Spicy Beef in Szechuan Style 水煮牛肉', price:33.95  },
+        { id: 434, name: 'Five Stars Mixed in Spicy Chili Sauce 五鲜烩 (毛肚,黄喉,肥牛,午餐肉,鱿鱼须) 菜类(青瓜,白菜,木耳,腐竹,魔芋) Black beef tripe, yellow throat, beef, spam meat, squid, cucumber, napa, earwood, bean curd stick, konjak', price:33.95  },
         { id: 435, name: 'Pork Intestine w. Chili Pot 干锅肥肠', price:22.95  },
+        { id: 454, name: 'Frog with Chill Pot 干锅田雞 ', price:"SP",
+            options: {
+                optionSize: {
+                    name: "Size", choices: ["M $25.95", "L $49.95"], selectedOptions: [], limit: 1, adjustable: true
+                }
+            }
+        },
         { id: 436, name: 'Cumin Beef 孜然牛肉', price:18.95  },
-        { id: 437, name: 'Mala Stir-Fried 麻辣香锅 (面筋,腐竹,花菜,鱿鱼,虾,鱼豆腐,肥牛,鸡胗) Gluten, bean curd stick, cauliflower, squid, shrimp, fish tofu, beef, chicken gizzard', price:30.95 },
+        { id: 437, name: 'Mala Stir-Fried 麻辣香锅 (面筋,腐竹,花菜,鱿鱼,虾,鱼豆腐,肥牛,鸡胗) Gluten, bean curd stick, cauliflower, squid, shrimp, fish tofu, beef, chicken gizzard', price:33.95 },
         { id: 438, name: 'Twice Cooked Pork Belly 回锅肉', price:17.95  },
         { id: 439, name: 'ChongQing Spicy Chicken 重庆辣子鸡', price:16.95  },
         { id: 440, name: 'Hot & Sour Shredded Potato 酸辣土豆丝', price:13.95  },
-        { id: 441, name: 'Mapo Tofu 麻婆豆腐', price:13.95  },
-        { id: 442, name: 'West Lake Beef Soup 西湖牛肉羹', price:16.95  },
+        { id: 441, name: 'Mapo Tofu 麻婆豆腐', price:15.95  },
+        { id: 442, name: 'West Lake Beef Soup 西湖牛肉羹', price:19.95  },
         { id: 443, name: 'Squid w. Cauliflower 鱿鱼炒花菜', price:13.95  },
         { id: 444, name: 'Pork Belly with Cauliflower 五花肉炒花菜', price:13.95  },
-        { id: 445, name: 'Stir-Fried Shanghai Vegetables 炒上海青', price:13.95  },
-        { id: 446, name: 'Sliced beef in Hot Sour Soup 酸汤肥牛', price:29.95  },
-        { id: 447, name: 'stir fry tomato with egg 番茄炒蛋', price:13.95  },
+        { id: 447, name: 'stir fry tomato with egg 番茄炒蛋', price:14.95  },
         { id: 448, name: 'sweet and sour pork ribs 糖醋排骨', price:17.95  },
-        { id: 449, name: 'Stir- Fried Lamb with Scallion 葱爆羊肉', price:16.95  },
+        { id: 449, name: 'Stir- Fried Lamb with Scallion 葱爆羊肉', price:18.95  },
         { id: 450, name: 'Stir-Fried Squid with XO Sauce XO酱炒鱿鱼', price:16.95  },
-        { id: 451, name: 'Pink Lady 粉红佳人', price:7.50  },
-        { id: 452, name: 'Orange Fruit Tea 粒粒鲜橙', price:6.75  },
-        { id: 453, name: 'Grapefruit Fruit Tea w/ Jelly Boba 满杯西柚', price:6.75  },
-        { id: 454, name: 'Mango Lemon Fruit Tea w/ Lychee Jelly 芒果香柠', price:6.75  },
-        { id: 455, name: 'Rose Lemon Fruit Tea w/ Lychee Jelly 玫瑰香柠', price:6.75  },
-        { id: 456, name: 'Strawberry Lemon Fruit Tea w/ Sweet Heart 草莓香柠', price:6.75  },
-        { id: 457, name: 'Lychee Jasmine Green Tea w/ Lychee Jelly 荔枝香柠', price:6.75  },
-        { id: 458, name: 'Mango & Passion Fruit Tea w/ Jelly Boba 芒果百香啵啵', price:6.75  },
-        { id: 459, name: 'Honey Lemon Green Tea 蜂蜜柠檬绿茶', price:6.75  },
-        { id: 460, name: 'Signature Lemonade 元气缤纷', price:6.75  },
-        { id: 461, name: 'Orange lemon Fruit Tea 柳橙香柠', price:6.75  },
-        { id: 462, name: 'Pina Colada Smoothie 椰香凤梨冰沙', price:6.75  },
-        { id: 463, name: 'Mango & Orange Smoothie 柳芒冰沙', price:6.75  },
-        { id: 464, name: 'Mango Smoothie 芒果冰沙', price:6.75  },
-        { id: 465, name: 'Strawberry Smoothie 草莓冰沙', price:6.75  },
-        { id: 466, name: 'Lychee Smoothie 荔枝冰沙', price:6.75  },
-        { id: 467, name: 'Orange Juice 柳橙汁', price:8.45  },
-        { id: 468, name: 'Cucumber Juice 青瓜汁', price:8.45  },
-        { id: 469, name: 'Vitamin 123 维生素123', price:8.45  },
-        { id: 470, name: 'Mr. Clean 排毒刷脂', price:8.45  },
-        { id: 471, name: 'Carrot Juice 红萝卜汁', price:8.45  },
-        { id: 472, name: 'Diet Coke 健怡可乐', price:2.00  },
-        { id: 473, name: 'Coke 可乐', price:2.00  },
-        { id: 474, name: 'Sprite 雪碧', price:2.00  },
-        { id: 475, name: 'Soymilk 豆奶', price:3.00  },
-        { id: 476, name: 'Wong Lo Kat 王老吉(加多宝)', price:3.00  },
+        
     ]
 };
 
