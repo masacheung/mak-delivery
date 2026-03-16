@@ -2,26 +2,7 @@ const SPICE_TWENTY_FOUR = {
     id: 7,
     name: 'Spice 24',
     dishes: [
-         { id: 71, name: '麥麥送工作餐 Mak dinner combo', price:60,
-                options: {
-                    option1:
-                        {
-                        name: "主菜選2 Entrees choice 2",
-                        choices: ["香辣排骨 ", "鮮露蘆筍牛肉 $5.00", "菠蘿辣子雞", "沸腾鱼片 $5.00", "火爆腰花", "土匪豬肝", "港式京都骨", "砂锅腊肉花菜", "香椿炒雞蛋", "椒鹽魚片", "鹽焗雞半隻", "上湯河塘小炒", "牛肉麻辣香鍋 請在備註欄標明 (薑蔥, 黑胡椒, 豆豉)"],
-                        selectedOptions: [], limit: 2, adjustable: true
-                        },
-                    option2:
-                        {
-                        name: "主食/湯選1",
-                        choices: [ "牛肉炒飯", "雞肉炒飯", "素菜炒飯", "菠蘿蝦炒飯", "卜卜脆炒飯 $5.00", "西湖牛肉羹", "蟹肉魚肚羹 $5.00", "酸辣湯"], selectedOptions: [], limit: 1, adjustable: true
-                    },
-                    option3: {
-                        name: "涼菜選1",
-                        choices: ["口水雞", "夫妻肺片", "燒椒茄子", "撈汁秋葵", "鹽酥雞"], selectedOptions: [], limit: 1
-                    },
-                }
-         },
-        { id: 72, name: "Create Your Own Stir-Fry", price:"SP",
+         { id: 72, name: "Create Your Own Stir-Fry", price:"SP",
                 options: {
                     optionSize:
                         {
@@ -121,7 +102,7 @@ const SPICE_TWENTY_FOUR = {
         { id: 73, name: '燒椒茄子 Spicy Eggplant', price:9.95},
         { id: 74, name: '雞翅 Chicken Wings ', price:13.95 , options: {option1: {name: "Types", choices: ["黑胡椒 Black Peppers", "麻辣 Mala", ], selectedOptions: [], limit: 1}}},
         { id: 75, name: '撈汁秋葵 Okra Salad', price:9.95},
-        { id: 76, name: '夫妻肺片 Beef and Tendon in Chili Oil', price:11.95 },
+        { id: 76, name: '夫妻肺片 Beef and Tendon in Chili Oil', price:12.95 },
         { id: 77, name: '黑椒牛肉餡餅 Pepper Beef Empanadas', price:9.95},
         { id: 78, name: '爆汁鍋貼 Pork Potstickers', price:7.95},
         { id: 79, name: '鹽酥雞 Popcorn Chicken', price:8.95 },
@@ -142,20 +123,20 @@ const SPICE_TWENTY_FOUR = {
         { id: 723, name: '豆腐燒黃魚', price:28.95  },
         { id: 724, name: '板栗燒雞', price:25.95  },
         { id: 725, name: '火爆腰花', price:17.95  },
-        { id: 726, name: '砂鍋臘肉花菜', price:17.95 },
+        { id: 726, name: '砂鍋臘肉花菜', price:18.95 },
         { id: 727, name: '上湯豆苗', price:23.95 },
         { id: 728, name: '手撕包菜', price:13.95 },
         { id: 729, name: '避風塘軟殼蟹', price:28.95 },
         { id: 730, name: '仙露筍牛肉粒', price:28.95 },
         { id: 731, name: '蕃茄牛腩', price:23.95 },
-        { id: 732, name: '湘西土匪豬肝', price:17.95},
+        { id: 732, name: '湘西土匪豬肝', price:19.95},
         { id: 733, name: 'XO醬小炒皇', price:28.95 },
-        { id: 734, name: '石鍋涼粉', price:9.95 },
-        { id: 735, name: '豆角燒茄子', price:15.95 },
+        { id: 734, name: '石鍋涼粉', price:10.95 },
+        { id: 735, name: '豆角燒茄子', price:16.95 },
         { id: 736, name: '麻婆豆腐牛腩', price:19.95 },
         { id: 737, name: '金沙南瓜蝦球', price:26.95 },
         { id: 738, name: '燒汁牛小排', price:29.95 },
-        { id: 739, name: '椒鹽白飯魚', price:13.95},
+        { id: 739, name: '秘製鮮魷魚', price:16.95},
         { id: 740, name: '老馬蹄花湯', price:18.95},
         { id: 741, name: '酸辣土豆絲', price:13.95 },
         { id: 742, name: '乾煸四季豆', price:13.95 },
