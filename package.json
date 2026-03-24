@@ -1,0 +1,15 @@
+{
+  "name": "mak-delivery-monorepo",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Monorepo: React app in static/, Express API in server/. Use this root for Render (see docs/render-deploy.md).",
+  "scripts": {
+    "install:all": "cd server && npm install && cd ../static && npm install",
+    "build": "cd static && npm run build",
+    "start": "node server/index.js",
+    "render-build": "npm run install:all && npm run build"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
