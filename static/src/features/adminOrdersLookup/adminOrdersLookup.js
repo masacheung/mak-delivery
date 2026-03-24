@@ -7,6 +7,7 @@ import { FileDownload } from "@mui/icons-material";
 import { Document, Packer, Paragraph, TextRun, HeadingLevel, Table, TableRow, TableCell, WidthType, AlignmentType } from "docx";
 import { saveAs } from "file-saver";
 import {PICK_UP_LOCATION, RESTAURANT_NAME} from "../../constant/constant";
+import { apiFetch } from "../../utils/apiClient";
 
 const AdminOrdersLookup = () => {
   const [pickUpLocation, setPickUpLocation] = useState("");
@@ -27,7 +28,10 @@ const AdminOrdersLookup = () => {
     const paymentStatusParam = paymentFilter !== "All" ? `&payment_status=${paymentFilter}` : "";
 
     try {
-      const response = await fetch(`/api/orders/search?pick_up_location=${encodePickUpLocation}&pick_up_date=${pickUpDate}&restaurantId=${restaurant}${paymentStatusParam}`);
+      const response = await apiFetch(
+        `/api/orders/search?pick_up_location=${encodePickUpLocation}&pick_up_date=${pickUpDate}&restaurantId=${restaurant}${paymentStatusParam}`,
+        { auth: "admin" }
+      );
       if (!response.ok) {
         throw new Error("Failed to fetch orders");
       }
@@ -46,12 +50,10 @@ const AdminOrdersLookup = () => {
 
   const handlePaymentStatusChange = async (orderId, newStatus) => {
     try {
-      const response = await fetch(`/api/orders/payment/${orderId}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ payment_status: newStatus }),
+      const response = await apiFetch(`/api/orders/payment/${orderId}`, {
+        method: "PUT",
+        auth: "admin",
+        body: { payment_status: newStatus },
       });
 
       if (!response.ok) {

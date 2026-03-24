@@ -1,9 +1,17 @@
 const express = require("express");
 const router = express.Router();
-const pool = require("../db/connection.js"); // PostgreSQL connection
+const pool = require("../db/connection.js");
+const {
+  requireUserAuth,
+  requireAdminAuth,
+} = require("../middleware/authMiddleware.js");
 
-router.post("/", async (req, res) => {
+router.post("/", requireUserAuth, async (req, res) => {
   const { username, pickupLocation, date, orderDetails, total, notes } = req.body;
+
+  if (!username || username !== req.authUser.username) {
+    return res.status(403).json({ error: "Cannot create order for another user" });
+  }
 
   try {
     const result = await pool.query(
@@ -18,11 +26,23 @@ router.post("/", async (req, res) => {
   }
 });
 
-router.put("/update/:orderId", async (req, res) => {
+router.put("/update/:orderId", requireUserAuth, async (req, res) => {
   const { orderId } = req.params;
   const { username, pickupLocation, date, orderDetails, total, notes } = req.body;
 
+  if (!username || username !== req.authUser.username) {
+    return res.status(403).json({ error: "Cannot update order for another user" });
+  }
+
   try {
+    const existing = await pool.query("SELECT username FROM orders WHERE id = $1", [orderId]);
+    if (existing.rows.length === 0) {
+      return res.status(404).json({ error: "Order not found" });
+    }
+    if (existing.rows[0].username !== req.authUser.username) {
+      return res.status(403).json({ error: "Not allowed to modify this order" });
+    }
+
     const result = await pool.query(
       "UPDATE orders SET username = $1, pick_up_location = $2, pick_up_date = $3, order_details = $4, total = $5, notes = $6 WHERE id = $7 RETURNING *",
       [username, pickupLocation, date, orderDetails, total, notes, orderId]
@@ -39,7 +59,6 @@ router.put("/update/:orderId", async (req, res) => {
   }
 });
 
-// GET: Fetch order by username and order_id
 router.get("/", async (req, res) => {
   const { username, orderId } = req.query;
 
@@ -48,10 +67,10 @@ router.get("/", async (req, res) => {
   }
 
   try {
-    const result = await pool.query(
-      "SELECT * FROM orders WHERE username = $1 AND id = $2",
-      [username, orderId]
-    );
+    const result = await pool.query("SELECT * FROM orders WHERE username = $1 AND id = $2", [
+      username,
+      orderId,
+    ]);
 
     if (result.rows.length === 0) {
       return res.status(404).json({ error: "Order not found." });
@@ -59,7 +78,6 @@ router.get("/", async (req, res) => {
 
     const order = result.rows[0];
 
-    // Ensure order_details is parsed correctly if stored as JSON
     if (typeof order.order_details === "string") {
       order.order_details = JSON.parse(order.order_details);
     }
@@ -71,15 +89,13 @@ router.get("/", async (req, res) => {
   }
 });
 
-// **NEW ROUTE: Search orders by pickup location and date**
-router.get("/search", async (req, res) => {
+router.get("/search", requireAdminAuth, async (req, res) => {
   const { pick_up_location, pick_up_date, restaurantId, payment_status } = req.query;
 
   if (!pick_up_date) {
     return res.status(400).json({ error: "Date are required." });
   }
 
-  // Build query dynamically based on filters
   let query = "SELECT * FROM orders WHERE pick_up_date = $1";
   const params = [pick_up_date];
   let paramIndex = 2;
@@ -96,7 +112,7 @@ router.get("/search", async (req, res) => {
     paramIndex++;
   }
 
-  if (payment_status && payment_status !== 'All') {
+  if (payment_status && payment_status !== "All") {
     query += ` AND payment_status = $${paramIndex}`;
     params.push(payment_status);
     paramIndex++;
@@ -114,10 +130,11 @@ router.get("/search", async (req, res) => {
     const orders = result.rows.map((order) => ({
       id: order.id,
       username: order.username,
-      order_details: typeof order.order_details === "string" ? JSON.parse(order.order_details) : order.order_details,
+      order_details:
+        typeof order.order_details === "string" ? JSON.parse(order.order_details) : order.order_details,
       total: order.total,
       notes: order.notes,
-      payment_status: order.payment_status || 'Unpaid'
+      payment_status: order.payment_status || "Unpaid",
     }));
 
     res.json(orders);
@@ -127,22 +144,23 @@ router.get("/search", async (req, res) => {
   }
 });
 
-// Update payment status for an order
-router.put("/payment/:orderId", async (req, res) => {
+router.put("/payment/:orderId", requireAdminAuth, async (req, res) => {
   const { orderId } = req.params;
   const { payment_status } = req.body;
 
-  const validStatuses = ['Unpaid', 'Zelle', 'Venmo', 'Cash'];
-  
+  const validStatuses = ["Unpaid", "Zelle", "Venmo", "Cash"];
+
   if (!payment_status || !validStatuses.includes(payment_status)) {
-    return res.status(400).json({ error: "Invalid payment status. Must be one of: Unpaid, Zelle, Venmo, Cash" });
+    return res.status(400).json({
+      error: "Invalid payment status. Must be one of: Unpaid, Zelle, Venmo, Cash",
+    });
   }
 
   try {
-    const result = await pool.query(
-      "UPDATE orders SET payment_status = $1 WHERE id = $2 RETURNING *",
-      [payment_status, orderId]
-    );
+    const result = await pool.query("UPDATE orders SET payment_status = $1 WHERE id = $2 RETURNING *", [
+      payment_status,
+      orderId,
+    ]);
 
     if (result.rows.length === 0) {
       return res.status(404).json({ error: "Order not found" });

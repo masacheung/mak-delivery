@@ -1,16 +1,17 @@
 import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
-import { 
-  Container, 
-  TextField, 
-  Button, 
-  Typography, 
-  Box, 
-  Card, 
-  CardContent, 
-  Divider, 
-  useTheme, 
+import { apiFetch } from "../../utils/apiClient";
+import {
+  Container,
+  TextField,
+  Button,
+  Typography,
+  Box,
+  Card,
+  CardContent,
+  Divider,
+  useTheme,
   useMediaQuery,
   Paper,
   Chip,
@@ -37,7 +38,7 @@ const OrderLookup = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const { user } = useAuth();
-  
+
   const [username, setUsername] = useState("");
   const [orderId, setOrderId] = useState("");
   const [orderData, setOrderData] = useState(null);
@@ -59,12 +60,15 @@ const OrderLookup = () => {
       setError("Please enter both Username and Order ID.");
       return;
     }
-    
+
     setError("");
     setLoading(true);
 
     try {
-      const response = await fetch(`/api/orders?username=${username}&orderId=${orderId}`);
+      const response = await apiFetch(
+        `/api/orders?username=${encodeURIComponent(username)}&orderId=${encodeURIComponent(orderId)}`,
+        { auth: "none" }
+      );
       if (!response.ok) throw new Error("Order not found");
 
       const data = await response.json();

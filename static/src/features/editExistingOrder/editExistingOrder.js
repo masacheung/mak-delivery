@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
+import { apiFetch } from "../../utils/apiClient";
 import {
   AppBar,
   Toolbar,
@@ -40,6 +41,7 @@ import {
 import { v4 as uuidv4 } from 'uuid';
 import DishForm from "../dishes/dishForm";
 import OrderSummary from "../order/orderSummary";
+import PickupNotificationBell from "../../components/PickupNotificationBell";
 import TASTY_MOMENT from "../../constant/restaurants/tastyMoment";
 import HK_ALLEY from "../../constant/restaurants/hkAlley";
 import WONTON_GUY from "../../constant/restaurants/wontonGuy";
@@ -142,7 +144,7 @@ const EditExistingOrder = () => {
     if (orderData) {
       console.log('Order data:', orderData);
       const initialDate = new Date(orderData.pick_up_date).toISOString().split("T")[0];
-      
+
       setOrderState({
         orderId: orderData.id,
         selectedRestaurant: null,
@@ -156,7 +158,7 @@ const EditExistingOrder = () => {
         errors: {},
         total: orderData.total,
       });
-      
+
       // Initialize search with the order date
       handleSearch(initialDate);
     }
@@ -194,16 +196,18 @@ const EditExistingOrder = () => {
     return restaurants.filter(restaurant =>
       events.some(event => event.restaurants.includes(restaurant.name)));
   };
-  
+
   const handleSearch = async (date) => {
     if (!date) return;
-    
+
     setLoading(true);
     resetEventsState();
-    
+
     try {
       setError("");
-      const response = await fetch(`/api/adminConfig/openEvents?date=${date}`);
+      const response = await apiFetch(`/api/adminConfig/openEvents?date=${date}`, {
+        auth: "none",
+      });
       if (!response.ok) {
         throw new Error("Failed to fetch upcoming events");
       }
@@ -357,10 +361,10 @@ const EditExistingOrder = () => {
     };
 
     try {
-      const response = await fetch(`/api/orders/update/${orderState.orderId}`, {
+      const response = await apiFetch(`/api/orders/update/${orderState.orderId}`, {
         method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(orderData),
+        auth: "user",
+        body: orderData,
       });
 
       if (!response.ok) throw new Error("Failed to update order");
@@ -394,7 +398,7 @@ const EditExistingOrder = () => {
       const updatedAddedDishes = { ...prev.addedDishes };
       if (updatedAddedDishes[restaurantId]) {
         updatedAddedDishes[restaurantId] = updatedAddedDishes[restaurantId].filter(dish => dish.id !== dishId);
-        
+
         // Clean up empty restaurant arrays
         if (updatedAddedDishes[restaurantId].length === 0) {
           delete updatedAddedDishes[restaurantId];
@@ -413,14 +417,14 @@ const EditExistingOrder = () => {
       if (updatedQuantities[restaurantId]) {
         // Try both the full ID and base ID
         if (updatedQuantities[restaurantId][dishId] !== undefined) {
-          updatedQuantities[restaurantId] = { 
-            ...updatedQuantities[restaurantId], 
-            [dishId]: 0 
+          updatedQuantities[restaurantId] = {
+            ...updatedQuantities[restaurantId],
+            [dishId]: 0
           };
         } else if (updatedQuantities[restaurantId][baseDishId] !== undefined) {
-          updatedQuantities[restaurantId] = { 
-            ...updatedQuantities[restaurantId], 
-            [baseDishId]: 0 
+          updatedQuantities[restaurantId] = {
+            ...updatedQuantities[restaurantId],
+            [baseDishId]: 0
           };
         }
       }
@@ -434,7 +438,7 @@ const EditExistingOrder = () => {
   };
 
   return (
-    <Box sx={{ 
+    <Box sx={{
       minHeight: '100vh',
       background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
       position: 'relative',
@@ -449,9 +453,9 @@ const EditExistingOrder = () => {
         pointerEvents: 'none',
       }
     }}>
-      <AppBar 
-        position="fixed" 
-        sx={{ 
+      <AppBar
+        position="fixed"
+        sx={{
           background: 'linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.8) 100%)',
           backdropFilter: 'blur(10px)',
           border: '1px solid rgba(255,255,255,0.2)',
@@ -461,18 +465,18 @@ const EditExistingOrder = () => {
       >
         <Toolbar>
           <Box sx={{ display: 'flex', alignItems: 'center', mr: 2 }}>
-            <img 
-              src="/delivery-truck.png" 
-              alt="Logo" 
-              style={{ width: isMobile ? 30 : 40, height: isMobile ? 30 : 40 }} 
+            <img
+              src="/delivery-truck.png"
+              alt="Logo"
+              style={{ width: isMobile ? 30 : 40, height: isMobile ? 30 : 40 }}
             />
           </Box>
-          
-          <Typography 
-            variant={isMobile ? "h6" : "h5"} 
-            component="div" 
-            sx={{ 
-              flexGrow: 1, 
+
+          <Typography
+            variant={isMobile ? "h6" : "h5"}
+            component="div"
+            sx={{
+              flexGrow: 1,
               textAlign: 'center',
               fontWeight: 'bold',
               background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
@@ -491,7 +495,8 @@ const EditExistingOrder = () => {
             {isMobile ? "Edit Order" : "Edit Order - Mak Delivery"}
           </Typography>
 
-          <Box sx={{ display: 'flex', gap: 1 }}>
+          <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
+            <PickupNotificationBell enabled={Boolean(user)} isMobile={isMobile} />
             <IconButton 
               onClick={() => navigate("/")}
               sx={{ 

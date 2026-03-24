@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useAdminConfigEvents } from "../../hooks/useAdminConfigEvents";
 import {
   Badge,
   Box,
@@ -23,7 +24,6 @@ import {
   Alert,
 } from "@mui/material";
 import {
-  AccountCircle,
   Event as EventIcon,
   Home as HomeIcon,
   Settings as SettingsIcon,
@@ -33,11 +33,15 @@ import {
   AdminPanelSettings as AdminIcon,
   Visibility,
   VisibilityOff,
+  NotificationsActive as NotifyIcon,
 } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 import AdminDeliveryEvent from "../adminConfig/adminDeliveryEvent";
 import AdminOrdersLookup from "../adminOrdersLookup/adminOrdersLookup";
+import AdminPickupNotify from "./AdminPickupNotify";
 import UpcomingEvent from "../headerSection/upcomingEvent/upcomingEvent";
+import { getAdminSessionFromToken } from "../../utils/apiAuth";
+import { apiFetch } from "../../utils/apiClient";
 
 const Admin = () => {
   const navigate = useNavigate();
@@ -47,44 +51,46 @@ const Admin = () => {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [adminUsername, setAdminUsername] = useState("");
   const [error, setError] = useState("");
-  const [events, setEvents] = useState([]);
+  const { events } = useAdminConfigEvents({ errorMode: "silent" });
   const [showEvents, setShowEvents] = useState(false);
   const [activeTab, setActiveTab] = useState(0);
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-    const adminUser = "admin";
-    const adminPass = "aDm1n";
-
-    if (username === adminUser && password === adminPass) {
-      setIsAuthenticated(true);
-      setError("");
-    } else {
-      setError("Invalid username or password");
-    }
-  };
-
-  const handleSearch = async () => {
+    setError("");
     try {
-      setError("");
-      const response = await fetch("/api/adminConfig");
+      const response = await apiFetch("/api/users/login", {
+        method: "POST",
+        auth: "none",
+        body: { username, password },
+      });
+      const data = await response.json().catch(() => ({}));
       if (!response.ok) {
-        throw new Error("Failed to fetch upcoming events");
+        setError(data.message || "Invalid username or password");
+        return;
       }
-      const data = await response.json();
-      setEvents(data);
-    } catch (err) {
-      setError(err.message);
+      if (data.user?.role !== "admin") {
+        setError("This account does not have admin access.");
+        return;
+      }
+      if (data.token) {
+        sessionStorage.setItem("makAdminToken", data.token);
+      }
+      setAdminUsername(data.user?.username || username);
+      setIsAuthenticated(true);
+    } catch {
+      setError("Login failed. Please try again.");
     }
   };
 
   useEffect(() => {
-    handleSearch();
-    const interval = setInterval(() => {
-      handleSearch();
-    }, 30 * 60 * 1000);
-    return () => clearInterval(interval);
+    const session = getAdminSessionFromToken();
+    if (session) {
+      setAdminUsername(session.username);
+      setIsAuthenticated(true);
+    }
   }, []);
 
   const handleTabChange = (event, newValue) => {
@@ -93,7 +99,7 @@ const Admin = () => {
 
   if (!isAuthenticated) {
     return (
-      <Box sx={{ 
+      <Box sx={{
         minHeight: '100vh',
         background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
         display: 'flex',
@@ -133,9 +139,9 @@ const Admin = () => {
                 >
                   <img src="/delivery-truck.png" alt="Logo" style={{ width: 50, height: 50 }} />
                 </Box>
-                <Typography 
-                  variant="h4" 
-                  sx={{ 
+                <Typography
+                  variant="h4"
+                  sx={{
                     color: 'white',
                     fontWeight: 'bold',
                     fontFamily: 'Poppins, sans-serif',
@@ -144,9 +150,9 @@ const Admin = () => {
                 >
                   Mak Delivery
                 </Typography>
-                <Typography 
-                  variant="h6" 
-                  sx={{ 
+                <Typography
+                  variant="h6"
+                  sx={{
                     color: 'rgba(255,255,255,0.9)',
                     fontWeight: 300,
                   }}
@@ -168,9 +174,9 @@ const Admin = () => {
               >
                 <Box sx={{ textAlign: 'center', mb: 3 }}>
                   <AdminIcon sx={{ fontSize: 60, color: '#667eea', mb: 2 }} />
-                  <Typography 
-                    variant="h5" 
-                    sx={{ 
+                  <Typography
+                    variant="h5"
+                    sx={{
                       fontWeight: 'bold',
                       color: '#333',
                       mb: 1,
@@ -179,7 +185,8 @@ const Admin = () => {
                     Administrator Login
                   </Typography>
                   <Typography variant="body2" color="text.secondary">
-                    Please enter your credentials to access the admin panel
+                    Sign in with a verified account that has{" "}
+                    <strong>role = admin</strong> in the database.
                   </Typography>
                 </Box>
 
@@ -227,18 +234,18 @@ const Admin = () => {
                       },
                     }}
                   />
-                  
+
                   {error && (
                     <Alert severity="error" sx={{ mt: 2, mb: 2 }}>
                       {error}
                     </Alert>
                   )}
-                  
-                  <Button 
-                    type="submit" 
-                    variant="contained" 
-                    fullWidth 
-                    sx={{ 
+
+                  <Button
+                    type="submit"
+                    variant="contained"
+                    fullWidth
+                    sx={{
                       mt: 3,
                       py: 1.5,
                       background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
@@ -269,7 +276,7 @@ const Admin = () => {
   }
 
   return (
-    <Box sx={{ 
+    <Box sx={{
       minHeight: '100vh',
       background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
       position: 'relative',
@@ -284,9 +291,9 @@ const Admin = () => {
         pointerEvents: 'none',
       }
     }}>
-      <AppBar 
-        position="fixed" 
-        sx={{ 
+      <AppBar
+        position="fixed"
+        sx={{
           background: 'linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.8) 100%)',
           backdropFilter: 'blur(10px)',
           border: '1px solid rgba(255,255,255,0.2)',
@@ -296,18 +303,18 @@ const Admin = () => {
       >
         <Toolbar>
           <Box sx={{ display: 'flex', alignItems: 'center', mr: 2 }}>
-            <img 
-              src="/delivery-truck.png" 
-              alt="Logo" 
-              style={{ width: isMobile ? 30 : 40, height: isMobile ? 30 : 40 }} 
+            <img
+              src="/delivery-truck.png"
+              alt="Logo"
+              style={{ width: isMobile ? 30 : 40, height: isMobile ? 30 : 40 }}
             />
           </Box>
-          
-          <Typography 
-            variant={isMobile ? "h6" : "h5"} 
-            component="div" 
-            sx={{ 
-              flexGrow: 1, 
+
+          <Typography
+            variant={isMobile ? "h6" : "h5"}
+            component="div"
+            sx={{
+              flexGrow: 1,
               textAlign: 'center',
               fontWeight: 'bold',
               background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
@@ -327,11 +334,11 @@ const Admin = () => {
           </Typography>
 
           <Box sx={{ display: 'flex', gap: 1 }}>
-            <IconButton 
+            <IconButton
               onClick={() => navigate("/")}
-              sx={{ 
+              sx={{
                 color: 'inherit',
-                '&:hover': { 
+                '&:hover': {
                   background: 'rgba(0,0,0,0.1)',
                   transform: 'scale(1.1)',
                 }
@@ -339,22 +346,22 @@ const Admin = () => {
             >
               <HomeIcon />
             </IconButton>
-            
-            <IconButton 
+
+            <IconButton
               onClick={() => setShowEvents(true)}
-              sx={{ 
+              sx={{
                 color: 'inherit',
-                '&:hover': { 
+                '&:hover': {
                   background: 'rgba(0,0,0,0.1)',
                   transform: 'scale(1.1)',
                 }
               }}
             >
-              <Badge 
-                badgeContent={events.length > 0 ? events.length : null} 
+              <Badge
+                badgeContent={events.length > 0 ? events.length : null}
                 color="error"
-                sx={{ 
-                  '& .MuiBadge-badge': { 
+                sx={{
+                  '& .MuiBadge-badge': {
                     fontSize: '0.75rem',
                     minWidth: 20,
                     height: 20,
@@ -404,11 +411,11 @@ const Admin = () => {
               }}
             >
               <DashboardIcon sx={{ fontSize: 60, color: '#667eea', mb: 2 }} />
-              <Typography 
-                variant="h4" 
-                component="h1" 
+              <Typography
+                variant="h4"
+                component="h1"
                 gutterBottom
-                sx={{ 
+                sx={{
                   fontWeight: 'bold',
                   background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
                   backgroundClip: 'text',
@@ -423,7 +430,7 @@ const Admin = () => {
               <Typography variant="h6" color="text.secondary" sx={{ mb: 3 }}>
                 Manage delivery events and monitor orders
               </Typography>
-              
+
               <Box sx={{ display: 'flex', justifyContent: 'center', gap: 2, flexWrap: 'wrap' }}>
                 <Chip
                   icon={<SettingsIcon />}
@@ -479,14 +486,19 @@ const Admin = () => {
                   },
                 }}
               >
-                <Tab 
-                  label="Delivery Events" 
+                <Tab
+                  label="Delivery Events"
                   icon={<SettingsIcon />}
                   iconPosition="start"
                 />
-                <Tab 
-                  label="Orders Lookup" 
+                <Tab
+                  label="Orders Lookup"
                   icon={<EventIcon />}
+                  iconPosition="start"
+                />
+                <Tab
+                  label="Customer notices"
+                  icon={<NotifyIcon />}
                   iconPosition="start"
                 />
               </Tabs>
@@ -513,7 +525,7 @@ const Admin = () => {
                   <AdminDeliveryEvent />
                 </Box>
               )}
-              
+
               {activeTab === 1 && (
                 <Box>
                   <Typography variant="h6" sx={{ fontWeight: 'bold', color: '#667eea', mb: 3 }}>
@@ -521,6 +533,16 @@ const Admin = () => {
                   </Typography>
                   <Divider sx={{ mb: 3 }} />
                   <AdminOrdersLookup />
+                </Box>
+              )}
+
+              {activeTab === 2 && (
+                <Box>
+                  <Typography variant="h6" sx={{ fontWeight: "bold", color: "#667eea", mb: 3 }}>
+                    Notify customers at pickup
+                  </Typography>
+                  <Divider sx={{ mb: 3 }} />
+                  <AdminPickupNotify />
                 </Box>
               )}
             </Paper>
@@ -542,7 +564,7 @@ const Admin = () => {
                 Administrator Panel - Mak Delivery System
               </Typography>
               <Typography variant="caption" color="text.secondary">
-                Logged in as: <strong>admin</strong> | Session secured
+                Logged in as: <strong>{adminUsername || "admin"}</strong> | Session secured
               </Typography>
             </Paper>
           </Box>

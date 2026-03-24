@@ -4,6 +4,7 @@ import {
   FormControl, FormControlLabel, Checkbox, FormGroup
 } from "@mui/material";
 import {PICK_UP_LOCATION, RESTAURANT_NAME} from "../../constant/constant";
+import { apiFetch } from "../../utils/apiClient";
 
 const AdminDeliveryEvent = () => {
   const [selectedLocations, setSelectedLocations] = useState([]);
@@ -46,12 +47,10 @@ const AdminDeliveryEvent = () => {
       locations: selectedLocations
     }
     try {
-      const response = await fetch("/api/adminConfig", {
+      const response = await apiFetch("/api/adminConfig", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(eventDate),
+        auth: "admin",
+        body: eventDate,
       });
 
       if (!response.ok) {

@@ -1,44 +1,19 @@
-import React, { useState, useEffect  } from "react";
+import React, { useState } from "react";
 import 'leaflet/dist/leaflet.css';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import { useNavigate } from "react-router-dom";
 import { Box, Button, Typography, IconButton, Badge } from "@mui/material";
 import DensityMediumIcon from '@mui/icons-material/DensityMedium';
 import EventIcon from "@mui/icons-material/Event";
-import UpcomingEvent from "../headerSection/upcomingEvent/upcomingEvent";
-import MoreMenu from "../headerSection/menu/more";
 import RestaurantList from "./restaurant_support_list";
+import { useAdminConfigEvents } from "../../hooks/useAdminConfigEvents";
+import { InformationMenuEventOverlays } from "./InformationPublicShell";
 
 const RestaurantSupportList = () => {
   const navigate = useNavigate();
-  const [error, setError] = useState("");
-  const [events, setEvents] = useState([]);
+  const { events } = useAdminConfigEvents({ errorMode: "surface" });
   const [showEvents, setShowEvents] = useState(false); // Controls visibility
   const [showMenu, setShowMenu] = useState(false); // Controls visibility
-
-  const handleSearch = async () => {
-    try {
-      setError(null); // Clear previous errors
-      const response = await fetch("/api/adminConfig");
-      if (!response.ok) {
-        throw new Error("Failed to fetch upcoming events");
-      }
-      const data = await response.json();
-      setEvents(data); // Store events in state
-    } catch (err) {
-      setError(err.message);
-    }
-  };
-
-  useEffect(() => {
-    handleSearch();
-  
-    const interval = setInterval(() => {
-      handleSearch();
-    }, 30 * 60 * 1000);
-  
-    return () => clearInterval(interval);
-  }, []);
 
   return (
     <Box
@@ -92,39 +67,20 @@ const RestaurantSupportList = () => {
 
         {/* Right - Shopping Cart */}
         <IconButton onClick={() =>setShowEvents(true)}>
-          <Badge badgeContent={events.length > 0 ? events.length : null} color="error" sx={{ "& .MuiBadge-badge": { fontSize: 12, minWidth: 20, height: 20 } }}> 
+          <Badge badgeContent={events.length > 0 ? events.length : null} color="error" sx={{ "& .MuiBadge-badge": { fontSize: 12, minWidth: 20, height: 20 } }}>
             <EventIcon sx={{ fontSize: 30, color: "black" }} />
           </Badge>
         </IconButton>
       </Box>
 
-      {/* Menu */}
-      {showMenu && (
-        <Box
-          sx={{
-            width: "100%", // Ensure full width
-            padding: 0, // Remove padding that might be causing the shift
-            display: "flex",
-            justifyContent: "center", // Center align the UpcomingEvent
-          }}
-        >
-          <MoreMenu onClose={() => setShowMenu(false)} />
-        </Box>
-      )}
-
-      {/* Upcoming Event */}
-      {showEvents && (
-        <Box
-          sx={{
-            width: "100%", // Ensure full width
-            padding: 0, // Remove padding that might be causing the shift
-            display: "flex",
-            justifyContent: "center", // Center align the UpcomingEvent
-          }}
-        >
-          <UpcomingEvent events={events} onClose={() => setShowEvents(false)} />
-        </Box>
-      )}
+      <InformationMenuEventOverlays
+        events={events}
+        showMenu={showMenu}
+        setShowMenu={setShowMenu}
+        showEvents={showEvents}
+        setShowEvents={setShowEvents}
+        variant="inline"
+      />
 
       {/* Top Section - 60% */}
       <Box

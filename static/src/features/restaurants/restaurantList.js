@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
+import { apiFetch } from "../../utils/apiClient";
 import {
   Box,
   Typography,
@@ -39,6 +40,7 @@ import { v4 as uuidv4 } from 'uuid';
 import DishForm from "../dishes/dishForm";
 import OrderSummary from "../order/orderSummary";
 import MoreMenu from "../headerSection/menu/more";
+import PickupNotificationBell from "../../components/PickupNotificationBell";
 import TASTY_MOMENT from "../../constant/restaurants/tastyMoment";
 import HK_ALLEY from "../../constant/restaurants/hkAlley";
 import WONTON_GUY from "../../constant/restaurants/wontonGuy";
@@ -166,13 +168,15 @@ const RestaurantList = () => {
     return restaurants.filter(restaurant =>
       events.some(event => event.restaurants.includes(restaurant.name)));
   };
-  
+
   const handleSearch = async (date) => {
     resetEventsState();
     setIsLoading(true);
     try {
       setError(null);
-      const response = await fetch(`/api/adminConfig/openEvents?date=${date}`);
+      const response = await apiFetch(`/api/adminConfig/openEvents?date=${date}`, {
+        auth: "none",
+      });
       if (!response.ok) {
         throw new Error("Failed to fetch upcoming events");
       }
@@ -307,7 +311,7 @@ const RestaurantList = () => {
               const restaurant = restaurants.find((r) => r.id === Number(restaurantId));
               acc[restaurantId] = dishes.map((dish) => ({
                 ...dish,
-                restaurantName: restaurant ? restaurant.name : `Restaurant ${restaurantId}`, 
+                restaurantName: restaurant ? restaurant.name : `Restaurant ${restaurantId}`,
               }));
             }
             return acc;
@@ -318,10 +322,10 @@ const RestaurantList = () => {
       };
 
     try {
-      const response = await fetch("/api/orders", {
+      const response = await apiFetch("/api/orders", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(orderData),
+        auth: "user",
+        body: orderData,
       });
 
       if (!response.ok) throw new Error("Failed to submit order");
@@ -424,6 +428,7 @@ const RestaurantList = () => {
           </Typography>
 
           <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+            <PickupNotificationBell enabled={Boolean(user)} isMobile={isMobile} />
             {!isMobile && (
               <IconButton
                 onClick={() => setShowFilters(!showFilters)}

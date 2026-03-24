@@ -1,8 +1,9 @@
 const express = require("express");
 const router = express.Router();
-const pool = require("../db/connection.js"); // PostgreSQL connection
+const pool = require("../db/connection.js");
+const { requireAdminAuth } = require("../middleware/authMiddleware.js");
 
-router.post("/", async (req, res) => {
+router.post("/", requireAdminAuth, async (req, res) => {
   const { locations, date, restaurants } = req.body;
 
   try {
@@ -31,10 +32,7 @@ router.get("/", async (req, res) => {
       return res.status(404).json({ error: "Event not found." });
     }
 
-    const events = result.rows;
-
-    res.json(events);
-
+    res.json(result.rows);
   } catch (error) {
     console.error("Error fetching event:", error);
     res.status(500).json({ error: "Database error" });
@@ -42,22 +40,16 @@ router.get("/", async (req, res) => {
 });
 
 router.get("/openEvents", async (req, res) => {
-  const {date} = req.query;
+  const { date } = req.query;
 
   try {
-    const result = await pool.query(
-      "SELECT * FROM admin_config WHERE pick_up_date = $1",
-      [date]
-    );
+    const result = await pool.query("SELECT * FROM admin_config WHERE pick_up_date = $1", [date]);
 
     if (result.rows.length === 0) {
       return res.status(404).json({ error: "Event not found." });
     }
 
-    const events = result.rows;
-
-    res.json(events);
-
+    res.json(result.rows);
   } catch (error) {
     console.error("Error fetching event:", error);
     res.status(500).json({ error: "Database error" });

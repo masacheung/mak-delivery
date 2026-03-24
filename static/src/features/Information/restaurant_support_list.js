@@ -1,11 +1,8 @@
-import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState } from "react";
 import {
   Box,
   Typography,
   Divider,
-  AppBar,
-  Toolbar,
   Container,
   Paper,
   Card,
@@ -16,21 +13,19 @@ import {
   useMediaQuery,
   Fade,
   Chip,
-  IconButton,
-  Badge,
 } from "@mui/material";
 import {
   Restaurant as RestaurantIcon,
-  Home as HomeIcon,
-  Event as EventIcon,
-  DensityMedium as DensityMediumIcon,
   Store as StoreIcon,
   MenuBook as MenuBookIcon,
   Phone as PhoneIcon,
   Language as LanguageIcon,
 } from "@mui/icons-material";
-import UpcomingEvent from "../headerSection/upcomingEvent/upcomingEvent";
-import MoreMenu from "../headerSection/menu/more";
+import { useAdminConfigEvents } from "../../hooks/useAdminConfigEvents";
+import {
+  InformationGradientAppBar,
+  InformationMenuEventOverlays,
+} from "./InformationPublicShell";
 
 // Import restaurant images
 import chefImage from "../../image/chef.webp";
@@ -178,40 +173,16 @@ const restaurants = [
 ];
 
 const RestaurantSupportList = () => {
-  const navigate = useNavigate();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
-  const [error, setError] = useState("");
-  const [events, setEvents] = useState([]);
+  const { events } = useAdminConfigEvents({ errorMode: "surface" });
   const [showEvents, setShowEvents] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
-
-  const handleSearch = async () => {
-    try {
-      setError("");
-      const response = await fetch("/api/adminConfig");
-      if (!response.ok) {
-        throw new Error("Failed to fetch upcoming events");
-      }
-      const data = await response.json();
-      setEvents(data);
-    } catch (err) {
-      setError(err.message);
-    }
-  };
-
-  useEffect(() => {
-    handleSearch();
-    const interval = setInterval(() => {
-      handleSearch();
-    }, 30 * 60 * 1000);
-    return () => clearInterval(interval);
-  }, []);
 
   const cuisineTypes = [...new Set(restaurants.map(r => r.cuisine))];
 
   return (
-    <Box sx={{ 
+    <Box sx={{
       minHeight: '100vh',
       background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
       position: 'relative',
@@ -226,131 +197,24 @@ const RestaurantSupportList = () => {
         pointerEvents: 'none',
       }
     }}>
-      <AppBar 
-        position="fixed" 
-        sx={{ 
-          background: 'linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.8) 100%)',
-          backdropFilter: 'blur(10px)',
-          border: '1px solid rgba(255,255,255,0.2)',
-          boxShadow: '0 8px 32px rgba(0,0,0,0.1)',
-          color: 'black',
-        }}
-      >
-        <Toolbar>
-          <IconButton 
-            onClick={() => setShowMenu(true)}
-            sx={{ 
-              color: 'inherit',
-              '&:hover': { 
-                background: 'rgba(0,0,0,0.1)',
-                transform: 'scale(1.1)',
-              }
-            }}
-          >
-            <DensityMediumIcon />
-          </IconButton>
-          
-          <Typography 
-            variant={isMobile ? "h6" : "h5"} 
-            component="div" 
-            sx={{ 
-              flexGrow: 1, 
-              textAlign: 'center',
-              fontWeight: 'bold',
-              background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-              backgroundClip: 'text',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              fontFamily: 'Poppins, sans-serif',
-              cursor: 'pointer',
-              '&:hover': {
-                transform: 'scale(1.05)',
-                transition: 'transform 0.2s ease',
-              }
-            }}
-            onClick={() => navigate("/")}
-          >
-            Restaurant Partners
-          </Typography>
+      <InformationGradientAppBar
+        title="Restaurant Partners"
+        isMobile={isMobile}
+        events={events}
+        showMenu={showMenu}
+        setShowMenu={setShowMenu}
+        showEvents={showEvents}
+        setShowEvents={setShowEvents}
+      />
 
-          <Box sx={{ display: 'flex', gap: 1 }}>
-            <IconButton 
-              onClick={() => navigate("/")}
-              sx={{ 
-                color: 'inherit',
-                '&:hover': { 
-                  background: 'rgba(0,0,0,0.1)',
-                  transform: 'scale(1.1)',
-                }
-              }}
-            >
-              <HomeIcon />
-            </IconButton>
-            
-            <IconButton 
-              onClick={() => setShowEvents(true)}
-              sx={{ 
-                color: 'inherit',
-                '&:hover': { 
-                  background: 'rgba(0,0,0,0.1)',
-                  transform: 'scale(1.1)',
-                }
-              }}
-            >
-              <Badge 
-                badgeContent={events.length > 0 ? events.length : null} 
-                color="error"
-                sx={{ 
-                  '& .MuiBadge-badge': { 
-                    fontSize: '0.75rem',
-                    minWidth: 20,
-                    height: 20,
-                    background: 'linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%)',
-                  }
-                }}
-              >
-                <EventIcon />
-              </Badge>
-            </IconButton>
-          </Box>
-        </Toolbar>
-      </AppBar>
-
-      {/* Menu */}
-      {showMenu && (
-        <Box
-          sx={{
-            position: 'fixed',
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            zIndex: 1300,
-            display: "flex",
-            justifyContent: "center",
-          }}
-        >
-          <MoreMenu onClose={() => setShowMenu(false)} />
-        </Box>
-      )}
-
-      {/* Upcoming Event */}
-      {showEvents && (
-        <Box
-          sx={{
-            position: 'fixed',
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            zIndex: 1300,
-            display: "flex",
-            justifyContent: "center",
-          }}
-        >
-          <UpcomingEvent events={events} onClose={() => setShowEvents(false)} />
-        </Box>
-      )}
+      <InformationMenuEventOverlays
+        events={events}
+        showMenu={showMenu}
+        setShowMenu={setShowMenu}
+        showEvents={showEvents}
+        setShowEvents={setShowEvents}
+        variant="fullscreen"
+      />
 
       <Container maxWidth="lg" sx={{ pt: 10, pb: 4 }}>
         <Fade in={true} timeout={1000}>
