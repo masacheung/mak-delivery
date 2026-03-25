@@ -33,6 +33,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import HomeIcon from '@mui/icons-material/Home';
 import RestaurantIcon from '@mui/icons-material/Restaurant';
 import ReceiptIcon from '@mui/icons-material/Receipt';
+import HistoryIcon from '@mui/icons-material/History';
 
 const OrderLookup = () => {
   const navigate = useNavigate();
