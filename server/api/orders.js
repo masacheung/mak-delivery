@@ -59,6 +59,36 @@ router.put("/update/:orderId", requireUserAuth, async (req, res) => {
   }
 });
 
+/** Logged-in customer: all their orders, newest placed first. */
+router.get("/mine", requireUserAuth, async (req, res) => {
+  try {
+    const result = await pool.query(
+      `SELECT * FROM orders
+       WHERE username = $1
+       ORDER BY create_date DESC NULLS LAST, id DESC
+       LIMIT 100`,
+      [req.authUser.username]
+    );
+
+    const orders = result.rows.map((order) => {
+      const o = { ...order };
+      if (typeof o.order_details === "string") {
+        try {
+          o.order_details = JSON.parse(o.order_details);
+        } catch {
+          o.order_details = {};
+        }
+      }
+      return o;
+    });
+
+    res.json(orders);
+  } catch (error) {
+    console.error("Error fetching user orders:", error);
+    res.status(500).json({ error: "Database error" });
+  }
+});
+
 router.get("/", async (req, res) => {
   const { username, orderId } = req.query;
 

@@ -2,21 +2,22 @@ import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
 import { apiFetch } from "../../utils/apiClient";
-import {
-  Container,
-  TextField,
-  Button,
-  Typography,
-  Box,
-  Card,
-  CardContent,
-  Divider,
-  useTheme,
+import { 
+  Container, 
+  TextField, 
+  Button, 
+  Typography, 
+  Box, 
+  Card, 
+  CardContent, 
+  Divider, 
+  useTheme, 
   useMediaQuery,
   Paper,
   Chip,
   List,
   ListItem,
+  ListItemButton,
   ListItemText,
   Alert,
   Fade,
@@ -37,8 +38,8 @@ const OrderLookup = () => {
   const navigate = useNavigate();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
-  const { user } = useAuth();
-
+  const { user, isAuthenticated, loading: authLoading } = useAuth();
+  
   const [username, setUsername] = useState("");
   const [orderId, setOrderId] = useState("");
   const [orderData, setOrderData] = useState(null);
@@ -47,6 +48,9 @@ const OrderLookup = () => {
   const currentDate = new Date().toISOString().split("T")[0];
   const [pickUpDate, setPickUpDate] = useState("");
   const [disableEdit, setDisableEdit] = useState(true);
+  const [myOrders, setMyOrders] = useState([]);
+  const [myOrdersLoading, setMyOrdersLoading] = useState(false);
+  const [myOrdersError, setMyOrdersError] = useState("");
 
   // Set username from logged-in user
   useEffect(() => {
@@ -55,12 +59,56 @@ const OrderLookup = () => {
     }
   }, [user]);
 
+  useEffect(() => {
+    if (!isAuthenticated || authLoading) {
+      setMyOrders([]);
+      return;
+    }
+    let cancelled = false;
+    (async () => {
+      setMyOrdersLoading(true);
+      setMyOrdersError("");
+      try {
+        const res = await apiFetch("/api/orders/mine", { auth: "user" });
+        const data = await res.json().catch(() => []);
+        if (cancelled) return;
+        if (!res.ok) {
+          setMyOrdersError(data.error || "Could not load your orders.");
+          setMyOrders([]);
+          return;
+        }
+        setMyOrders(Array.isArray(data) ? data : []);
+      } catch {
+        if (!cancelled) {
+          setMyOrdersError("Could not load your orders.");
+          setMyOrders([]);
+        }
+      } finally {
+        if (!cancelled) setMyOrdersLoading(false);
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [isAuthenticated, authLoading]);
+
+  const applyOrderFromList = (o) => {
+    setError("");
+    setOrderData(o);
+    setOrderId(String(o.id));
+    if (user?.username) setUsername(user.username);
+    if (o.pick_up_date) {
+      setPickUpDate(new Date(o.pick_up_date).toISOString().split("T")[0]);
+      setDisableEdit(new Date(o.pick_up_date).toISOString().split("T")[0] >= currentDate);
+    }
+  };
+
   const handleLookup = async () => {
     if (!username || !orderId) {
       setError("Please enter both Username and Order ID.");
       return;
     }
-
+    
     setError("");
     setLoading(true);
 
@@ -144,6 +192,97 @@ const OrderLookup = () => {
                 Enter your order details to view and manage your delivery order
               </Typography>
             </Box>
+
+            {/* Logged-in: orders for this account (newest first) */}
+            {!authLoading && isAuthenticated && (
+              <Box sx={{ marginBottom: 4, textAlign: "left" }}>
+                <Typography
+                  variant="subtitle1"
+                  sx={{ fontWeight: 700, mb: 1, display: "flex", alignItems: "center", gap: 1 }}
+                >
+                  <HistoryIcon color="primary" />
+                  Your orders
+                </Typography>
+                <Typography variant="caption" color="text.secondary" display="block" sx={{ mb: 1.5 }}>
+                  Newest at the top. Tap one to view full details below.
+                </Typography>
+                {myOrdersLoading && (
+                  <Typography variant="body2" color="text.secondary">
+                    Loading your orders…
+                  </Typography>
+                )}
+                {myOrdersError && (
+                  <Alert severity="warning" sx={{ mb: 1 }}>
+                    {myOrdersError}
+                  </Alert>
+                )}
+                {!myOrdersLoading && !myOrdersError && myOrders.length === 0 && (
+                  <Typography variant="body2" color="text.secondary">
+                    No orders found for your account yet.
+                  </Typography>
+                )}
+                {myOrders.length > 0 && (
+                  <Paper
+                    variant="outlined"
+                    sx={{
+                      maxHeight: 280,
+                      overflow: "auto",
+                      borderRadius: 2,
+                    }}
+                  >
+                    <List dense disablePadding>
+                      {myOrders.map((o) => (
+                        <ListItem key={o.id} disablePadding sx={{ borderBottom: 1, borderColor: "divider" }}>
+                          <ListItemButton onClick={() => applyOrderFromList(o)} alignItems="flex-start">
+                            <ListItemText
+                              primary={
+                                <Typography variant="body2" fontWeight={600}>
+                                  Order #{o.id}{" "}
+                                  <Typography component="span" variant="caption" color="text.secondary">
+                                    · placed{" "}
+                                    {o.create_date
+                                      ? new Date(o.create_date).toLocaleString()
+                                      : "—"}
+                                  </Typography>
+                                </Typography>
+                              }
+                              secondary={
+                                <>
+                                  <Typography variant="caption" display="block" color="text.secondary">
+                                    Pickup {o.pick_up_date ? new Date(o.pick_up_date).toISOString().split("T")[0] : "—"}{" "}
+                                    · {o.pick_up_location || "—"}
+                                  </Typography>
+                                  <Typography variant="caption" display="block" color="primary.main">
+                                    ${Number(o.total || 0).toFixed(2)}
+                                    {o.payment_status ? ` · ${o.payment_status}` : ""}
+                                  </Typography>
+                                </>
+                              }
+                            />
+                          </ListItemButton>
+                        </ListItem>
+                      ))}
+                    </List>
+                  </Paper>
+                )}
+              </Box>
+            )}
+
+            {!authLoading && !isAuthenticated && (
+              <Alert severity="info" sx={{ marginBottom: 3, textAlign: "left" }}>
+                <Typography variant="body2">
+                  <Button
+                    size="small"
+                    variant="contained"
+                    sx={{ mr: 1, mb: 1 }}
+                    onClick={() => navigate("/auth?redirect=/lookup-order")}
+                  >
+                    Log in
+                  </Button>
+                  to list your orders here (newest first). You can still look up a single order with username and ID below.
+                </Typography>
+              </Alert>
+            )}
 
             {/* Search Form */}
             <Box sx={{ marginBottom: 4 }}>
