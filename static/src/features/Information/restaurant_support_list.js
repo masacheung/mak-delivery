@@ -42,6 +42,7 @@ import tastyMoment from "../../image/tastyMoment.webp";
 import wontonGuy from "../../image/wontonGuy.webp";
 import yoDessert from "../../image/yoDessert.webp";
 import youGarden from "../../image/youGarden.webp";
+import chopsticksCharmImage from "../../image/youGarden.webp";
 
 const restaurants = [
   {
@@ -169,6 +170,15 @@ const restaurants = [
     cuisine: "Shanghai Cuisine",
     specialty: "Shanghai Dishes",
     description: "Traditional Shanghai cuisine and specialties"
+  },
+  {
+    name: "Chopsticks Charm",
+    englishName: "Chopsticks Charm",
+    menu: "",
+    image: chopsticksCharmImage,
+    cuisine: "",
+    specialty: "",
+    description: ""
   }
 ];
 

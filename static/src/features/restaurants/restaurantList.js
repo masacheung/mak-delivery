@@ -56,6 +56,7 @@ import NOODLES_TIME from "../../constant/restaurants/noodlesTimes";
 import NEW_DA_NOODLES from "../../constant/restaurants/newDaNoodles";
 import YO_DESSERT_US from "../../constant/restaurants/yoDessert";
 import ALL_BLUE_CHINESE_CUISINE from "../../constant/restaurants/allBlueChineseCuisine";
+import CHOPSTICKS_CHARM from "../../constant/restaurants/chopsticksCharm";
 
 // Import restaurant images
 import tastyMomentImg from "../../image/tastyMoment.webp";
@@ -73,6 +74,7 @@ import yoDessertImg from "../../image/yoDessert.webp";
 import noodlesTimeImg from "../../image/noodlesTime.webp";
 import newDaNoodlesImg from "../../image/newDaNoodles.webp";
 import allBlueChineseCuisineImg from "../../image/allBlueChineseCuisine.jpg";
+import chopsticksCharmImage from "../../image/allBlueChineseCuisine.jpg";
 
 const RestaurantList = () => {
   const navigate = useNavigate();
@@ -96,7 +98,8 @@ const RestaurantList = () => {
     YO_DESSERT_US,
     NOODLES_TIME,
     NEW_DA_NOODLES,
-    ALL_BLUE_CHINESE_CUISINE
+    ALL_BLUE_CHINESE_CUISINE,
+    CHOPSTICKS_CHARM
   ];
 
   const [orderState, setOrderState] = useState({
@@ -373,6 +376,7 @@ const RestaurantList = () => {
       '面缘': noodlesTimeImg,
       '牛大 NewDa Noodles': newDaNoodlesImg,
       '四海 All Blue Chinese Cuisine': allBlueChineseCuisineImg,
+      'Chopsticks Charm': chopsticksCharmImage
     };
     return imageMap[restaurantName] || chefImg;
   };

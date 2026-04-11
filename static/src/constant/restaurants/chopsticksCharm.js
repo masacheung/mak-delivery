@@ -1,6 +1,6 @@
-const YOU_GARDEN = {
-    id: 9,
-    name: "YOU GARDEN",
+const CHOPSTICKS_CHARM = {
+    id: 16,
+    name: "Chopsticks Charm",
     dishes: [
         { id: 995, name: '夫妻肺片 Spicy Beef Trip ', price:13.00},
         { id: 996, name: '麻辣牛筋 Spicy Beef Tenders', price:12.00},
@@ -42,4 +42,4 @@ const YOU_GARDEN = {
     ]
   };
   
-  export default YOU_GARDEN;
+  export default CHOPSTICKS_CHARM;
