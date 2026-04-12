@@ -74,7 +74,7 @@ import tastyMomentImage from "../../image/tastyMoment.webp";
 import wontonGuyImage from "../../image/wontonGuy.webp";
 import yoDessertImage from "../../image/yoDessert.webp";
 import youGardenImage from "../../image/youGarden.webp";
-import chopsticksCharmImage from "../../image/youGarden.webp";
+import chopsticksCharmImage from "../../image/chopsticksCharm.jpg";
 
 const EditExistingOrder = () => {
   const theme = useTheme();

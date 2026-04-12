@@ -74,7 +74,7 @@ import yoDessertImg from "../../image/yoDessert.webp";
 import noodlesTimeImg from "../../image/noodlesTime.webp";
 import newDaNoodlesImg from "../../image/newDaNoodles.webp";
 import allBlueChineseCuisineImg from "../../image/allBlueChineseCuisine.jpg";
-import chopsticksCharmImage from "../../image/allBlueChineseCuisine.jpg";
+import chopsticksCharmImage from "../../image/chopsticksCharm.jpg";
 
 const RestaurantList = () => {
   const navigate = useNavigate();

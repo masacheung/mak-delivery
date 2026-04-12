@@ -42,7 +42,7 @@ import tastyMoment from "../../image/tastyMoment.webp";
 import wontonGuy from "../../image/wontonGuy.webp";
 import yoDessert from "../../image/yoDessert.webp";
 import youGarden from "../../image/youGarden.webp";
-import chopsticksCharmImage from "../../image/youGarden.webp";
+import chopsticksCharmImage from "../../image/chopsticksCharm.jpg";
 
 const restaurants = [
   {
