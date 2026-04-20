@@ -1,4 +1,4 @@
-const Chopstick Charm= {
+const Chopstick Charm = {
     id: 9,
     name: "Chopstick Charm",
     dishes: [
