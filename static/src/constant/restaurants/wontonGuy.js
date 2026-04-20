@@ -102,7 +102,7 @@ const WONTON_GUY = {
         { id: 317, name: '雙拼撈麵', price:14.75  },
         { id: 318, name: '三拼撈麵', price:16.50  },
         { id: 339, name: '豬手撈麵', price:13.00  },
-        { id: 319, name: '牛腩（小食）Beef Brisket', price:19.00  },
+        { id: 319, name: '牛腩（小食）Beef Brisket', price:22.00  },
         { id: 320, name: '炸魚皮（小食）Deep Fried Fish Skin', price:7.00  },
         { id: 321, name: '油菜（菜心或生菜）Vegetable with Oyster Sauce(Choy Sum or Lettuce) ', price:6.00  },
         { id: 322, name: '炸醬生菜（小食）Chill Tomato Sauce with Shredded Pork on Lettuce', price:10.00  },
