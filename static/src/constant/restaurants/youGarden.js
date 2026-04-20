@@ -1,4 +1,4 @@
-const Chopstick Charm = {
+const YOUGARDEN = {
     id: 9,
     name: "Chopstick Charm",
     dishes: [
@@ -43,4 +43,4 @@ const Chopstick Charm = {
     ]
   };
   
-  export default Chopstick Charm;
+  export default YOUGARDEN;
