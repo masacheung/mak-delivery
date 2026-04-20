@@ -2,6 +2,7 @@ const YOU_GARDEN = {
     id: 9,
     name: "YOU GARDEN",
     dishes: [
+         { id: 933, name: '老媽蹄花湯 (2-3 person) ', price:18.00 },
         { id: 995, name: '夫妻肺片 Spicy Beef Trip ', price:13.00},
         { id: 996, name: '麻辣牛筋 Spicy Beef Tenders', price:12.00},
         { id: 997, name: '口水雞 Mouth Watering Chicken', price:12.00},
