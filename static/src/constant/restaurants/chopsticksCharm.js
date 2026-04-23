@@ -29,7 +29,7 @@ const CHOPSTICKS_CHARM = {
         { id: 921, name: '宮廷秘製紅燒肉 Braised Pork Belly with Quali Egg', price:20.00 },
         { id: 922, name: '魚香茄子 Signature Sichuan Style Eggplant', price:12.00 },
         { id: 923, name: '青椒千葉豆腐 Thousand Layer Tofy with Green Peppers ', price:16.00 },
-        { id: 924, name: '蔥爆牛肉 Wok-seared Beef with Scallions and ginger', price:12.95 },
+        { id: 924, name: '蔥爆牛肉 Wok-seared Beef with Scallions and ginger', price:18.00 },
         { id: 925, name: '百香果芒果檸檬茶 passion mango perfume lemon tea', price:8.00 },
         { id: 926, name: '鴨屎檸檬茶 Yashi perfume Lemon tea ', price:8.00 },
         { id: 927, name: '黃皮檸檬茶 wampi perfume Lemon tea', price:8.95 },
