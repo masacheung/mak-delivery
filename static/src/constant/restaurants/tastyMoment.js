@@ -3,7 +3,7 @@ const TASTY_MOMENT = {
   name: "Tasty Moment",
   dishes: [
     
-    { id: 12, name: '鲜肉小笼包', price:10.95  },
+    { id: 12, name: '鲜肉小笼包', price:11.95  },
     { id: 13, name: '丝瓜小笼包', price:11.50  },
     { id: 14, name: '蟹粉小笼包', price:14.95  },
     { id: 15, name: '香辣小笼包', price:12.50  },
@@ -50,7 +50,7 @@ const TASTY_MOMENT = {
     { id: 148, name: '老醋海蜇头', price:12.95  },
     { id: 149, name: '剁椒鱼肚', price:12.95  },
     { id: 150, name: '海派炸猪排', price:14.95  },
-    { id: 151, name: '蒜香骨', price:13.95  },
+    { id: 151, name: '蒜香骨', price:14.95  },
     { id: 152, name: '香辣鸡中翼', price:13.95  },
     { id: 153, name: '蒜香鸡中翼', price:11.95  },
     { id: 154, name: '弄堂臭豆腐', price:11.95  },
@@ -147,7 +147,7 @@ const TASTY_MOMENT = {
     { id: 1142, name: '泡椒牛杂米线', price:12.95  },
     { id: 1143, name: '川味大肠面', price:10.95  },
     { id: 1144, name: '麻酱凉面', price:5.95  },
-    { id: 1145, name: '葱油拌麵', price:5.95  },
+    { id: 1145, name: '葱油拌麵', price:6.45  },
     { id: 1146, name: '重庆冷面', price:11.95 },
     { id: 1147, name: '蟹粉拌面', price:17.95  },
     { id: 1148, name: '辣肉葱油拌面', price:11.45  },
