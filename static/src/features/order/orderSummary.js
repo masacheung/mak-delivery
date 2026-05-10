@@ -37,7 +37,7 @@ const OrderSummary = ({ orderState, updateOrderState, onClose, onSubmit, updateT
   const restaurantCount = Object.values(addedDishes).filter(dishes => dishes.length > 0).length;
 
   let deliveryFee = 0;
-  if (restaurantCount === 1) deliveryFee = 5;
+  if (restaurantCount === 1) deliveryFee = 6;
   else if (restaurantCount === 2) deliveryFee = 8;
   else if (restaurantCount >= 3) deliveryFee = 10;
 
