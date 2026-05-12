@@ -2,6 +2,8 @@ const CHOPSTICKS_CHARM = {
     id: 16,
     name: "Chopsticks Charm",
     dishes: [
+        { id: 934, name: '水煮魚', price:26 },
+        { id: 935, name: '水煮牛', price:24 },
         { id: 933, name: '老媽蹄花湯 (2-3 person) ', price:18.00 },
         { id: 995, name: '夫妻肺片 Spicy Beef Trip ', price:13.00},
         { id: 996, name: '麻辣牛筋 Spicy Beef Tenders', price:12.00},
