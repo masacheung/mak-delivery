@@ -2,6 +2,7 @@ const SPICE_TWENTY_FOUR = {
     id: 7,
     name: 'Spice 24',
     dishes: [
+         { id: 756, name: '龍蝦 3磅', price:35.95 , options: {option1: {name: "Types", choices: ["麻辣 ", "蒜香", ], selectedOptions: [], limit: 1 }}},
          { id: 72, name: "Create Your Own Stir-Fry", price:"SP",
                 options: {
                     optionSize:
