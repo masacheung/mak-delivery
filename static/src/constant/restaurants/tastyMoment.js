@@ -48,7 +48,7 @@ const TASTY_MOMENT = {
     { id: 146, name: '墨鱼大烤', price:12.95  },
     { id: 147, name: '香糟三宝', price:14.95  },
     { id: 148, name: '老醋海蜇头', price:12.95  },
-    { id: 149, name: '剁椒鱼肚', price:12.95  },
+    { id: 149, name: '剁椒鱼肚', price:15.95  },
     { id: 150, name: '海派炸猪排', price:14.95  },
     { id: 151, name: '蒜香骨', price:14.95  },
     { id: 152, name: '香辣鸡中翼', price:13.95  },
