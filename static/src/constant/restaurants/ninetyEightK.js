@@ -107,7 +107,7 @@ const NINETY_EIGHT_K = {
         { id: 526, name: ' 烤翅 Roasted Chicken Wings', price:"SP",
          options: {
             optionSize: {
-               name: "Pieces", choices: ["2pcs $3.25", "6pcs $9.50", "10pcs $13.50"], selectedOptions: [], limit: 1, adjustable: true
+               name: "Pieces", choices: ["2pcs $3.25", "6pcs $9.50", "10pcs $14.10"], selectedOptions: [], limit: 1, adjustable: true
             }
          }
         },
