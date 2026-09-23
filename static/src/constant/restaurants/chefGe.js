@@ -2,6 +2,7 @@ const CHEF_GE = {
     id: 6,
     name: '葛师傅',
     dishes: [
+        { id: 6118, name: '豆花全魚', price:38.99  },
         { id: 6118, name: '小炒牛三樣', price:28.99  },
         { id: 6119, name: '青花椒就三樣', price:28.99  },
         { id: 6117, name: '羊杂汤 Signature Lamb Offal Soup', price:13.99  },
