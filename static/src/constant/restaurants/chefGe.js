@@ -34,7 +34,7 @@ const CHEF_GE = {
         { id: 615, name: '滷鴨頭 Braised Duck Head/EA', price:3.99  },
         { id: 616, name: '滷雞腿 Braised Chicken thighs', price:3.75  },
         { id: 617, name: '滷蛋 Braised egg', price:1.75},
-        { id: 619, name: '家鄉烙餅 Hometown Pancake', price:4.99  },
+        { id: 619, name: '家鄉烙餅 Hometown Pancake', price:5.99  },
         { id: 620, name: '滷肉大餅 Braised Pork pancake', price:6.99  },
          { id: 618, name: '秘製椒香鮮肉餅 Homemade Pork Pancake/EA', price:4.99  },
         { id: 621, name: '白菜肉餡餅 Pork Pie with Cabbage', price:4.99  },
