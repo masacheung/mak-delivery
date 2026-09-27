@@ -146,10 +146,6 @@ const S_Y_MINI_HOTPOT = {
 
         { id: 434, name: 'Five Stars Mixed in Spicy Chili Sauce 五鲜烩 (毛肚,黄喉,肥牛,午餐肉,鱿鱼须) 菜类(青瓜,白菜,木耳,腐竹,魔芋) Black beef tripe, yellow throat, beef, spam meat, squid, cucumber, napa, earwood, bean curd stick, konjak', price:33.95  },
         
-                }
-            }
-        },
-        
     ]
 };
 
