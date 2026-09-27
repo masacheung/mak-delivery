@@ -5,7 +5,7 @@ const S_Y_MINI_HOTPOT = {
         { id: 41, name: 'Mini Hot Pot 冒菜', price:"SP",
         options: {
             option1: {
-                name: "Choose Spice", choices: ["No Spicy (Tomato Soup) 不要辣(番茄汤底)", "Slightly 微微辣", "Mild 微辣", "Medium 中辣", "Fire 大辣", "Super Spicy 特辣"], selectedOptions: [], limit: 1
+                name: "Choose Spice", choices: ["No Spicy (Tomato Soup) 不要辣(番茄汤底)","青花椒 Green Sichuan Pepper(spicy)","骨湯 Bone Broth(no spicy)", "Slightly 微微辣", "Mild 微辣", "Medium 中辣", "Fire 大辣", "Super Spicy 特辣"], selectedOptions: [], limit: 1
             },
             option2: {
                 name: "Option (6.49 each)",
@@ -79,30 +79,27 @@ const S_Y_MINI_HOTPOT = {
                 name: "Options", choices:["Dry Chili Seasoning 干碟 $1.50", "Sesame Oil with Ingredients 油碟 $2.00", "Instant Noodle 公仔面 $3.00"], selectedOptions: [], limit: 100, adjustable: true
             }
         }},
-        { id: 42, name: 'Chongqing Noodle 重庆小面', price:9.95 },
-        { id: 43, name: 'Dan Dan Noodle 担担面', price:9.95 },
-        { id: 44, name: 'Egg Fried Rice 蛋炒饭', price:9.95 },
-        { id: 45, name: 'Spam Egg Fried Rice 午餐肉蛋炒饭', price:10.95 },
-        { id: 46, name: 'Beef Stir-Fried Udon Noodle 牛肉炒乌冬面 ', price:10.95 },
-        { id: 47, name: 'Seafood Stir-Fried Udon Noodle 海鲜炒乌冬面', price:13.95 },
-        { id: 48, name: 'Beef Stir-Fried Instant Noodle 牛肉炒公仔面', price:10.95  },
-        { id: 49, name: 'Seafood Stir-Fried Instant Noodle 海鲜炒公仔面', price:13.95  },
-        { id: 410, name: 'White Rice 白饭', price:2.00 },
-        { id: 411, name: 'Purple Sweet Potato Ball 紫薯球', price:5.95  },
-        { id: 412, name: 'Fried pork egg roll (2pcs) 炸春卷', price:4.95  },
+        { id: 42, name: 'Twice Cooked Pork Belly 回锅肉', price:17.95},
+        { id: 43, name: 'Mapo Tofu 麻婆豆腐', price:15.95},
+        { id: 44, name: 'Spicy Beef in Szechuan Style 水煮牛肉', price:33.95},
+        { id: 45, name: 'Cumin Beef 孜然牛肉', price:18.95},
+        { id: 46, name: 'ChongQing Spicy Chicken 重庆辣子鸡', price:16.95},
+        { id: 47, name: 'West Lake Beef Soup 西湖牛肉羹', price:19.95},
+        { id: 48, name: 'Squid w. Cauliflower 鱿鱼炒花菜', price:13.95},
+        { id: 49, name: 'Pork Belly with Cauliflower 五花肉炒花菜', price:13.95},
+        { id: 410, name: 'stir fry tomato with egg 番茄炒蛋', price:14.95 },
+        { id: 411, name: 'Brown Sugar Lava Rice Cake 紅糖糍粑', price:6.95  },
+        { id: 412, name: 'Pork Intestine w. Chili Pot 干锅肥肠', price:22.95  },
         { id: 413, name: 'sweet potato fries 地瓜薯条', price:6.95 },
         { id: 414, name: 'Corn pudding crispy 玉米布丁酥', price:5.95 },
-        { id: 415, name: 'Cumin Chicken Strips 孜然鸡条', price:6.95 },
-        { id: 416, name: 'Fried fish stick 炸鳕鱼条', price:6.95 },
-        { id: 417, name: 'Rice Stuffed Chicken Wing 鸡翅包饭', price:6.95 },
-        { id: 418, name: 'Rice Stuffed Chicken Wing(2) 鸡翅包饭(2)', price:12.95 },
-        { id: 419, name: 'Fried Chicken Cutlet with cheese 爆浆鸡排', price:9.95  },
-        { id: 421, name: 'Crispy Fried Pork 小酥肉', price:9.95  },
-        { id: 422, name: 'Crispy Peanut 炒花生', price:5.00  },
-        { id: 423, name: 'Cucumber in Hot and Sour Sauce 拍黄瓜', price:6.95  },
-        { id: 424, name: 'Pickled Chicken Feet 泡椒凤爪', price:8.95  },
         { id: 425, name: 'Sliced Beef and OX Tongue in Chili Sauce 夫妻肺片', price:10.95  },
-        { id: 426, name: 'Arctic Surf Clams w. Homemade Sauce 凉拌北极贝', price:15.95  },
+        { id: 426, name: 'Pickled Cabbage & Chili w. Fish Filets 酸菜活魚', price:"SP",
+            options: {
+                optionSize: {
+                    name: "Size", choices: ["M $28.95", "L $44.95"], selectedOptions: [], limit: 1, adjustable: true
+                }
+            }
+        },
         { id: 427, name: 'whole fish in Hot Chili Oil 水煮活魚', price:"SP",
             options: {
                 optionSize: {
@@ -117,20 +114,14 @@ const S_Y_MINI_HOTPOT = {
                 }
             }
         },
-        { id: 420, name: 'Boiled Fish Filets in Hot Chili Oil 水煮田雞', price:"SP",
+        { id: 420, name: 'Boiled Frog in Hot Chili Oil 泡椒牛蛙', price:"SP",
             options: {
                 optionSize: {
-                    name: "Size", choices: ["M $25.95", "L $44.95"], selectedOptions: [], limit: 1, adjustable: true
+                    name: "Size", choices: ["M $25.95", "L $49.95"], selectedOptions: [], limit: 1, adjustable: true
                 }
             }
         },
-        { id: 451, name: 'Whole Fish w. Fish Filets 酸菜活魚', price:"SP",
-            options: {
-                optionSize: {
-                    name: "Size", choices: ["M $28.95", "L $44.95"], selectedOptions: [], limit: 1, adjustable: true
-                }
-            }
-        },
+        
         { id: 429, name: 'Pickled Cabbage & Chili w. Fish Filets 酸菜鱼片', price:"SP",
             options: {
                 optionSize: {
@@ -152,36 +143,12 @@ const S_Y_MINI_HOTPOT = {
                 }
             }
         },
-        { id: 453, name: 'Frog with Pickled Pepper 泡椒田雞', price:"SP",
-            options: {
-                optionSize: {
-                    name: "Size", choices: ["M $25.95", "L $49.95"], selectedOptions: [], limit: 1, adjustable: true
-                }
-            }
-        },
-        { id: 433, name: 'Spicy Beef in Szechuan Style 水煮牛肉', price:33.95  },
+
         { id: 434, name: 'Five Stars Mixed in Spicy Chili Sauce 五鲜烩 (毛肚,黄喉,肥牛,午餐肉,鱿鱼须) 菜类(青瓜,白菜,木耳,腐竹,魔芋) Black beef tripe, yellow throat, beef, spam meat, squid, cucumber, napa, earwood, bean curd stick, konjak', price:33.95  },
-        { id: 435, name: 'Pork Intestine w. Chili Pot 干锅肥肠', price:22.95  },
-        { id: 454, name: 'Frog with Chill Pot 干锅田雞 ', price:"SP",
-            options: {
-                optionSize: {
-                    name: "Size", choices: ["M $25.95", "L $49.95"], selectedOptions: [], limit: 1, adjustable: true
+        
                 }
             }
         },
-        { id: 436, name: 'Cumin Beef 孜然牛肉', price:18.95  },
-        { id: 437, name: 'Mala Stir-Fried 麻辣香锅 (面筋,腐竹,花菜,鱿鱼,虾,鱼豆腐,肥牛,鸡胗) Gluten, bean curd stick, cauliflower, squid, shrimp, fish tofu, beef, chicken gizzard', price:33.95 },
-        { id: 438, name: 'Twice Cooked Pork Belly 回锅肉', price:17.95  },
-        { id: 439, name: 'ChongQing Spicy Chicken 重庆辣子鸡', price:16.95  },
-        { id: 440, name: 'Hot & Sour Shredded Potato 酸辣土豆丝', price:13.95  },
-        { id: 441, name: 'Mapo Tofu 麻婆豆腐', price:15.95  },
-        { id: 442, name: 'West Lake Beef Soup 西湖牛肉羹', price:19.95  },
-        { id: 443, name: 'Squid w. Cauliflower 鱿鱼炒花菜', price:13.95  },
-        { id: 444, name: 'Pork Belly with Cauliflower 五花肉炒花菜', price:13.95  },
-        { id: 447, name: 'stir fry tomato with egg 番茄炒蛋', price:14.95  },
-        { id: 448, name: 'sweet and sour pork ribs 糖醋排骨', price:17.95  },
-        { id: 449, name: 'Stir- Fried Lamb with Scallion 葱爆羊肉', price:18.95  },
-        { id: 450, name: 'Stir-Fried Squid with XO Sauce XO酱炒鱿鱼', price:16.95  },
         
     ]
 };
