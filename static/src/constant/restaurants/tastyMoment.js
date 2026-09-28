@@ -55,7 +55,7 @@ const TASTY_MOMENT = {
     { id: 153, name: '蒜香鸡中翼', price:11.95  },
     { id: 154, name: '弄堂臭豆腐', price:11.95  },
     { id: 155, name: '芋泥腐衣卷', price:13.95  },
-    { id: 156, name: '响油鳝丝', price: 38.95  },
+    { id: 156, name: '响油鳝丝', price: 40.95  },
     { id: 157, name: '滨江椒盐脆鳝', price: 38.95  },
     { id: 158, name: '金牌红烧肉', price:22.95  },
     { id: 159, name: '飘香猪肝', price:17.95  },
