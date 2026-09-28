@@ -41,6 +41,66 @@ const MISS_FLOWER_HOTPOT = {
                 }
             }
         },
+        {
+    id: 1185,
+    name: "双人初体验套餐 First-Timer Hotpot Set for 2",
+    price: 58,
+    options: {
+        option1: {
+            name: "Choose 锅底 BROTH",
+            choices: [
+                "花胶鸡金汤锅 Golden Chicken Soup",
+                "猪肚鸡汤锅 Pork Tripe Chicken Soup",
+                "椰子鸡汤锅 Coconut Chicken Soup"
+            ],
+            selectedOptions: [],
+            limit: 1
+        },
+        option2: {
+            name: "Choose 餐前小食 APPETIZER",
+            choices: [
+                "九层塔盐酥鸡 Deep Fried Popcorn Chicken with Basil",
+                "姜蓉手撕鸡 Chicken Salad with Ginger Paste",
+                "现炸小酥肉 Spicy Deep Fried Pork"
+            ],
+            selectedOptions: [],
+            limit: 1
+        },
+        option3: {
+            name: "Choose 臻选菜品 PREMIUM",
+            choices: [
+                "花胶1条 Fish Maw",
+                "M8澳洲短肋板和牛一份 M8 Wagyu"
+            ],
+            selectedOptions: [],
+            limit: 1
+        },
+        option4: {
+            name: "Choose 鸡肉 CHICKEN",
+            choices: [
+                "去骨走地鸡 Boneless Chicken 180g",
+                "走地鸡 Bone-In Chicken 350g"
+            ],
+            selectedOptions: [],
+            limit: 1
+        },
+        option5: {
+            name: "Choose 主食 STAPLES",
+            choices: [
+                "手工面 Handmade Noodle",
+                "宽粉 Vermicelli",
+                "米饭 Rice"
+            ],
+            selectedOptions: [],
+            limit: 2
+        }
+    },
+
+    includedItems: [
+        "有机活体香菇 Live-Grown Shiitake Mushroom",
+        "蔬菜菌菇拼盘 Vegetable & Mushroom Platter",
+    ]
+},
         { id: 112, name: "鲍鱼花胶鸡汤 Chicken soup with Fish Maw and Abalone", price: "SP",
             options: {
                 option1: {
@@ -235,7 +295,6 @@ const MISS_FLOWER_HOTPOT = {
         { id: 1182, name: "菠菜 Spinach", price: 4.99 },
         { id: 1183, name: "豆腐 Tofu", price: 3.99 },
         { id: 1184, name: "冬瓜 Winter Melon", price: 3.99 },
-        { id: 1185, name: "广东点心拼盘 Cantonese Dim Sum Platter", price: 14.99 },
         { id: 1186, name: "九层塔盐酥鸡 Crispy Salted Chicken", price: 9.99 },
         
         { id: 11111, name: "陳皮蕃茄烏梅 Tangerine Peel, Tomato & Smoked Plum/pit", price: 9.99 },
