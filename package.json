@@ -1,6 +1,6 @@
 {
   "name": "mak-delivery-monorepo",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "private": true,
   "description": "Monorepo: React app in static/, Express API in server/. Use this root for Render (see docs/render-deploy.md).",
   "scripts": {
