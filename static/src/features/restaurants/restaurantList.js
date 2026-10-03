@@ -28,6 +28,7 @@ import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import RestaurantIcon from '@mui/icons-material/Restaurant';
 import { v4 as uuidv4 } from 'uuid';
 import DishForm from "../dishes/dishForm";
+import { changeSimpleDishQuantity } from "../dishes/dishCart";
 import OrderSummary from "../order/orderSummary";
 import PickupNotificationBell from "../../components/PickupNotificationBell";
 import AvailablePickupDates from './AvailablePickupDates';
@@ -232,32 +233,8 @@ const RestaurantList = () => {
     updateOrderState("selectedRestaurant", null);
   };
 
-  const handleQuantityChange = (dishId, action, restaurantId) => {
-    setOrderState((prev) => {
-      const updatedQuantities = { ...prev.quantities[restaurantId] } || {};
-
-      if (action === "increase" && (updatedQuantities[dishId] || 0) < 10) {
-        updatedQuantities[dishId] = (updatedQuantities[dishId] || 0) + 1;
-      } else if (action === "decrease" && (updatedQuantities[dishId] || 0) > 0) {
-        updatedQuantities[dishId] -= 1;
-      } else if (action === "reset") {
-        updatedQuantities[dishId] = 0;
-      }
-
-      const updatedDishes = { ...prev.addedDishes };
-      if (updatedQuantities[dishId] === 0) {
-        updatedDishes[restaurantId] = updatedDishes[restaurantId]?.filter(dish => dish.id !== dishId) || [];
-      }
-
-      return {
-        ...prev,
-        quantities: {
-          ...prev.quantities,
-          [restaurantId]: updatedQuantities,
-        },
-        addedDishes: updatedDishes,
-      };
-    });
+  const handleSimpleQuantityChange = (restaurantId, dish, delta) => {
+    setOrderState(prev => ({ ...prev, addedDishes: changeSimpleDishQuantity(prev.addedDishes, restaurantId, dish, delta, () => `${dish.id}-${uuidv4()}`) }));
   };
 
   const handleAddDish = (restaurantId, selectedDishes) => {
@@ -268,6 +245,7 @@ const RestaurantList = () => {
       selectedDishes.forEach((newDish) => {
         updatedDishes[restaurantId].push({
           id: `${newDish.id}-${uuidv4()}`,
+          sourceDishId: newDish.id,
           name: newDish.name || "Unknown",
           price: newDish.price === "SP" ? "SP" : newDish.price ?? 0,
           quantity: newDish.quantity ?? 0,
@@ -732,8 +710,8 @@ const RestaurantList = () => {
           <DishForm
             restaurant={orderState.selectedRestaurant}
             key={orderState.selectedRestaurant.id}
-            quantities={orderState.quantities[orderState.selectedRestaurant.id] || {}}
-            onQuantityChange={handleQuantityChange}
+            cartDishes={orderState.addedDishes[orderState.selectedRestaurant.id] || []}
+            onSimpleQuantityChange={handleSimpleQuantityChange}
             onAddDish={handleAddDish}
             onClose={handleCloseDishForm}
             cartReview={<CartReviewButton addedDishes={orderState.addedDishes} onClick={() => { handleCloseDishForm(); handleOpen(); }} />}
