@@ -6,14 +6,11 @@ import {
   TextField,
   Button,
   Typography,
-  Card,
-  CardContent,
   IconButton,
   AppBar,
   Toolbar,
   Container,
   Paper,
-  Grid,
   useTheme,
   useMediaQuery,
   Fade,
@@ -27,7 +24,6 @@ import {
   Event as EventIcon,
   Home as HomeIcon,
   Settings as SettingsIcon,
-  Dashboard as DashboardIcon,
   Person as PersonIcon,
   Lock as LockIcon,
   AdminPanelSettings as AdminIcon,
@@ -55,7 +51,7 @@ const Admin = () => {
   const [error, setError] = useState("");
   const { events } = useAdminConfigEvents({ errorMode: "silent" });
   const [showEvents, setShowEvents] = useState(false);
-  const [activeTab, setActiveTab] = useState(0);
+  const [activeTab, setActiveTab] = useState(1);
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -101,7 +97,7 @@ const Admin = () => {
     return (
       <Box sx={{
         minHeight: '100vh',
-        background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+        background: '#f7f7fb',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
@@ -128,13 +124,13 @@ const Admin = () => {
                     height: 80,
                     margin: '0 auto',
                     mb: 2,
-                    background: 'linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.8) 100%)',
+                    background: '#ffffff',
                     backdropFilter: 'blur(10px)',
                     borderRadius: '50%',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    border: '1px solid rgba(255,255,255,0.2)',
+                    border: '1px solid #e5e5ef',
                   }}
                 >
                   <img src="/delivery-truck.png" alt="Logo" style={{ width: 50, height: 50 }} />
@@ -142,10 +138,9 @@ const Admin = () => {
                 <Typography
                   variant="h4"
                   sx={{
-                    color: 'white',
+                    color: 'text.primary',
                     fontWeight: 'bold',
                     fontFamily: 'Poppins, sans-serif',
-                    textShadow: '0 2px 4px rgba(0,0,0,0.3)',
                   }}
                 >
                   Mak Delivery
@@ -153,7 +148,7 @@ const Admin = () => {
                 <Typography
                   variant="h6"
                   sx={{
-                    color: 'rgba(255,255,255,0.9)',
+                    color: 'text.secondary',
                     fontWeight: 300,
                   }}
                 >
@@ -163,17 +158,17 @@ const Admin = () => {
 
               {/* Login Card */}
               <Paper
-                elevation={8}
+                elevation={0}
                 sx={{
                   p: 4,
-                  background: 'linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.8) 100%)',
+                  background: '#ffffff',
                   backdropFilter: 'blur(10px)',
-                  border: '1px solid rgba(255,255,255,0.2)',
-                  borderRadius: 3,
+                  border: '1px solid #e5e5ef',
+                  borderRadius: 2,
                 }}
               >
                 <Box sx={{ textAlign: 'center', mb: 3 }}>
-                  <AdminIcon sx={{ fontSize: 60, color: '#667eea', mb: 2 }} />
+                  <AdminIcon sx={{ fontSize: 60, color: '#5557d9', mb: 2 }} />
                   <Typography
                     variant="h5"
                     sx={{
@@ -185,8 +180,7 @@ const Admin = () => {
                     Administrator Login
                   </Typography>
                   <Typography variant="body2" color="text.secondary">
-                    Sign in with a verified account that has{" "}
-                    <strong>role = admin</strong> in the database.
+                    Sign in with your administrator account.
                   </Typography>
                 </Box>
 
@@ -203,8 +197,8 @@ const Admin = () => {
                     }}
                     sx={{
                       '& .MuiOutlinedInput-root': {
-                        '&:hover fieldset': { borderColor: '#667eea' },
-                        '&.Mui-focused fieldset': { borderColor: '#667eea' },
+                        '&:hover fieldset': { borderColor: '#5557d9' },
+                        '&.Mui-focused fieldset': { borderColor: '#5557d9' },
                       },
                     }}
                   />
@@ -229,8 +223,8 @@ const Admin = () => {
                     }}
                     sx={{
                       '& .MuiOutlinedInput-root': {
-                        '&:hover fieldset': { borderColor: '#667eea' },
-                        '&.Mui-focused fieldset': { borderColor: '#667eea' },
+                        '&:hover fieldset': { borderColor: '#5557d9' },
+                        '&.Mui-focused fieldset': { borderColor: '#5557d9' },
                       },
                     }}
                   />
@@ -248,7 +242,7 @@ const Admin = () => {
                     sx={{
                       mt: 3,
                       py: 1.5,
-                      background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                      background: '#5557d9',
                       '&:hover': {
                         background: 'linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%)',
                         transform: 'translateY(-2px)',
@@ -278,7 +272,7 @@ const Admin = () => {
   return (
     <Box sx={{
       minHeight: '100vh',
-      background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+      background: '#f7f7fb',
       position: 'relative',
       '&::before': {
         content: '""',
@@ -294,10 +288,10 @@ const Admin = () => {
       <AppBar
         position="fixed"
         sx={{
-          background: 'linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.8) 100%)',
+          background: '#ffffff',
           backdropFilter: 'blur(10px)',
-          border: '1px solid rgba(255,255,255,0.2)',
-          boxShadow: '0 8px 32px rgba(0,0,0,0.1)',
+          border: '1px solid #e5e5ef',
+          boxShadow: 'none',
           color: 'black',
         }}
       >
@@ -317,7 +311,7 @@ const Admin = () => {
               flexGrow: 1,
               textAlign: 'center',
               fontWeight: 'bold',
-              background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+              background: '#5557d9',
               backgroundClip: 'text',
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent',
@@ -397,77 +391,30 @@ const Admin = () => {
       <Container maxWidth="lg" sx={{ pt: 10, pb: 4 }}>
         <Fade in={true} timeout={1000}>
           <Box>
-            {/* Admin Dashboard Header */}
-            <Paper
-              elevation={8}
-              sx={{
-                p: 4,
-                mb: 4,
-                background: 'linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.8) 100%)',
-                backdropFilter: 'blur(10px)',
-                border: '1px solid rgba(255,255,255,0.2)',
-                borderRadius: 3,
-                textAlign: 'center',
-              }}
-            >
-              <DashboardIcon sx={{ fontSize: 60, color: '#667eea', mb: 2 }} />
-              <Typography
-                variant="h4"
-                component="h1"
-                gutterBottom
-                sx={{
-                  fontWeight: 'bold',
-                  background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-                  backgroundClip: 'text',
-                  WebkitBackgroundClip: 'text',
-                  WebkitTextFillColor: 'transparent',
-                  fontFamily: 'Poppins, sans-serif',
-                  fontSize: isMobile ? '1.8rem' : '2.5rem',
-                }}
-              >
-                Administrator Dashboard
-              </Typography>
-              <Typography variant="h6" color="text.secondary" sx={{ mb: 3 }}>
-                Manage delivery events and monitor orders
-              </Typography>
-
-              <Box sx={{ display: 'flex', justifyContent: 'center', gap: 2, flexWrap: 'wrap' }}>
-                <Chip
-                  icon={<SettingsIcon />}
-                  label="Event Management"
-                  sx={{
-                    background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-                    color: 'white',
-                    fontWeight: 'bold',
-                  }}
-                />
-                <Chip
-                  icon={<EventIcon />}
-                  label={`${events.length} Active Events`}
-                  sx={{
-                    background: 'linear-gradient(135deg, #4CAF50 0%, #45a049 100%)',
-                    color: 'white',
-                    fontWeight: 'bold',
-                  }}
-                />
+            <Box sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', alignItems: 'center', gap: 1, mb: 2 }}>
+              <Box>
+                <Typography variant="h5" component="h1" fontWeight={800}>Manage deliveries</Typography>
+                <Typography variant="body2" color="text.secondary">Orders, delivery dates and customer notices.</Typography>
               </Box>
-            </Paper>
-
+              <Chip variant="outlined" label={`Signed in as ${adminUsername || 'admin'}`} />
+            </Box>
             {/* Admin Tabs */}
             <Paper
-              elevation={8}
+              elevation={0}
               sx={{
-                mb: 4,
-                background: 'linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.8) 100%)',
+                mb: 2,
+                background: '#ffffff',
                 backdropFilter: 'blur(10px)',
-                border: '1px solid rgba(255,255,255,0.2)',
-                borderRadius: 3,
+                border: '1px solid #e5e5ef',
+                borderRadius: 2,
               }}
             >
               <Tabs
                 value={activeTab}
                 onChange={handleTabChange}
-                centered
+                centered={!isMobile}
+                variant={isMobile ? 'scrollable' : 'standard'}
+                allowScrollButtonsMobile
                 sx={{
                   '& .MuiTab-root': {
                     fontWeight: 'bold',
@@ -475,13 +422,10 @@ const Admin = () => {
                     textTransform: 'none',
                   },
                   '& .Mui-selected': {
-                    background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-                    backgroundClip: 'text',
-                    WebkitBackgroundClip: 'text',
-                    WebkitTextFillColor: 'transparent',
+                    color: 'primary.main',
                   },
                   '& .MuiTabs-indicator': {
-                    background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                    background: '#5557d9',
                     height: 3,
                   },
                 }}
@@ -506,19 +450,19 @@ const Admin = () => {
 
             {/* Tab Content */}
             <Paper
-              elevation={8}
+              elevation={0}
               sx={{
-                p: 3,
-                background: 'linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.8) 100%)',
+                p: { xs: 1, sm: 3 },
+                background: '#ffffff',
                 backdropFilter: 'blur(10px)',
-                border: '1px solid rgba(255,255,255,0.2)',
-                borderRadius: 3,
-                minHeight: '500px',
+                border: '1px solid #e5e5ef',
+                borderRadius: 2,
+                minHeight: '300px',
               }}
             >
               {activeTab === 0 && (
                 <Box>
-                  <Typography variant="h6" sx={{ fontWeight: 'bold', color: '#667eea', mb: 3 }}>
+                  <Typography variant="h6" sx={{ fontWeight: 'bold', color: '#5557d9', mb: 3 }}>
                     Delivery Event Management
                   </Typography>
                   <Divider sx={{ mb: 3 }} />
@@ -527,18 +471,12 @@ const Admin = () => {
               )}
 
               {activeTab === 1 && (
-                <Box>
-                  <Typography variant="h6" sx={{ fontWeight: 'bold', color: '#667eea', mb: 3 }}>
-                    Orders Lookup & Management
-                  </Typography>
-                  <Divider sx={{ mb: 3 }} />
-                  <AdminOrdersLookup />
-                </Box>
+                <AdminOrdersLookup />
               )}
 
               {activeTab === 2 && (
                 <Box>
-                  <Typography variant="h6" sx={{ fontWeight: "bold", color: "#667eea", mb: 3 }}>
+                  <Typography variant="h6" sx={{ fontWeight: "bold", color: "#5557d9", mb: 3 }}>
                     Notify customers at pickup
                   </Typography>
                   <Divider sx={{ mb: 3 }} />
@@ -547,26 +485,6 @@ const Admin = () => {
               )}
             </Paper>
 
-            {/* Admin Info Footer */}
-            <Paper
-              elevation={8}
-              sx={{
-                p: 3,
-                mt: 4,
-                background: 'linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.8) 100%)',
-                backdropFilter: 'blur(10px)',
-                border: '1px solid rgba(255,255,255,0.2)',
-                borderRadius: 3,
-                textAlign: 'center',
-              }}
-            >
-              <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
-                Administrator Panel - Mak Delivery System
-              </Typography>
-              <Typography variant="caption" color="text.secondary">
-                Logged in as: <strong>{adminUsername || "admin"}</strong> | Session secured
-              </Typography>
-            </Paper>
           </Box>
         </Fade>
       </Container>

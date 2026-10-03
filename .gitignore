@@ -4,7 +4,6 @@ node_modules/
 # Environment / local secrets — never commit
 .env
 .env.local
-server/db/connection.js
 
 # Local AI project notes (accumulates knowledge per session; keep local-only)
 docs/ai-project-notes.md

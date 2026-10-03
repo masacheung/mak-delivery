@@ -48,6 +48,7 @@ const HomePageHeader = ({
     >
       <IconButton
         onClick={onOpenMenu}
+        aria-label="Open menu"
         sx={{
           color: "primary.main",
           transition: "all 0.3s ease",
@@ -67,7 +68,7 @@ const HomePageHeader = ({
           flexGrow: 1,
           textAlign: "center",
           fontWeight: "bold",
-          background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+          background: "#5557d9",
           backgroundClip: "text",
           WebkitBackgroundClip: "text",
           WebkitTextFillColor: "transparent",
@@ -87,6 +88,7 @@ const HomePageHeader = ({
         <PickupNotificationBell enabled={isAuthenticated} isMobile={isMobile} />
         <IconButton
           onClick={onOpenEvents}
+          aria-label="Delivery dates"
           sx={{
             color: "primary.main",
             transition: "all 0.3s ease",
@@ -116,6 +118,7 @@ const HomePageHeader = ({
           <>
             <IconButton
               onClick={onUserMenuOpen}
+              aria-label="Account menu"
               sx={{
                 color: "primary.main",
                 transition: "all 0.3s ease",

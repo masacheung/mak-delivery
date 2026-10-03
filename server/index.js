@@ -1,20 +1,5 @@
 const path = require("path");
-const fs = require("fs");
-
-function loadEnv() {
-  const candidates = [
-    path.join(__dirname, "..", ".env"),
-    path.join(__dirname, "..", "static", ".env"),
-  ];
-  for (const p of candidates) {
-    if (fs.existsSync(p)) {
-      require("dotenv").config({ path: p });
-      return;
-    }
-  }
-  require("dotenv").config();
-}
-loadEnv();
+require("dotenv").config({ path: path.join(__dirname, "..", ".env") });
 
 const { getJwtSecret } = require("./middleware/authMiddleware.js");
 try {

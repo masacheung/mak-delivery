@@ -8,7 +8,6 @@ import {
   Button,
   Card,
   CardContent,
-  CardActions,
   FormControlLabel,
   Checkbox,
   Radio,
@@ -22,7 +21,9 @@ import {
   AppBar,
   Toolbar,
   Fade,
-  Slide
+  Slide,
+  Snackbar,
+  Alert
 } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
@@ -33,16 +34,18 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import TuneIcon from '@mui/icons-material/Tune';
 
-const DishForm = ({ restaurant, quantities, onQuantityChange, onAddDish, onClose }) => {
+const DishForm = ({ restaurant, quantities, onQuantityChange, onAddDish, onClose, cartReview }) => {
   const [selectedOptions, setSelectedOptions] = useState({});
   const [expandedDishes, setExpandedDishes] = useState({});
+  const [search, setSearch] = useState('');
+  const [addedMessage, setAddedMessage] = useState('');
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
 
 
   const calculateTotal = (dish) => {
-    let total = dish.price === 'SP' ? 0 : dish.price;
+    let total = dish.price === 'SP' ? 0 : Number(dish.price) || 0;
 
     if (selectedOptions[dish.id] && dish.options) {
       const selectedOptionsKeys = Object.keys(selectedOptions[dish.id]);
@@ -99,7 +102,7 @@ const DishForm = ({ restaurant, quantities, onQuantityChange, onAddDish, onClose
         {
           id: dish.id,
           name: dish.name || "Unknown",
-          price: total,
+          price: dish.price === 'SP' ? 'SP' : total,
           quantity: quantities[dish.id] ?? 0,
           selectedOptions: selectedOptions[dish.id] || {},
         },
@@ -111,6 +114,7 @@ const DishForm = ({ restaurant, quantities, onQuantityChange, onAddDish, onClose
       }));
   
       onQuantityChange(dish.id, "reset", restaurant.id);
+      setAddedMessage(`${quantities[dish.id]} × ${dish.name} added to your cart`);
     }
   };
 
@@ -166,8 +170,9 @@ const DishForm = ({ restaurant, quantities, onQuantityChange, onAddDish, onClose
   return (
     <Box
       sx={{
-        minHeight: "100vh",
-        background: "linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)",
+        height: "100dvh",
+        overflow: "hidden",
+        background: "#f7f7fb",
         display: "flex",
         flexDirection: "column",
         position: "relative",
@@ -214,6 +219,7 @@ const DishForm = ({ restaurant, quantities, onQuantityChange, onAddDish, onClose
           {onClose && (
             <IconButton
               onClick={onClose}
+              aria-label="Back to restaurants"
               sx={{
                 color: "primary.main",
                 backgroundColor: "rgba(102, 126, 234, 0.1)",
@@ -239,6 +245,8 @@ const DishForm = ({ restaurant, quantities, onQuantityChange, onAddDish, onClose
         maxWidth="lg"
         sx={{
           flex: 1,
+          minHeight: 0,
+          overflowY: 'auto',
           padding: isMobile ? "16px" : "24px",
           paddingTop: isMobile ? "72px" : "80px", // Add top padding for fixed header
           paddingBottom: isMobile ? "32px" : "40px",
@@ -260,6 +268,8 @@ const DishForm = ({ restaurant, quantities, onQuantityChange, onAddDish, onClose
             Select Your Dishes
           </Typography>
         </Slide>
+        <TextField fullWidth label="Search dishes" value={search} onChange={e => setSearch(e.target.value)} />
+        {!restaurant.dishes.some(dish => dish.name.toLowerCase().includes(search.toLowerCase())) && <Typography>No dishes match your search.</Typography>}
 
         {/* Dishes List */}
         <Box
@@ -275,7 +285,7 @@ const DishForm = ({ restaurant, quantities, onQuantityChange, onAddDish, onClose
           className="custom-scroll"
         >
           {restaurant?.dishes?.length > 0 ? (
-            restaurant.dishes.map((dish, index) => (
+            restaurant.dishes.filter(dish => dish.name.toLowerCase().includes(search.toLowerCase())).map((dish, index) => (
             <Fade key={dish.id} in={true} timeout={300 + index * 100}>
               <Card
                 className="dish-card"
@@ -352,7 +362,7 @@ const DishForm = ({ restaurant, quantities, onQuantityChange, onAddDish, onClose
                         label={dish.price === 'SP' ? 'Special Price' : `$${dish.price}`}
                         size="small"
                         sx={{
-                          backgroundColor: dish.price === 'SP' ? '#FF6B6B' : '#4CAF50',
+                          backgroundColor: dish.price === 'SP' ? '#FF6B6B' : '#5557d9',
                           color: 'white',
                           fontWeight: 600,
                           height: "28px",
@@ -371,13 +381,14 @@ const DishForm = ({ restaurant, quantities, onQuantityChange, onAddDish, onClose
                         borderRadius: 3,
                         padding: "8px 12px",
                         minWidth: "120px",
-                        height: "44px",
+                        minHeight: "52px",
                       }}
                     >
                       <IconButton
                         size="small"
                         onClick={() => onQuantityChange(dish.id, 'decrease', restaurant.id)}
-                        disabled={quantities[dish.id] === 0}
+                        aria-label={`Decrease quantity for ${dish.name}`}
+                        disabled={!quantities[dish.id]}
                         sx={{
                           color: "primary.main",
                           backgroundColor: "white",
@@ -407,6 +418,7 @@ const DishForm = ({ restaurant, quantities, onQuantityChange, onAddDish, onClose
                       <IconButton
                         size="small"
                         onClick={() => onQuantityChange(dish.id, 'increase', restaurant.id)}
+                        aria-label={`Increase quantity for ${dish.name}`}
                         disabled={quantities[dish.id] >= 10}
                         sx={{
                           color: "primary.main",
@@ -571,7 +583,7 @@ const DishForm = ({ restaurant, quantities, onQuantityChange, onAddDish, onClose
                       variant="contained"
                       size="large"
                       onClick={() => handleAddDish(dish)}
-                      disabled={quantities[dish.id] === 0}
+                      disabled={!quantities[dish.id]}
                       sx={{
                         background: "linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)",
                         borderRadius: "50px",
@@ -641,6 +653,10 @@ const DishForm = ({ restaurant, quantities, onQuantityChange, onAddDish, onClose
           )}
         </Box>
       </Container>
+      <Box sx={{ flexShrink: 0 }}>{cartReview}</Box>
+      <Snackbar open={Boolean(addedMessage)} autoHideDuration={3000} onClose={(_event, reason) => { if (reason !== 'clickaway') setAddedMessage(''); }} anchorOrigin={{ vertical: 'top', horizontal: 'center' }} sx={{ top: '72px !important' }}>
+        <Alert severity="success" role="status" onClose={() => setAddedMessage('')} sx={{ bgcolor: '#ededfc', color: 'text.primary' }}>{addedMessage}</Alert>
+      </Snackbar>
     </Box>
   );
 };

@@ -21,6 +21,11 @@ export function useAdminConfigEvents(options = {}) {
         setError("");
       }
       const response = await apiFetch("/api/adminConfig", { auth: "none" });
+      if (response.status === 404) {
+        setEvents([]);
+        setError('');
+        return;
+      }
       if (!response.ok) {
         throw new Error("Failed to fetch upcoming events");
       }

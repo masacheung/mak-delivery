@@ -21,7 +21,7 @@ export function useAuthForm(onLoginSuccess) {
     onLoginSuccessRef.current = onLoginSuccess;
   }, [onLoginSuccess]);
 
-  const [activeTab, setActiveTab] = useState(0);
+  const [activeTab, setActiveTab] = useState(1);
   const [formData, setFormData] = useState(initialFormData);
   const [message, setMessage] = useState('');
   const [messageType, setMessageType] = useState('info');

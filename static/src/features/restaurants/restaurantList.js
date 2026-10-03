@@ -1,14 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
 import { apiFetch } from "../../utils/apiClient";
 import {
   Box,
   Typography,
-  Button,
-  List,
-  ListItem,
-  ListItemText,
   Chip,
   TextField,
   MenuItem,
@@ -19,7 +15,6 @@ import {
   Card,
   CardContent,
   CardMedia,
-  Grid,
   useTheme,
   useMediaQuery,
   Fade,
@@ -27,20 +22,17 @@ import {
   Drawer,
   AppBar,
   Toolbar,
-  Divider,
-  Avatar
 } from "@mui/material";
-import ClearIcon from '@mui/icons-material/Clear';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-import DensityMediumIcon from '@mui/icons-material/DensityMedium';
 import RestaurantIcon from '@mui/icons-material/Restaurant';
-import FilterListIcon from '@mui/icons-material/FilterList';
 import { v4 as uuidv4 } from 'uuid';
 import DishForm from "../dishes/dishForm";
 import OrderSummary from "../order/orderSummary";
-import MoreMenu from "../headerSection/menu/more";
 import PickupNotificationBell from "../../components/PickupNotificationBell";
+import AvailablePickupDates from './AvailablePickupDates';
+import CartReviewButton from '../order/CartReviewButton';
+import { pickupLocationDetails } from '../../utils/pickupLocation';
 import TASTY_MOMENT from "../../constant/restaurants/tastyMoment";
 import HK_ALLEY from "../../constant/restaurants/hkAlley";
 import WONTON_GUY from "../../constant/restaurants/wontonGuy";
@@ -80,7 +72,6 @@ const RestaurantList = () => {
   const navigate = useNavigate();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
-  const isTablet = useMediaQuery(theme.breakpoints.between('md', 'lg'));
   const { user } = useAuth();
 
   const restaurants = [
@@ -116,28 +107,18 @@ const RestaurantList = () => {
   });
   const [openEvents, setOpenEvents] = useState([]);
   const [pickupLocations, setPickupLocations] = useState([]);
-  const [availableRestaurants, setAvailableRestaurants] = useState([]);
   const [enableLocationsDropdown, setEnableLocationsDropdown] = useState(false);
   const [error, setError] = useState("");
-  const [showMenu, setShowMenu] = useState(false);
-  const [showFilters, setShowFilters] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const submittingRef = useRef(false);
+  const eventRequestId = useRef(0);
+  const [submitError, setSubmitError] = useState('');
+  const [restaurantSearch, setRestaurantSearch] = useState('');
 
   const [isOpen, setIsOpen] = useState(false);
   const handleOpen = () => setIsOpen(true);
   const handleClose = () => setIsOpen(false);
-
-  useEffect(() => {
-    console.log("Updated orderState:", orderState);
-  }, [orderState]);
-
-  useEffect(() => {
-    console.log("Updated openEvents:", openEvents);
-  }, [openEvents]);
-
-  useEffect(() => {
-    console.log("Updated availableRestaurants:", availableRestaurants);
-  }, [availableRestaurants]);
 
   // Set username from logged-in user
   useEffect(() => {
@@ -149,7 +130,6 @@ const RestaurantList = () => {
   const resetEventsState = () => {
     setOpenEvents([]);
     setPickupLocations([]);
-    setAvailableRestaurants([]);
     setEnableLocationsDropdown(false);
     setOrderState((prevState) => ({
       ...prevState,
@@ -173,7 +153,9 @@ const RestaurantList = () => {
   };
 
   const handleSearch = async (date) => {
+    const currentRequest = ++eventRequestId.current;
     resetEventsState();
+    if (!date) { setIsLoading(false); return; }
     setIsLoading(true);
     try {
       setError(null);
@@ -184,31 +166,42 @@ const RestaurantList = () => {
         throw new Error("Failed to fetch upcoming events");
       }
       const data = await response.json();
+      if (eventRequestId.current !== currentRequest) return;
       setOpenEvents(data);
       setPickupLocations(getUniqueOptions(data, "pick_up_locations"));
-      setAvailableRestaurants(getAvailableRestaurants(data));
       setEnableLocationsDropdown(true);
     } catch (err) {
+      if (eventRequestId.current !== currentRequest) return;
       setError(err.message);
       resetEventsState();
     } finally {
-      setIsLoading(false);
+      if (eventRequestId.current === currentRequest) setIsLoading(false);
     }
   };
 
   const updateOrderState = async (field, value) => {
+    if (field === 'date' && value === orderState.date) return;
+    if (field === 'date' && value !== orderState.date && Object.values(orderState.addedDishes).some(dishes => dishes.length)) {
+      if (!window.confirm('Changing the pickup date clears your cart. Continue?')) return;
+    }
+    if (field === 'pickupLocation' && value !== orderState.pickupLocation) {
+      const allowed = getAvailableRestaurants(openEvents.filter(event => event.pick_up_locations.includes(value)));
+      const invalidCart = Object.entries(orderState.addedDishes).some(([id, dishes]) => dishes.length && !allowed.some(r => String(r.id) === id));
+      if (invalidCart && !window.confirm('Some dishes are unavailable at this location. Changing location clears your cart. Continue?')) return;
+      if (invalidCart) setOrderState(prev => ({ ...prev, addedDishes: {}, quantities: {}, total: 0 }));
+    }
     setOrderState((prev) => ({ ...prev, [field]: value }));
     if (field === 'date') {
       await handleSearch(value);
     }
   };
 
-  const updateTotal = (total) => {
+  const updateTotal = useCallback((total) => {
     setOrderState((prevState) => ({
       ...prevState,
       total,
     }));
-  };
+  }, []);
 
   const handleSelectRestaurant = (restaurant) => {
     if (orderState.selectedRestaurant?.id === restaurant.id) {
@@ -270,7 +263,7 @@ const RestaurantList = () => {
   const handleAddDish = (restaurantId, selectedDishes) => {
     setOrderState((prev) => {
       const updatedDishes = { ...prev.addedDishes };
-      if (!updatedDishes[restaurantId]) updatedDishes[restaurantId] = [];
+      updatedDishes[restaurantId] = [...(updatedDishes[restaurantId] || [])];
 
       selectedDishes.forEach((newDish) => {
         updatedDishes[restaurantId].push({
@@ -287,6 +280,8 @@ const RestaurantList = () => {
   };
 
   const handleSubmit = async () => {
+    if (submittingRef.current) return;
+    setSubmitError('');
     let newErrors = {
       username: !orderState.username,
       pickupLocation: !orderState.pickupLocation,
@@ -324,6 +319,8 @@ const RestaurantList = () => {
         notes: orderState.notes
       };
 
+    submittingRef.current = true;
+    setSubmitting(true);
     try {
       const response = await apiFetch("/api/orders", {
         method: "POST",
@@ -349,7 +346,10 @@ const RestaurantList = () => {
         total: 0,
       });
     } catch (error) {
-      console.error("Error submitting order:", error);
+      setSubmitError('Unable to submit your order. Please try again.');
+    } finally {
+      submittingRef.current = false;
+      setSubmitting(false);
     }
   };
 
@@ -381,11 +381,16 @@ const RestaurantList = () => {
     return imageMap[restaurantName] || chefImg;
   };
 
+  const locationRestaurants = orderState.pickupLocation
+    ? getAvailableRestaurants(openEvents.filter(event => event.pick_up_locations.includes(orderState.pickupLocation)))
+    : [];
+  const visibleRestaurants = locationRestaurants.filter(restaurant => restaurant.name.toLowerCase().includes(restaurantSearch.toLowerCase()));
+
   return (
     <Box
       sx={{
         minHeight: "100vh",
-        background: "linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)",
+        background: "#f7f7fb",
         display: "flex",
         flexDirection: "column",
       }}
@@ -409,6 +414,7 @@ const RestaurantList = () => {
           }}
         >
           <IconButton
+            aria-label="Back to home"
             onClick={() => navigate("/")}
             sx={{
               color: "primary.main",
@@ -433,20 +439,9 @@ const RestaurantList = () => {
 
           <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
             <PickupNotificationBell enabled={Boolean(user)} isMobile={isMobile} />
-            {!isMobile && (
-              <IconButton
-                onClick={() => setShowFilters(!showFilters)}
-                sx={{
-                  color: "primary.main",
-                  transition: "all 0.3s ease",
-                  "&:hover": { transform: "scale(1.1)" },
-                }}
-              >
-                <FilterListIcon />
-              </IconButton>
-            )}
             <IconButton
               onClick={handleOpen}
+              aria-label="View cart"
               sx={{
                 color: "primary.main",
                 transition: "all 0.3s ease",
@@ -474,7 +469,7 @@ const RestaurantList = () => {
         maxWidth="lg"
         sx={{
           flex: 1,
-          padding: isMobile ? "80px 16px 24px" : "80px 24px 24px",
+          padding: isMobile ? "80px 16px 110px" : "88px 24px 110px",
           display: "flex",
           flexDirection: "column",
           gap: 3,
@@ -484,7 +479,6 @@ const RestaurantList = () => {
         <Slide direction="down" in={true} timeout={500}>
           <Paper
             elevation={0}
-            className="form-container"
             sx={{
               padding: isMobile ? "16px" : "24px",
               marginBottom: 2,
@@ -501,9 +495,10 @@ const RestaurantList = () => {
                 color: "primary.main",
               }}
             >
-              Select Date & Location
+              1. Choose your pickup
             </Typography>
             
+            <AvailablePickupDates value={orderState.date} onChange={date => updateOrderState('date', date)} />
             <Box
               sx={{
                 display: "flex",
@@ -513,26 +508,14 @@ const RestaurantList = () => {
               }}
             >
               <TextField
-                label="Date"
-                type="date"
-                value={orderState.date}
-                onChange={(e) => updateOrderState("date", e.target.value)}
-                InputLabelProps={{ shrink: true }}
-                fullWidth={isMobile}
-                sx={{
-                  minWidth: isMobile ? "100%" : "200px",
-                  "& .MuiOutlinedInput-root": {
-                    borderRadius: 2,
-                  },
-                }}
-              />
-              
-              <TextField
                 select
                 label="Pickup Location"
                 value={orderState.pickupLocation}
                 onChange={(e) => updateOrderState("pickupLocation", e.target.value)}
                 disabled={!enableLocationsDropdown}
+                error={Boolean(orderState.errors.pickupLocation)}
+                helperText={!orderState.date ? 'Choose a date first' : 'Select where you will collect your order'}
+                SelectProps={{ renderValue: location => pickupLocationDetails(location).name, MenuProps: { PaperProps: { sx: { maxWidth: 'calc(100vw - 32px)' } } } }}
                 fullWidth={isMobile}
                 sx={{
                   minWidth: isMobile ? "100%" : "250px",
@@ -542,12 +525,13 @@ const RestaurantList = () => {
                 }}
               >
                 {pickupLocations.map((location) => (
-                  <MenuItem key={location} value={location}>
-                    {location}
+                  <MenuItem key={location} value={location} sx={{ whiteSpace: 'normal', py: 1.5 }}>
+                    <Box><Typography fontWeight={700}>{pickupLocationDetails(location).name}</Typography><Typography variant="body2" color="text.secondary" sx={{ overflowWrap: 'anywhere' }}>{location}</Typography></Box>
                   </MenuItem>
                 ))}
               </TextField>
             </Box>
+            {orderState.pickupLocation && <Typography variant="body2" color="text.secondary" sx={{ mt: 1, overflowWrap: 'anywhere' }}>{orderState.pickupLocation}</Typography>}
 
             {error && (
               <Box className="error-message" sx={{ marginTop: 2 }}>
@@ -558,7 +542,7 @@ const RestaurantList = () => {
         </Slide>
 
         {/* Restaurant Grid */}
-        {availableRestaurants.length > 0 && (
+        {locationRestaurants.length > 0 && !isLoading && (
           <Fade in={true} timeout={800}>
             <Box>
               <Typography
@@ -570,30 +554,28 @@ const RestaurantList = () => {
                   textAlign: "center",
                 }}
               >
-                Available Restaurants
+                2. Choose a restaurant
               </Typography>
+              <TextField fullWidth label="Search restaurants" value={restaurantSearch} onChange={e => setRestaurantSearch(e.target.value)} sx={{ mb: 2 }} />
+              {!visibleRestaurants.length && <Typography sx={{ mb: 2 }}>No restaurants match your search.</Typography>}
               
-              <Grid
-                container
-                spacing={isMobile ? 2 : 3}
-                sx={{ marginBottom: 4 }}
-              >
-                {availableRestaurants.map((restaurant) => (
-                  <Grid
-                    item
-                    xs={12}
-                    sm={6}
-                    md={4}
-                    lg={3}
-                    key={restaurant.id}
-                  >
+              <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', sm: 'repeat(2, 1fr)', md: 'repeat(3, 1fr)' }, gap: 2, mb: 4 }}>
+                {visibleRestaurants.map((restaurant) => (
+                  <Box key={restaurant.id}>
                     <Card
+                      component="button"
+                      type="button"
                       className="restaurant-card"
                       sx={{
                         cursor: "pointer",
+                        width: '100%',
+                        textAlign: 'left',
+                        font: 'inherit',
+                        p: 0,
+                        border: '1px solid #e5e5ef',
                         height: "100%",
                         display: "flex",
-                        flexDirection: "column",
+                        flexDirection: isMobile ? "row" : "column",
                         transition: "all 0.3s ease",
                         "&:hover": {
                           transform: "translateY(-8px)",
@@ -604,11 +586,14 @@ const RestaurantList = () => {
                     >
                       <CardMedia
                         component="img"
-                        height="200"
+                        height={isMobile ? '116' : '180'}
+                        loading="lazy"
                         image={getRestaurantImage(restaurant.name)}
                         alt={restaurant.name}
                         sx={{
                           objectFit: "cover",
+                          width: isMobile ? 104 : '100%',
+                          flexShrink: 0,
                           transition: "transform 0.3s ease",
                           "&:hover": {
                             transform: "scale(1.05)",
@@ -629,6 +614,7 @@ const RestaurantList = () => {
                             variant="h6"
                             sx={{
                               fontWeight: 600,
+                              fontSize: isMobile ? '1rem' : '1.2rem',
                               marginBottom: 1,
                               color: "primary.main",
                             }}
@@ -640,7 +626,7 @@ const RestaurantList = () => {
                             color="text.secondary"
                             sx={{ marginBottom: 2 }}
                           >
-                            {restaurant.description || "Delicious food awaits!"}
+                          {restaurant.description || "View menu & choose your dishes"}
                           </Typography>
                         </Box>
                         
@@ -672,9 +658,9 @@ const RestaurantList = () => {
                         </Box>
                       </CardContent>
                     </Card>
-                  </Grid>
+                  </Box>
                 ))}
-              </Grid>
+              </Box>
             </Box>
           </Fade>
         )}
@@ -694,7 +680,13 @@ const RestaurantList = () => {
         )}
 
         {/* Empty State */}
-        {!isLoading && availableRestaurants.length === 0 && orderState.date && (
+        {!isLoading && !orderState.pickupLocation && (
+          <Paper variant="outlined" sx={{ p: 3, textAlign: 'center', borderRadius: 3 }}>
+            <Typography fontWeight={700}>{orderState.date ? 'Choose your pickup location to see restaurants' : 'Good food starts here'}</Typography>
+            <Typography color="text.secondary" sx={{ mt: 1 }}>Select a date and pickup location above to browse available menus.</Typography>
+          </Paper>
+        )}
+        {!isLoading && locationRestaurants.length === 0 && orderState.pickupLocation && orderState.date && (
           <Paper
             elevation={0}
             sx={{
@@ -720,6 +712,9 @@ const RestaurantList = () => {
           </Paper>
         )}
       </Container>
+      {getCartItemCount() > 0 && <Box sx={{ position: 'fixed', bottom: 0, left: 0, right: 0, zIndex: 1100 }}>
+        <CartReviewButton addedDishes={orderState.addedDishes} onClick={handleOpen} />
+      </Box>}
 
       {/* Dish Form Modal */}
       <Drawer
@@ -736,10 +731,12 @@ const RestaurantList = () => {
         {orderState.selectedRestaurant && (
           <DishForm
             restaurant={orderState.selectedRestaurant}
+            key={orderState.selectedRestaurant.id}
             quantities={orderState.quantities[orderState.selectedRestaurant.id] || {}}
             onQuantityChange={handleQuantityChange}
             onAddDish={handleAddDish}
             onClose={handleCloseDishForm}
+            cartReview={<CartReviewButton addedDishes={orderState.addedDishes} onClick={() => { handleCloseDishForm(); handleOpen(); }} />}
           />
         )}
       </Drawer>
@@ -751,10 +748,10 @@ const RestaurantList = () => {
         onClose={handleClose}
         PaperProps={{
           sx: {
-            maxHeight: "90vh",
+            maxHeight: "90dvh",
             borderTopLeftRadius: 20,
             borderTopRightRadius: 20,
-            overflow: "visible",
+            overflow: "hidden",
           },
         }}
       >
@@ -764,6 +761,8 @@ const RestaurantList = () => {
           onClose={handleClose}
           onSubmit={handleSubmit}
           updateTotal={updateTotal}
+          submitting={submitting}
+          submitError={submitError}
         />
       </Drawer>
     </Box>

@@ -7,7 +7,7 @@
     "install:all": "cd server && npm install && cd ../static && npm install",
     "build": "cd static && npm run build",
     "start": "node server/index.js",
-    "render-build": "npm run install:all && node server/ensure-connection.js && npm run build"
+    "render-build": "npm run install:all && npm run build"
   },
   "engines": {
     "node": ">=18.0.0"

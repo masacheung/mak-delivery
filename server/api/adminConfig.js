@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const pool = require("../db/connection.js");
 const { requireAdminAuth } = require("../middleware/authMiddleware.js");
+const { getDeliveryDate } = require('../utils/deliveryDate');
 
 router.post("/", requireAdminAuth, async (req, res) => {
   const { locations, date, restaurants } = req.body;
@@ -20,7 +21,7 @@ router.post("/", requireAdminAuth, async (req, res) => {
 });
 
 router.get("/", async (req, res) => {
-  const todayDate = new Date().toISOString().split("T")[0];
+  const todayDate = getDeliveryDate();
 
   try {
     const result = await pool.query(

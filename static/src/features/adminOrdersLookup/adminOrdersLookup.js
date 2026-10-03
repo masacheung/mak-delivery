@@ -1,526 +1,158 @@
-import React, { useState } from "react";
-import {
-  Box, TextField, Button, Typography, Card,
-  Select, MenuItem, FormControl, InputLabel,
-} from "@mui/material";
-import { FileDownload } from "@mui/icons-material";
-import { Document, Packer, Paragraph, TextRun, HeadingLevel, Table, TableRow, TableCell, WidthType, AlignmentType } from "docx";
-import { saveAs } from "file-saver";
-import {PICK_UP_LOCATION, RESTAURANT_NAME} from "../../constant/constant";
-import { apiFetch } from "../../utils/apiClient";
+import React, { useRef, useState } from 'react';
+import { Alert, Box, Button, Card, Chip, CircularProgress, MenuItem, Stack, ToggleButton, ToggleButtonGroup, TextField, Typography } from '@mui/material';
+import ContentCopy from '@mui/icons-material/ContentCopy';
+import FileDownload from '@mui/icons-material/FileDownload';
+import { saveAs } from 'file-saver';
+import { PICK_UP_LOCATION, RESTAURANT_NAME } from '../../constant/constant';
+import { apiFetch } from '../../utils/apiClient';
+import { dishDescription, groupOrdersByRestaurant, groupOrdersByUser, restaurantOrderText, userOrderText } from './orderGroups';
 
-const AdminOrdersLookup = () => {
-  const [pickUpLocation, setPickUpLocation] = useState("");
-  const [pickUpDate, setPickUpDate] = useState("");
-  const [restaurant, setRestaurant] = useState("");
-  const [paymentFilter, setPaymentFilter] = useState("All");
+const paymentStatuses = ['Unpaid', 'Zelle', 'Venmo', 'Cash'];
+
+export default function AdminOrdersLookup() {
+  const [location, setLocation] = useState('');
+  const [date, setDate] = useState('');
+  const [restaurant, setRestaurant] = useState('');
+  const [payment, setPayment] = useState('All');
+  const [groupByRestaurant, setGroupByRestaurant] = useState(true);
   const [orders, setOrders] = useState([]);
-  const [filteredOrders, setFilteredOrders] = useState([]);
-  const [sumTotal, setSumTotal] = useState(0);
-  const [isFieldsVisible, setIsFieldsVisible] = useState(false);
+  const [searchedDate, setSearchedDate] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [searched, setSearched] = useState(false);
+  const [message, setMessage] = useState(null);
+  const [saving, setSaving] = useState({});
+  const requestId = useRef(0);
+  const filtered = orders.filter(order => payment === 'All' || (order.payment_status || 'Unpaid') === payment);
+  const groups = groupOrdersByRestaurant(filtered, groupByRestaurant ? restaurant : '');
+  const visibleOrders = groupByRestaurant ? filtered.filter(order => groups.some(group => group.orders.some(row => row.id === order.id))) : filtered;
+  const userGroups = groupOrdersByUser(visibleOrders);
+  const total = visibleOrders.reduce((sum, order) => sum + (Number(order.total) || 0), 0);
 
-  const handleTitleClick = () => {
-    setIsFieldsVisible(!isFieldsVisible); // Toggle the visibility of the form fields
-  };
-
-  const handleSearch = async () => {
-    const encodePickUpLocation = encodeURIComponent(pickUpLocation);
-    const paymentStatusParam = paymentFilter !== "All" ? `&payment_status=${paymentFilter}` : "";
-
+  async function search(event) {
+    event.preventDefault();
+    if (!date) return;
+    const currentRequest = ++requestId.current;
+    setLoading(true);
+    setMessage(null);
     try {
-      const response = await apiFetch(
-        `/api/orders/search?pick_up_location=${encodePickUpLocation}&pick_up_date=${pickUpDate}&restaurantId=${restaurant}${paymentStatusParam}`,
-        { auth: "admin" }
-      );
-      if (!response.ok) {
-        throw new Error("Failed to fetch orders");
-      }
+      const params = new URLSearchParams({ pick_up_date: date, pick_up_location: location });
+      const response = await apiFetch(`/api/orders/search?${params}`, { auth: 'admin' });
+      if (!response.ok) throw new Error('Unable to load orders. Please try again.');
       const data = await response.json();
-      const sum = data.reduce((acc, item) => acc + parseFloat(item.total || 0), 0);
-
+      if (requestId.current !== currentRequest) return;
       setOrders(data);
-      setFilteredOrders(data);
-      setSumTotal(parseFloat(sum.toFixed(2)));
+      setSearchedDate(date);
+      setSearched(true);
     } catch (error) {
-      console.error("Error fetching orders:", error);
+      if (requestId.current !== currentRequest) return;
       setOrders([]);
-      setFilteredOrders([]);
+      setSearched(false);
+      setMessage({ severity: 'error', text: error.message });
+    } finally {
+      if (requestId.current === currentRequest) setLoading(false);
     }
-  };
+  }
 
-  const handlePaymentStatusChange = async (orderId, newStatus) => {
+  async function updatePayment(id, status) {
+    setSaving(prev => ({ ...prev, [id]: true }));
     try {
-      const response = await apiFetch(`/api/orders/payment/${orderId}`, {
-        method: "PUT",
-        auth: "admin",
-        body: { payment_status: newStatus },
-      });
-
-      if (!response.ok) {
-        throw new Error("Failed to update payment status");
-      }
-
-      // Update local state
-      const updatedOrders = orders.map(order => 
-        order.id === orderId ? { ...order, payment_status: newStatus } : order
-      );
-      setOrders(updatedOrders);
-      
-      // Apply filter to updated orders
-      applyFilter(updatedOrders, paymentFilter);
+      const response = await apiFetch(`/api/orders/payment/${id}`, { method: 'PUT', auth: 'admin', body: { payment_status: status } });
+      if (!response.ok) throw new Error('Payment update failed. Please try again.');
+      setOrders(prev => prev.map(order => order.id === id ? { ...order, payment_status: status } : order));
     } catch (error) {
-      console.error("Error updating payment status:", error);
-      alert("Failed to update payment status. Please try again.");
+      setMessage({ severity: 'error', text: error.message });
+    } finally {
+      setSaving(prev => ({ ...prev, [id]: false }));
     }
-  };
+  }
 
-  const applyFilter = (ordersToFilter, filter) => {
-    let filtered = ordersToFilter;
-    
-    if (filter !== "All") {
-      filtered = ordersToFilter.filter(order => 
-        (order.payment_status || 'Unpaid') === filter
-      );
-    }
-    
-    setFilteredOrders(filtered);
-    const sum = filtered.reduce((acc, item) => acc + parseFloat(item.total || 0), 0);
-    setSumTotal(parseFloat(sum.toFixed(2)));
-  };
-
-  const handlePaymentFilterChange = (e) => {
-    const newFilter = e.target.value;
-    setPaymentFilter(newFilter);
-    applyFilter(orders, newFilter);
-  };
-
-  const exportToWord = async () => {
-    if (filteredOrders.length === 0) {
-      alert("No orders to export. Please search for orders first.");
-      return;
-    }
-
+  async function copyGroup(group, text = restaurantOrderText(group, searchedDate)) {
     try {
-      // Create document sections
-      const children = [];
-
-      // Title
-      children.push(
-        new Paragraph({
-          text: "Order Report",
-          heading: HeadingLevel.HEADING_1,
-          alignment: AlignmentType.CENTER,
-          spacing: { after: 400 },
-        })
-      );
-
-      // Summary Information
-      children.push(
-        new Paragraph({
-          text: "Summary",
-          heading: HeadingLevel.HEADING_2,
-          spacing: { before: 200, after: 200 },
-        })
-      );
-
-      children.push(
-        new Paragraph({
-          children: [
-            new TextRun({ text: "Total Orders: ", bold: true }),
-            new TextRun({ text: filteredOrders.length.toString() }),
-          ],
-          spacing: { after: 100 },
-        })
-      );
-
-      children.push(
-        new Paragraph({
-          children: [
-            new TextRun({ text: "Total Amount: ", bold: true }),
-            new TextRun({ text: `$${sumTotal.toFixed(2)}` }),
-          ],
-          spacing: { after: 100 },
-        })
-      );
-
-      children.push(
-        new Paragraph({
-          children: [
-            new TextRun({ text: "Location: ", bold: true }),
-            new TextRun({ text: pickUpLocation || "All Locations" }),
-          ],
-          spacing: { after: 100 },
-        })
-      );
-
-      if (pickUpDate) {
-        children.push(
-          new Paragraph({
-            children: [
-              new TextRun({ text: "Pickup Date: ", bold: true }),
-              new TextRun({ text: pickUpDate }),
-            ],
-            spacing: { after: 200 },
-          })
-        );
-      }
-
-      // Orders Details
-      children.push(
-        new Paragraph({
-          text: "Order Details",
-          heading: HeadingLevel.HEADING_2,
-          spacing: { before: 400, after: 200 },
-        })
-      );
-
-      // Create table for orders
-      const tableRows = [];
-
-      // Table header
-      tableRows.push(
-        new TableRow({
-          children: [
-            new TableCell({
-              children: [new Paragraph({ text: "Order ID", bold: true })],
-              width: { size: 10, type: WidthType.PERCENTAGE },
-            }),
-            new TableCell({
-              children: [new Paragraph({ text: "Username", bold: true })],
-              width: { size: 15, type: WidthType.PERCENTAGE },
-            }),
-            new TableCell({
-              children: [new Paragraph({ text: "Total", bold: true })],
-              width: { size: 10, type: WidthType.PERCENTAGE },
-            }),
-            new TableCell({
-              children: [new Paragraph({ text: "Order Details", bold: true })],
-              width: { size: 50, type: WidthType.PERCENTAGE },
-            }),
-            new TableCell({
-              children: [new Paragraph({ text: "Notes", bold: true })],
-              width: { size: 15, type: WidthType.PERCENTAGE },
-            }),
-          ],
-        })
-      );
-
-      // Add order rows
-      filteredOrders.forEach((order) => {
-        const orderDetailsParagraphs = [];
-        
-        if (order.order_details && Object.keys(order.order_details).length > 0) {
-          const restaurantEntries = Object.entries(order.order_details);
-          
-          restaurantEntries.forEach(([restaurantId, dishes], index) => {
-            const restaurantName = RESTAURANT_NAME[restaurantId] || `Restaurant ${restaurantId}`;
-            
-            // Add separator line before each restaurant (except the first one)
-            if (index > 0) {
-              orderDetailsParagraphs.push(
-                new Paragraph({
-                  text: "─────────────────────────────────────",
-                  spacing: { before: 200, after: 200 },
-                })
-              );
-            }
-            
-            // Restaurant name as a paragraph
-            orderDetailsParagraphs.push(
-              new Paragraph({
-                children: [
-                  new TextRun({ text: restaurantName, bold: true }),
-                ],
-                spacing: { after: 100 },
-              })
-            );
-            
-            // Add dishes
-            dishes.forEach((dish) => {
-              let dishText = `  - ${dish.name}`;
-              
-              if (dish.selectedOptions && Object.keys(dish.selectedOptions).length > 0) {
-                const optionsText = Object.entries(dish.selectedOptions)
-                  .map(([optionKey, selected]) => selected.join(", "))
-                  .join("; ");
-                dishText += ` (${optionsText})`;
-              }
-              
-              dishText += ` x${dish.quantity}`;
-              
-              if (dish.price === "SP") {
-                dishText += " - SP (Check with restaurant)";
-              } else if (!isNaN(Number(dish.price))) {
-                dishText += ` - $${Number(dish.price).toFixed(2)}`;
-              } else {
-                dishText += " - N/A";
-              }
-              
-              orderDetailsParagraphs.push(
-                new Paragraph({
-                  text: dishText,
-                  spacing: { after: 50 },
-                })
-              );
-            });
-            
-            // Add extra spacing after each restaurant
-            if (index < restaurantEntries.length - 1) {
-              orderDetailsParagraphs.push(
-                new Paragraph({
-                  text: "",
-                  spacing: { after: 100 },
-                })
-              );
-            }
-          });
-        } else {
-          orderDetailsParagraphs.push(
-            new Paragraph({
-              text: "No order details available.",
-            })
-          );
-        }
-
-        const orderTotal = isNaN(Number(order.total)) 
-          ? "N/A" 
-          : `$${Number(order.total).toFixed(2)}`;
-
-        tableRows.push(
-          new TableRow({
-            children: [
-              new TableCell({
-                children: [new Paragraph({ text: order.id.toString() })],
-              }),
-              new TableCell({
-                children: [new Paragraph({ text: order.username || "N/A" })],
-              }),
-              new TableCell({
-                children: [new Paragraph({ text: orderTotal })],
-              }),
-              new TableCell({
-                children: orderDetailsParagraphs,
-              }),
-              new TableCell({
-                children: [new Paragraph({ text: order.notes || "N/A" })],
-              }),
-            ],
-          })
-        );
-      });
-
-      children.push(
-        new Table({
-          rows: tableRows,
-          width: { size: 100, type: WidthType.PERCENTAGE },
-        })
-      );
-
-      // Create document
-      const doc = new Document({
-        sections: [
-          {
-            children: children,
-          },
-        ],
-      });
-
-      // Generate and download
-      const blob = await Packer.toBlob(doc);
-      const fileName = `Orders_Report_${pickUpLocation || "All"}_${pickUpDate || new Date().toISOString().split("T")[0]}.docx`;
-      saveAs(blob, fileName);
-    } catch (error) {
-      console.error("Error exporting to Word:", error);
-      alert("Failed to export to Word document. Please try again.");
+      await navigator.clipboard.writeText(text);
+      setMessage({ severity: 'success', text: `Copied ${group.name} orders.` });
+    } catch {
+      setMessage({ severity: 'error', text: 'Clipboard unavailable. Use Download text to save the restaurant orders.' });
     }
-  };
+  }
 
-  return (
-    <>
+  async function exportWord() {
+    try {
+      const { Document, Packer, Paragraph, HeadingLevel } = await import('docx');
+      const title = groupByRestaurant ? 'Restaurant orders' : 'User orders';
+      const children = [new Paragraph({ text: `${title} · ${searchedDate}`, heading: HeadingLevel.HEADING_1 })];
+      const sections = groupByRestaurant ? groups.map(group => restaurantOrderText(group, searchedDate)) : userGroups.map(group => userOrderText(group, searchedDate));
+      sections.forEach(section => section.split('\n').forEach((line, index) => {
+        children.push(new Paragraph({ text: line, ...(index === 0 ? { heading: HeadingLevel.HEADING_2 } : {}) }));
+      }));
+      saveAs(await Packer.toBlob(new Document({ sections: [{ children }] })), `${groupByRestaurant ? 'Restaurant' : 'User'}_orders_${searchedDate}.docx`);
+    } catch {
+      setMessage({ severity: 'error', text: 'Export failed. Please try again.' });
+    }
+  }
 
-      <Box sx={{ width: "100%", paddingTop: (theme) => `calc(${theme.mixins.toolbar.minHeight}px + 16px)`, display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center", overflowX: "hidden",
-          flexDirection: "column" }}>
-        <Typography
-          variant="h5"
-          sx={{
-            fontWeight: "bold",
-            marginBottom: 3,
-            fontFamily: 'Poppins, sans-serif',
-            textAlign: 'center',
-            color: 'text.primary', // Adjust color as needed
-            cursor: "pointer", // Show pointer cursor to indicate it's clickable
-            transition: "color 0.3s ease, transform 0.2s ease", // Smooth transition effect
-            "&:hover": {
-              color: "primary.main", // Change color on hover (use theme primary color)
-              transform: "scale(1.05)", // Slightly increase size on hover
-            }
-          }}
-          onClick={handleTitleClick}
-        >
-          Collect Orders
-        </Typography>
-        {isFieldsVisible && (
-        <>
-        {/* Pickup Location Dropdown */}
-        <FormControl sx={{ minWidth: 300, mb: 2 }}>
-          <InputLabel shrink htmlFor="location-select">Pickup Location</InputLabel>
-          <Select
-            value={pickUpLocation}
-            onChange={(e) => setPickUpLocation(e.target.value)}
-            displayEmpty
-          >
-            <MenuItem value="">
-              <em>Clear Selection</em>
-            </MenuItem>
-            {PICK_UP_LOCATION.map((location, index) => (
-              <MenuItem key={index} value={location}>{location}</MenuItem>
-            ))}
-          </Select>
-        </FormControl>
+  function renderOrder(order, restaurantEntries) {
+    return <Box key={order.id} sx={{ p: 2, borderTop: '1px solid #e5e5ef' }}>
+      <Stack direction={{ xs: 'column', sm: 'row' }} gap={2} justifyContent="space-between">
+        <Box><Typography fontWeight={700}>#{order.id} · {order.username}</Typography>
+          <Typography sx={{ mt: .5 }}><strong>Pickup:</strong> {order.pick_up_location || 'Not specified'}</Typography>
+          <Typography variant="body2" color="text.secondary">Whole-order total: ${Number(order.total || 0).toFixed(2)}</Typography></Box>
+        <TextField select label="Payment status" size="small" value={order.payment_status || 'Unpaid'} disabled={Boolean(saving[order.id])} onChange={e => updatePayment(order.id, e.target.value)} sx={{ minWidth: 150 }}>
+          {paymentStatuses.map(status => <MenuItem key={status} value={status}>{status}</MenuItem>)}
+        </TextField>
+      </Stack>
+      {restaurantEntries.map(([id, dishes]) => Array.isArray(dishes) && dishes.length > 0 && <Box key={id}>
+        {!groupByRestaurant && <Typography fontWeight={700} color="primary" sx={{ mt: 2 }}>{RESTAURANT_NAME[id] || dishes[0]?.restaurantName || `Restaurant ${id}`}</Typography>}
+        <Box component="ul" sx={{ pl: 2.5, my: 1.5 }}>{dishes.map((dish, index) => <Typography component="li" key={`${dish.id}-${index}`} sx={{ mb: .5 }}>{dishDescription(dish)}</Typography>)}</Box>
+      </Box>)}
+      {order.notes && <Typography variant="body2"><strong>Order notes:</strong> {order.notes}</Typography>}
+    </Box>;
+  }
 
-        <FormControl sx={{ minWidth: 300, mb: 2 }}>
-          <InputLabel shrink htmlFor="restaurant-select">
-            Select Restaurant
-          </InputLabel>
-          <Select
-            id="restaurant-select"
-            value={restaurant}
-            onChange={(e) => setRestaurant(e.target.value)}
-            displayEmpty
-          >
-            <MenuItem value="">
-              <em>Clear Selection</em>
-            </MenuItem>
-            {Object.entries(RESTAURANT_NAME).map(([id, name]) => (
-              <MenuItem key={id} value={id}>
-                {name}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-
-        {/* Pickup Date Input */}
-        <TextField
-          type="date"
-          label="Pickup Date"
-          InputLabelProps={{ shrink: true }}
-          sx={{ minWidth: 300, mb: 2 }}
-          value={pickUpDate}
-          onChange={(e) => setPickUpDate(e.target.value)}
-        />
-
-        {/* Payment Filter Dropdown */}
-        <FormControl sx={{ minWidth: 300, mb: 2 }}>
-          <InputLabel shrink htmlFor="payment-filter-select">
-            Filter by Payment Status
-          </InputLabel>
-          <Select
-            id="payment-filter-select"
-            value={paymentFilter}
-            onChange={handlePaymentFilterChange}
-            displayEmpty
-          >
-            <MenuItem value="All">All</MenuItem>
-            <MenuItem value="Unpaid">Unpaid</MenuItem>
-            <MenuItem value="Zelle">Zelle</MenuItem>
-            <MenuItem value="Venmo">Venmo</MenuItem>
-            <MenuItem value="Cash">Cash</MenuItem>
-          </Select>
-        </FormControl>
-
-        <Button variant="contained" color="primary" onClick={handleSearch}>
-          Search Orders
-        </Button>
-
-        {/* Display Search Results */}
-        {orders.length > 0 && (
-          <Box mt={4} width="80%">
-            <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 2 }}>
-              <Typography variant="h6">Search Results:</Typography>
-              <Button 
-                variant="outlined" 
-                color="success" 
-                onClick={exportToWord}
-                startIcon={<FileDownload />}
-                sx={{ ml: 2 }}
-              >
-                Export to Word
-              </Button>
-            </Box>
-            <Typography><strong>Total Orders:</strong> {filteredOrders.length}</Typography>
-            <Typography><strong>Total :</strong> $ {sumTotal}</Typography>
-            <Typography><strong>Location:</strong> {pickUpLocation}</Typography>
-            {filteredOrders.map((order) => (
-              <Card key={order.id} sx={{ mt: 2, p: 2 }}>
-                <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 1 }}>
-                  <Box>
-                    <Typography><strong>Order ID:</strong> {order.id}</Typography>
-                    <Typography><strong>Username:</strong> {order.username}</Typography>
-                    <Typography><strong>Total:</strong> ${isNaN(Number(order.total)) ? "N/A" : Number(order.total).toFixed(2)}</Typography>
-                  </Box>
-                  <FormControl sx={{ minWidth: 150 }}>
-                    <InputLabel shrink>Payment Status</InputLabel>
-                    <Select
-                      value={order.payment_status || 'Unpaid'}
-                      onChange={(e) => handlePaymentStatusChange(order.id, e.target.value)}
-                      label="Payment Status"
-                    >
-                      <MenuItem value="Unpaid">Unpaid</MenuItem>
-                      <MenuItem value="Zelle">Zelle</MenuItem>
-                      <MenuItem value="Venmo">Venmo</MenuItem>
-                      <MenuItem value="Cash">Cash</MenuItem>
-                    </Select>
-                  </FormControl>
-                </Box>
-
-                <Typography variant="h6" mt={2}><strong>Order Details:</strong></Typography>
-                {order.order_details && Object.keys(order.order_details).length > 0 ? (
-                  Object.entries(order.order_details).map(([restaurantId, dishes]) => (
-                    <Box key={restaurantId} sx={{ mt: 2 }}>
-                      <Typography variant="h6" color="primary">
-                        {RESTAURANT_NAME[restaurantId]}
-                      </Typography>
-                      <Typography><strong>Order:</strong></Typography>
-                      <ul style={{ paddingLeft: "20px" }}>
-                        {dishes.map((dish) => (
-                          <li key={dish.id}>
-                            {`${dish.name} ${
-                              dish.selectedOptions && Object.keys(dish.selectedOptions).length > 0
-                                ? ` (${Object.entries(dish.selectedOptions)
-                                    .map(([optionKey, selected]) => selected.join(", "))
-                                    .join("; ")})` // ✅ Display all selected options correctly
-                                : ""
-                            } x${dish.quantity}`} -
-                            {dish.price === "SP" ? (
-                              <Typography color="error" variant="caption">
-                                SP (Check with restaurant)
-                              </Typography>
-                            ) : !isNaN(Number(dish.price)) ? (
-                              `$${Number(dish.price).toFixed(2)}`
-                            ) : (
-                              <Typography color="error" variant="caption">
-                                N/A
-                              </Typography>
-                            )}
-                          </li>
-                        ))}
-                      </ul>
-                    </Box>
-                  ))
-                ) : (
-                  <Typography color="error">No order details available.</Typography>
-                )}
-                <Typography><strong>Notes:</strong>{order.notes}</Typography>
-              </Card>
-            ))}
-          </Box>
-        )}
-        </>)}
-      </Box>
-    </>
-  );
-};
-
-export default AdminOrdersLookup;
+  return <Box sx={{ width: '100%', maxWidth: 1100, mx: 'auto', py: 3, px: { xs: 1, sm: 3 } }}>
+    <Typography variant="h5" fontWeight={800}>Collect orders</Typography>
+    <Typography color="text.secondary" sx={{ mt: 1, mb: 1 }}>{groupByRestaurant ? 'Orders organised by restaurant, ready to copy and send.' : 'All orders grouped by user, with every restaurant in each order.'}</Typography>
+    <ToggleButtonGroup exclusive color="primary" value={groupByRestaurant ? 'restaurant' : 'user'} onChange={(_event, mode) => { if (!mode) return; setGroupByRestaurant(mode === 'restaurant'); setMessage(null); }} aria-label="Order view" sx={{ mb: 2, width: { xs: '100%', sm: 'auto' }, '& .MuiToggleButton-root': { flex: { xs: 1, sm: 'initial' }, minWidth: 0, minHeight: 48, px: { xs: 1, sm: 3 } } }}>
+      <ToggleButton value="restaurant">By restaurant · 按餐廳</ToggleButton>
+      <ToggleButton value="user">By user · 按用戶</ToggleButton>
+    </ToggleButtonGroup>
+    <Box component="form" onSubmit={search} sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', sm: '1fr 1fr' }, gap: 2 }}>
+      <TextField required type="date" label="Pickup date" InputLabelProps={{ shrink: true }} value={date} onChange={e => setDate(e.target.value)} />
+      <TextField select label="Pickup location" value={location} onChange={e => setLocation(e.target.value)}>
+        <MenuItem value="">All locations</MenuItem>
+        {PICK_UP_LOCATION.map(name => <MenuItem key={name} value={name}>{name}</MenuItem>)}
+      </TextField>
+      <TextField select label="Restaurant" value={groupByRestaurant ? restaurant : ''} disabled={!groupByRestaurant} SelectProps={{ displayEmpty: true }} InputLabelProps={{ shrink: true }} onChange={e => setRestaurant(e.target.value)} helperText={!groupByRestaurant ? 'User view includes all restaurants.' : ''}>
+        <MenuItem value="">All restaurants</MenuItem>
+        {Object.entries(RESTAURANT_NAME).map(([id, name]) => <MenuItem key={id} value={id}>{name}</MenuItem>)}
+      </TextField>
+      <TextField select label="Payment status" value={payment} onChange={e => setPayment(e.target.value)}>
+        {['All', ...paymentStatuses].map(status => <MenuItem key={status} value={status}>{status}</MenuItem>)}
+      </TextField>
+      <Button type="submit" variant="contained" disabled={loading || !date} sx={{ minHeight: 48 }}>{loading ? <CircularProgress size={24} /> : 'Search orders'}</Button>
+    </Box>
+    {message && <Alert severity={message.severity} onClose={() => setMessage(null)} sx={{ mt: 2 }}>{message.text}</Alert>}
+    {searched && !loading && <>
+      <Stack direction="row" useFlexGap flexWrap="wrap" gap={1} sx={{ my: 3 }}>
+        <Chip label={searchedDate} /><Chip label={`${visibleOrders.length} orders`} /><Chip label={groupByRestaurant ? `${groups.length} restaurants` : `${userGroups.length} users`} />
+        <Chip label={`Whole-order totals: $${total.toFixed(2)}`} />
+        <Button startIcon={<FileDownload />} disabled={!visibleOrders.length} onClick={exportWord}>Export to Word</Button>
+      </Stack>
+      {!visibleOrders.length && <Alert severity="info">No orders match these filters.</Alert>}
+      <Stack gap={3}>{groupByRestaurant ? groups.map(group => <Card key={group.id} variant="outlined" sx={{ borderRadius: 3, overflow: 'hidden' }}>
+        <Box sx={{ p: 2, bgcolor: '#f0f0ff', display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: 1 }}>
+          <Box sx={{ flexGrow: 1 }}><Typography variant="h6" fontWeight={700}>{group.name}</Typography>
+            <Typography variant="body2">{group.orders.length} orders · {group.orders.reduce((sum, order) => sum + order.dishes.reduce((qty, dish) => qty + Number(dish.quantity || 0), 0), 0)} items</Typography></Box>
+          <Button startIcon={<ContentCopy />} variant="contained" onClick={() => copyGroup(group)}>Copy restaurant orders</Button>
+          <Button onClick={() => saveAs(new Blob([restaurantOrderText(group, searchedDate)], { type: 'text/plain;charset=utf-8' }), `Restaurant_${group.id}_${searchedDate}.txt`)}>Download text</Button>
+        </Box>
+        {group.orders.map(order => renderOrder(order, [[group.id, order.dishes]]))}
+      </Card>) : userGroups.map(group => <Card key={group.name} variant="outlined" sx={{ borderRadius: 3, overflow: 'hidden' }}>
+        <Box sx={{ p: 2, bgcolor: '#f0f0ff', display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: 1 }}>
+          <Box sx={{ flexGrow: 1 }}><Typography variant="h6" fontWeight={700}>{group.name}</Typography><Typography variant="body2">{group.orders.length} orders</Typography></Box>
+          <Button startIcon={<ContentCopy />} onClick={() => copyGroup(group, userOrderText(group, searchedDate))}>Copy user orders</Button>
+        </Box>
+        {group.orders.map(order => renderOrder(order, Object.entries(order.order_details || {})))}
+      </Card>)}</Stack>
+    </>}
+  </Box>;
+}
