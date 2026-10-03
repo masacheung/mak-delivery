@@ -10,6 +10,7 @@ import PickUpLocations from "./features/Information/pick_up_location.js";
 import RestaurantSupportList from "./features/Information/restaurant_list.js";
 import AuthPage from "./features/auth/AuthPage.js";
 import ProtectedRoute from "./components/ProtectedRoute.js";
+import InstallGuide from "./features/Information/InstallGuide.js";
 
 const App = () => {
   return (
@@ -17,6 +18,7 @@ const App = () => {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/auth" element={<AuthPage />} />
+        <Route path="/install-guide" element={<InstallGuide />} />
         <Route path="/pick-up-locations" element={<PickUpLocations />} />
         <Route path="/restaurant-support" element={<RestaurantSupportList />} />
         <Route path="/lookup-order" element={<OrderLookup />} /> {/* Keep public for order tracking */}

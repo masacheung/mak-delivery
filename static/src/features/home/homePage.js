@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Box, useTheme, useMediaQuery } from "@mui/material";
+import { Box, Button, useTheme, useMediaQuery } from "@mui/material";
 import UpcomingEvent from "../headerSection/upcomingEvent/upcomingEvent";
 import MoreMenu from "../headerSection/menu/more";
 import { useAuth } from "../../hooks/useAuth";
@@ -104,7 +104,10 @@ const HomePage = () => {
         onTrackOrder={() => navigate("/lookup-order")}
         error={error}
       />
-      {isAuthenticated && <Box sx={{ p: 2, textAlign: 'center' }}><PushNotificationSettings /></Box>}
+      <Box sx={{ p: 2, textAlign: 'center' }}>
+        <Button onClick={() => navigate('/install-guide')} sx={{ textTransform: 'none' }}>加入主畫面及開啟通知 · 使用教學</Button>
+        {isAuthenticated && <Box><PushNotificationSettings /></Box>}
+      </Box>
     </Box>
   );
 };

@@ -46,6 +46,7 @@ export default function PushNotificationSettings() {
       <Stack gap={1.5} sx={{ pt: 1 }}>
         {status && <Alert severity={status.severity}>{status.text}</Alert>}
         <Box><Typography fontWeight={700}>Add Mak Delivery to your home screen</Typography><Typography variant="body2" color="text.secondary">iPhone: open in Safari → Share → Add to Home Screen. Open the home-screen app, sign in and enable notifications here. Android: browser menu → Install app / Add to Home Screen.</Typography></Box>
+        <Button href="/install-guide" sx={{ alignSelf: 'flex-start', textTransform: 'none' }}>查看安裝及通知教學</Button>
         {!pushSupported() && <Alert severity="info">Push is unavailable in this browser. On iPhone, open the installed home-screen app. You can still read notices using the bell.</Alert>}
         {config && !config.enabled && <Alert severity="info">Phone notifications are not available yet. You can save your preferences and read notices in the app.</Alert>}
         {enabled ? <Button disabled={busy} onClick={async () => { setBusy(true); try { await stopPushNotifications(); setEnabled(false); } catch { setStatus({ severity: 'error', text: 'Unable to disable notifications. Please retry.' }); } finally { setBusy(false); } }}>Disable on this device</Button> : <Button variant="contained" disabled={busy || !pushSupported() || !config?.enabled} onClick={enable}>Enable phone notifications</Button>}
