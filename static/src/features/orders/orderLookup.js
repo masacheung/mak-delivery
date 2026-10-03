@@ -1,638 +1,117 @@
-import React, { useState, useEffect } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
-import { useAuth } from "../../hooks/useAuth";
-import { apiFetch } from "../../utils/apiClient";
-import { 
-  Container, 
-  TextField, 
-  Button, 
-  Typography, 
-  Box, 
-  Card, 
-  CardContent, 
-  Divider, 
-  useTheme, 
-  useMediaQuery,
-  Paper,
-  Chip,
-  List,
-  ListItem,
-  ListItemButton,
-  ListItemText,
-  Alert,
-  Fade,
-  Slide
-} from "@mui/material";
-import SearchIcon from '@mui/icons-material/Search';
-import AssignmentIcon from '@mui/icons-material/Assignment';
-import PersonIcon from '@mui/icons-material/Person';
-import LocationOnIcon from '@mui/icons-material/LocationOn';
-import DateRangeIcon from '@mui/icons-material/DateRange';
-import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
-import EditIcon from '@mui/icons-material/Edit';
-import HomeIcon from '@mui/icons-material/Home';
-import RestaurantIcon from '@mui/icons-material/Restaurant';
-import ReceiptIcon from '@mui/icons-material/Receipt';
-import HistoryIcon from '@mui/icons-material/History';
+import React, { useEffect, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { Accordion, AccordionDetails, AccordionSummary, Alert, Box, Button, Chip, CircularProgress, Dialog, DialogContent, DialogTitle, IconButton, Paper, Skeleton, Stack, Tab, Tabs, TextField, Typography, useMediaQuery, useTheme } from '@mui/material';
+import ArrowForward from '@mui/icons-material/ArrowForward';
+import Close from '@mui/icons-material/Close';
+import ExpandMore from '@mui/icons-material/ExpandMore';
+import LocationOnOutlined from '@mui/icons-material/LocationOnOutlined';
+import Refresh from '@mui/icons-material/Refresh';
+import Search from '@mui/icons-material/Search';
+import ReceiptLong from '@mui/icons-material/ReceiptLong';
+import CustomerPage from '../../components/CustomerPage';
+import { useAuth } from '../../hooks/useAuth';
+import { apiFetch } from '../../utils/apiClient';
+import { pickupLocationDetails } from '../../utils/pickupLocation';
+import { pickupDateLabel } from '../restaurants/AvailablePickupDates';
+import { orderGroups, pickupDay, pickupLabel, splitOrders } from './orderPresentation';
+import OrderDetails from './OrderDetails';
 
-const OrderLookup = () => {
-  const navigate = useNavigate();
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+export default function OrderLookup() {
   const { user, isAuthenticated, loading: authLoading } = useAuth();
-  
-  const [username, setUsername] = useState("");
-  const [orderId, setOrderId] = useState("");
-  const [orderData, setOrderData] = useState(null);
-  const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
-  const currentDate = new Date().toISOString().split("T")[0];
-  const [pickUpDate, setPickUpDate] = useState("");
-  const [disableEdit, setDisableEdit] = useState(true);
-  const [myOrders, setMyOrders] = useState([]);
-  const [myOrdersLoading, setMyOrdersLoading] = useState(false);
-  const [myOrdersError, setMyOrdersError] = useState("");
-
-  // Set username from logged-in user
+  const navigate = useNavigate();
+  const location = useLocation();
+  const mobile = useMediaQuery(useTheme().breakpoints.down('sm'));
+  const [orders, setOrders] = useState([]);
+  const [ordersLoading, setOrdersLoading] = useState(false);
+  const [ordersError, setOrdersError] = useState('');
+  const [version, setVersion] = useState(0);
+  const [tab, setTab] = useState(0);
+  const [limit, setLimit] = useState(6);
+  const [selected, setSelected] = useState(null);
+  const [username, setUsername] = useState('');
+  const [orderId, setOrderId] = useState('');
+  const [lookupLoading, setLookupLoading] = useState(false);
+  const [lookupError, setLookupError] = useState('');
+  const [searchOpen, setSearchOpen] = useState(false);
+  const initialOrderId = location.state?.orderId;
+  useEffect(() => { if (user?.username) setUsername(user.username); }, [user?.username]);
   useEffect(() => {
-    if (user?.username) {
-      setUsername(user.username);
-    }
-  }, [user]);
-
-  useEffect(() => {
-    if (!isAuthenticated || authLoading) {
-      setMyOrders([]);
-      return;
-    }
     let cancelled = false;
-    (async () => {
-      setMyOrdersLoading(true);
-      setMyOrdersError("");
-      try {
-        const res = await apiFetch("/api/orders/mine", { auth: "user" });
-        const data = await res.json().catch(() => []);
-        if (cancelled) return;
-        if (!res.ok) {
-          setMyOrdersError(data.error || "Could not load your orders.");
-          setMyOrders([]);
-          return;
-        }
-        setMyOrders(Array.isArray(data) ? data : []);
-      } catch {
-        if (!cancelled) {
-          setMyOrdersError("Could not load your orders.");
-          setMyOrders([]);
-        }
-      } finally {
-        if (!cancelled) setMyOrdersLoading(false);
+    if (authLoading) return;
+    if (!isAuthenticated) { setOrders([]); return; }
+    setOrdersLoading(true); setOrdersError('');
+    apiFetch('/api/orders/mine', { auth: 'user' }).then(async response => {
+      const result = await response.json();
+      if (!response.ok) throw new Error(result.error || 'Unable to load your orders.');
+      if (!cancelled) {
+        const next = Array.isArray(result) ? result : [];
+        setOrders(next);
+        if (initialOrderId) setSelected(next.find(order => String(order.id) === String(initialOrderId)) || null);
       }
-    })();
-    return () => {
-      cancelled = true;
-    };
-  }, [isAuthenticated, authLoading]);
+    }).catch(error => { if (!cancelled) setOrdersError(error.message || 'Unable to load your orders.'); })
+      .finally(() => { if (!cancelled) setOrdersLoading(false); });
+    return () => { cancelled = true; };
+  }, [isAuthenticated, authLoading, version, initialOrderId]);
 
-  const applyOrderFromList = (o) => {
-    setError("");
-    setOrderData(o);
-    setOrderId(String(o.id));
-    if (user?.username) setUsername(user.username);
-    if (o.pick_up_date) {
-      setPickUpDate(new Date(o.pick_up_date).toISOString().split("T")[0]);
-      setDisableEdit(new Date(o.pick_up_date).toISOString().split("T")[0] >= currentDate);
-    }
-  };
-
-  const handleLookup = async () => {
-    if (!username || !orderId) {
-      setError("Please enter both Username and Order ID.");
-      return;
-    }
-    
-    setError("");
-    setLoading(true);
-
+  async function lookup(event) {
+    event.preventDefault();
+    if (lookupLoading) return;
+    setLookupError('');
+    if (!username.trim() || !/^\d+$/.test(orderId.trim())) { setLookupError('Enter your username and a numeric order ID.'); return; }
+    setLookupLoading(true);
     try {
-      const response = await apiFetch(
-        `/api/orders?username=${encodeURIComponent(username)}&orderId=${encodeURIComponent(orderId)}`,
-        { auth: "none" }
-      );
-      if (!response.ok) throw new Error("Order not found");
+      const response = await apiFetch(`/api/orders?username=${encodeURIComponent(username.trim())}&orderId=${encodeURIComponent(orderId.trim())}`, { auth: 'none' });
+      const result = await response.json();
+      if (!response.ok) throw new Error(response.status === 404 ? 'Order not found. Check your username and order ID.' : 'Unable to look up this order. Please try again.');
+      setSelected(result);
+    } catch (error) { setLookupError(error.message || 'Unable to look up this order.'); }
+    finally { setLookupLoading(false); }
+  }
+  const groups = splitOrders(orders);
+  const currentOrders = tab === 0 ? groups.upcoming : groups.past;
+  const searchForm = <Box component="form" onSubmit={lookup}><Stack gap={2}>
+    <Typography variant="body2" color="text.secondary">Use the order ID from your confirmation.</Typography>
+    <TextField label="Username" value={username} onChange={event => setUsername(event.target.value)} autoComplete="username" fullWidth required />
+    <TextField label="Order ID" value={orderId} onChange={event => setOrderId(event.target.value)} inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }} fullWidth required />
+    {lookupError && <Alert severity="error">{lookupError}</Alert>}
+    <Button type="submit" variant="contained" disabled={lookupLoading} startIcon={<Search />}>{lookupLoading ? 'Finding your order…' : 'Find order'}</Button>
+  </Stack></Box>;
 
-      const data = await response.json();
-      console.log(data);
-      setOrderData(data);
-      setPickUpDate(new Date(data.pick_up_date).toISOString().split("T")[0]);
-      setDisableEdit(data.pick_up_date >= currentDate);
-      console.log(new Date(data.pick_up_date).toISOString().split("T")[0]);
-      console.log(currentDate);
-    } catch (err) {
-      setOrderData(null);
-      setError("Order not found. Please check your details and try again.");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  return (
-    <Box
-      sx={{
-        minHeight: "100vh",
-        background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        padding: isMobile ? "16px" : "24px",
-      }}
-    >
-      <Container maxWidth="md">
-        <Fade in={true} timeout={800}>
-          <Paper
-            elevation={0}
-            sx={{
-              background: "rgba(255, 255, 255, 0.95)",
-              backdropFilter: "blur(20px)",
-              borderRadius: 4,
-              padding: isMobile ? "32px 24px" : "48px 40px",
-              textAlign: "center",
-              border: "1px solid rgba(255, 255, 255, 0.2)",
-              boxShadow: "0 20px 40px rgba(0, 0, 0, 0.1)",
-            }}
-          >
-            {/* Header */}
-            <Box sx={{ marginBottom: 4 }}>
-              <SearchIcon 
-                sx={{ 
-                  fontSize: 48, 
-                  color: "primary.main", 
-                  marginBottom: 2 
-                }} 
-              />
-              <Typography 
-                variant={isMobile ? "h4" : "h3"} 
-                sx={{
-                  fontWeight: 700,
-                  color: "primary.main",
-                  marginBottom: 1,
-                  background: "linear-gradient(45deg, #667eea, #764ba2)",
-                  WebkitBackgroundClip: "text",
-                  WebkitTextFillColor: "transparent",
-                }}
-              >
-                Order Lookup
-              </Typography>
-              <Typography 
-                variant="body1" 
-                sx={{
-                  color: "text.secondary",
-                  maxWidth: "400px",
-                  margin: "0 auto",
-                }}
-              >
-                Enter your order details to view and manage your delivery order
-              </Typography>
-            </Box>
-
-            {/* Logged-in: orders for this account (newest first) */}
-            {!authLoading && isAuthenticated && (
-              <Box sx={{ marginBottom: 4, textAlign: "left" }}>
-                <Typography
-                  variant="subtitle1"
-                  sx={{ fontWeight: 700, mb: 1, display: "flex", alignItems: "center", gap: 1 }}
-                >
-                  <HistoryIcon color="primary" />
-                  Your orders
-                </Typography>
-                <Typography variant="caption" color="text.secondary" display="block" sx={{ mb: 1.5 }}>
-                  Newest at the top. Tap one to view full details below.
-                </Typography>
-                {myOrdersLoading && (
-                  <Typography variant="body2" color="text.secondary">
-                    Loading your orders…
-                  </Typography>
-                )}
-                {myOrdersError && (
-                  <Alert severity="warning" sx={{ mb: 1 }}>
-                    {myOrdersError}
-                  </Alert>
-                )}
-                {!myOrdersLoading && !myOrdersError && myOrders.length === 0 && (
-                  <Typography variant="body2" color="text.secondary">
-                    No orders found for your account yet.
-                  </Typography>
-                )}
-                {myOrders.length > 0 && (
-                  <Paper
-                    variant="outlined"
-                    sx={{
-                      maxHeight: 280,
-                      overflow: "auto",
-                      borderRadius: 2,
-                    }}
-                  >
-                    <List dense disablePadding>
-                      {myOrders.map((o) => (
-                        <ListItem key={o.id} disablePadding sx={{ borderBottom: 1, borderColor: "divider" }}>
-                          <ListItemButton onClick={() => applyOrderFromList(o)} alignItems="flex-start">
-                            <ListItemText
-                              primary={
-                                <Typography variant="body2" fontWeight={600}>
-                                  Order #{o.id}{" "}
-                                  <Typography component="span" variant="caption" color="text.secondary">
-                                    · placed{" "}
-                                    {o.create_date
-                                      ? new Date(o.create_date).toLocaleString()
-                                      : "—"}
-                                  </Typography>
-                                </Typography>
-                              }
-                              secondary={
-                                <>
-                                  <Typography variant="caption" display="block" color="text.secondary">
-                                    Pickup {o.pick_up_date ? new Date(o.pick_up_date).toISOString().split("T")[0] : "—"}{" "}
-                                    · {o.pick_up_location || "—"}
-                                  </Typography>
-                                  <Typography variant="caption" display="block" color="primary.main">
-                                    ${Number(o.total || 0).toFixed(2)}
-                                    {o.payment_status ? ` · ${o.payment_status}` : ""}
-                                  </Typography>
-                                </>
-                              }
-                            />
-                          </ListItemButton>
-                        </ListItem>
-                      ))}
-                    </List>
-                  </Paper>
-                )}
-              </Box>
-            )}
-
-            {!authLoading && !isAuthenticated && (
-              <Alert severity="info" sx={{ marginBottom: 3, textAlign: "left" }}>
-                <Typography variant="body2">
-                  <Button
-                    size="small"
-                    variant="contained"
-                    sx={{ mr: 1, mb: 1 }}
-                    onClick={() => navigate("/auth?redirect=/lookup-order")}
-                  >
-                    Log in
-                  </Button>
-                  to list your orders here (newest first). You can still look up a single order with username and ID below.
-                </Typography>
-              </Alert>
-            )}
-
-            {/* Search Form */}
-            <Box sx={{ marginBottom: 4 }}>
-              <TextField
-                fullWidth
-                label="Username"
-                variant="outlined"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                sx={{
-                  marginBottom: 2,
-                  "& .MuiOutlinedInput-root": {
-                    borderRadius: 3,
-                    backgroundColor: "rgba(255, 255, 255, 0.8)",
-                  },
-                }}
-                InputProps={{
-                  startAdornment: (
-                    <PersonIcon sx={{ color: "action.active", mr: 1 }} />
-                  ),
-                }}
-              />
-              <TextField
-                fullWidth
-                label="Order ID"
-                variant="outlined"
-                value={orderId}
-                onChange={(e) => setOrderId(e.target.value)}
-                sx={{
-                  marginBottom: 3,
-                  "& .MuiOutlinedInput-root": {
-                    borderRadius: 3,
-                    backgroundColor: "rgba(255, 255, 255, 0.8)",
-                  },
-                }}
-                InputProps={{
-                  startAdornment: (
-                    <AssignmentIcon sx={{ color: "action.active", mr: 1 }} />
-                  ),
-                }}
-              />
-              <Button 
-                variant="contained" 
-                size="large"
-                fullWidth 
-                onClick={handleLookup}
-                disabled={loading}
-                sx={{
-                  background: "linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)",
-                  borderRadius: "50px",
-                  height: 56,
-                  fontSize: "1.1rem",
-                  fontWeight: 600,
-                  textTransform: "none",
-                  boxShadow: "0 6px 20px rgba(255, 105, 135, 0.4)",
-                  transition: "all 0.3s ease",
-                  "&:hover": {
-                    transform: "translateY(-2px)",
-                    boxShadow: "0 8px 25px rgba(255, 105, 135, 0.5)",
-                  },
-                }}
-              >
-                {loading ? "Searching..." : "Search Order"}
-              </Button>
-            </Box>
-
-            {/* Error Message */}
-            {error && (
-              <Slide direction="up" in={!!error} timeout={300}>
-                <Alert 
-                  severity="error" 
-                  sx={{ 
-                    marginBottom: 3,
-                    borderRadius: 2,
-                  }}
-                >
-                  {error}
-                </Alert>
-              </Slide>
-            )}
-
-            {/* Order Details */}
-            {orderData && (
-              <Slide direction="up" in={!!orderData} timeout={500}>
-                <Card
-                  sx={{
-                    background: "rgba(255, 255, 255, 0.9)",
-                    backdropFilter: "blur(10px)",
-                    borderRadius: 3,
-                    border: "1px solid rgba(255, 255, 255, 0.3)",
-                    boxShadow: "0 8px 32px rgba(0, 0, 0, 0.1)",
-                    textAlign: "left",
-                  }}
-                >
-                  <CardContent sx={{ padding: isMobile ? "24px" : "32px" }}>
-                    {/* Order Header */}
-                    <Box sx={{ display: "flex", alignItems: "center", marginBottom: 3 }}>
-                      <ReceiptIcon sx={{ color: "primary.main", marginRight: 1 }} />
-                      <Typography 
-                        variant="h5" 
-                        sx={{
-                          fontWeight: 700,
-                          color: "primary.main",
-                        }}
-                      >
-                        Order Details
-                      </Typography>
-                    </Box>
-
-                    {/* Order Info Grid */}
-                    <Box sx={{ display: "flex", flexDirection: "column", gap: 2, marginBottom: 3 }}>
-                      <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                        <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-                          <PersonIcon sx={{ color: "text.secondary", fontSize: 20 }} />
-                          <Typography sx={{ fontWeight: 600 }}>Username:</Typography>
-                        </Box>
-                        <Chip 
-                          label={orderData.username} 
-                          size="small"
-                          sx={{ 
-                            backgroundColor: "rgba(102, 126, 234, 0.1)",
-                            color: "primary.main",
-                            fontWeight: 600,
-                          }}
-                        />
-                      </Box>
-
-                      <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                        <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-                          <AssignmentIcon sx={{ color: "text.secondary", fontSize: 20 }} />
-                          <Typography sx={{ fontWeight: 600 }}>Order ID:</Typography>
-                        </Box>
-                        <Chip 
-                          label={orderData.id} 
-                          size="small"
-                          sx={{ 
-                            backgroundColor: "rgba(76, 175, 80, 0.1)",
-                            color: "success.main",
-                            fontWeight: 600,
-                          }}
-                        />
-                      </Box>
-
-                      <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                        <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-                          <LocationOnIcon sx={{ color: "text.secondary", fontSize: 20 }} />
-                          <Typography sx={{ fontWeight: 600 }}>Pickup Location:</Typography>
-                        </Box>
-                        <Typography sx={{ textAlign: "right", maxWidth: "200px" }}>
-                          {orderData.pick_up_location}
-                        </Typography>
-                      </Box>
-
-                      <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                        <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-                          <DateRangeIcon sx={{ color: "text.secondary", fontSize: 20 }} />
-                          <Typography sx={{ fontWeight: 600 }}>Pickup Date:</Typography>
-                        </Box>
-                        <Typography sx={{ textAlign: "right" }}>
-                          {orderData.pick_up_date ? new Date(orderData.pick_up_date).toISOString().split("T")[0] : ""}
-                        </Typography>
-                      </Box>
-
-                      <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                        <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-                          <AttachMoneyIcon sx={{ color: "text.secondary", fontSize: 20 }} />
-                          <Typography sx={{ fontWeight: 600 }}>Total:</Typography>
-                        </Box>
-                        <Chip 
-                          label={`$${Number(orderData?.total || 0).toFixed(2)}`}
-                          size="small"
-                          sx={{ 
-                            backgroundColor: "rgba(255, 107, 107, 0.1)",
-                            color: "error.main",
-                            fontWeight: 600,
-                          }}
-                        />
-                      </Box>
-                    </Box>
-
-                    {/* Disclaimer */}
-                    <Alert 
-                      severity="info" 
-                      sx={{ 
-                        marginBottom: 3,
-                        borderRadius: 2,
-                        backgroundColor: "rgba(33, 150, 243, 0.1)",
-                      }}
-                    >
-                      The total shown is for reference only and may vary at delivery time.
-                    </Alert>
-
-                    {/* Notes */}
-                    {orderData.notes && (
-                      <Box sx={{ marginBottom: 3 }}>
-                        <Typography sx={{ fontWeight: 600, marginBottom: 1 }}>Notes:</Typography>
-                        <Paper
-                          sx={{
-                            padding: 2,
-                            backgroundColor: "rgba(0, 0, 0, 0.03)",
-                            borderRadius: 2,
-                          }}
-                        >
-                          <Typography variant="body2">{orderData.notes}</Typography>
-                        </Paper>
-                      </Box>
-                    )}
-
-                    {/* Ordered Dishes */}
-                    <Box>
-                      <Typography 
-                        variant="h6" 
-                        sx={{ 
-                          fontWeight: 600,
-                          marginBottom: 2,
-                          display: "flex",
-                          alignItems: "center",
-                          gap: 1,
-                        }}
-                      >
-                        <RestaurantIcon sx={{ color: "primary.main" }} />
-                        Ordered Dishes
-                      </Typography>
-
-                      {orderData.order_details &&
-                        Object.entries(orderData.order_details).map(([restaurantId, dishes]) => (
-                          <Card 
-                            key={restaurantId} 
-                            sx={{ 
-                              marginBottom: 2,
-                              backgroundColor: "rgba(255, 255, 255, 0.7)",
-                              borderRadius: 2,
-                            }}
-                          >
-                            <CardContent sx={{ padding: "16px !important" }}>
-                              <Typography 
-                                variant="subtitle1" 
-                                sx={{ 
-                                  fontWeight: 600,
-                                  color: "primary.main",
-                                  marginBottom: 1,
-                                }}
-                              >
-                                {dishes[0]?.restaurantName}
-                              </Typography>
-
-                              <List dense>
-                                {dishes.map((dish, index) => (
-                                  <ListItem 
-                                    key={dish.id}
-                                    sx={{
-                                      padding: "4px 0",
-                                      borderBottom: index < dishes.length - 1 ? "1px solid rgba(0, 0, 0, 0.05)" : "none",
-                                    }}
-                                  >
-                                    <ListItemText
-                                      primary={
-                                        <Typography variant="body2" sx={{ fontWeight: 500 }}>
-                                          {index + 1}. {dish.name}
-                                          {dish.selectedOptions && Object.keys(dish.selectedOptions).length > 0 && (
-                                            <Typography
-                                              variant="caption"
-                                              sx={{
-                                                display: "block",
-                                                color: "text.secondary",
-                                                fontStyle: "italic",
-                                              }}
-                                            >
-                                              ({Object.entries(dish.selectedOptions)
-                                                .map(([optionKey, selected]) => selected.join(", "))
-                                                .join("; ")})
-                                            </Typography>
-                                          )}
-                                        </Typography>
-                                      }
-                                      secondary={
-                                        <Typography variant="caption" sx={{ color: "text.secondary" }}>
-                                          Quantity: {dish.quantity}
-                                        </Typography>
-                                      }
-                                    />
-                                  </ListItem>
-                                ))}
-                              </List>
-                            </CardContent>
-                          </Card>
-                        ))}
-                    </Box>
-                  </CardContent>
-                </Card>
-              </Slide>
-            )}
-
-            {/* Action Buttons */}
-            <Box sx={{ display: "flex", flexDirection: isMobile ? "column" : "row", gap: 2, marginTop: 3 }}>
-              {orderData && (
-                <Button 
-                  variant="contained" 
-                  size="large"
-                  onClick={() => navigate("/edit-order", { state: { orderData } })}
-                  disabled={!disableEdit}
-                  sx={{
-                    background: disableEdit ? "linear-gradient(45deg, #4CAF50 30%, #45a049 90%)" : "rgba(0, 0, 0, 0.12)",
-                    borderRadius: "50px",
-                    height: 48,
-                    fontSize: "1rem",
-                    fontWeight: 600,
-                    textTransform: "none",
-                    flex: 1,
-                    boxShadow: disableEdit ? "0 4px 15px rgba(76, 175, 80, 0.4)" : "none",
-                    "&:hover": {
-                      transform: disableEdit ? "translateY(-2px)" : "none",
-                      boxShadow: disableEdit ? "0 6px 20px rgba(76, 175, 80, 0.5)" : "none",
-                    },
-                  }}
-                >
-                  <EditIcon sx={{ marginRight: 1 }} />
-                  {disableEdit ? "Edit Order" : "Too Late to Edit"}
-                </Button>
-              )}
-              
-              <Button 
-                variant="outlined" 
-                size="large"
-                onClick={() => navigate("/")}
-                sx={{
-                  borderRadius: "50px",
-                  height: 48,
-                  fontSize: "1rem",
-                  fontWeight: 600,
-                  textTransform: "none",
-                  flex: 1,
-                  borderColor: "primary.main",
-                  color: "primary.main",
-                  "&:hover": {
-                    backgroundColor: "rgba(102, 126, 234, 0.1)",
-                    transform: "translateY(-2px)",
-                  },
-                }}
-              >
-                <HomeIcon sx={{ marginRight: 1 }} />
-                Go to Home
-              </Button>
-            </Box>
-          </Paper>
-        </Fade>
-      </Container>
-    </Box>
-  );
-};
-
-export default OrderLookup;
+  return <CustomerPage title="My orders" showOrders={false}>
+    <Stack gap={3}>
+      <Box><Typography component="h1" variant="h4" fontWeight={800} sx={{ fontSize: { xs: 28, sm: 34 } }}>Your next pickup,<br />all in one place.</Typography><Typography color="text.secondary" sx={{ mt: 1 }}>View your dishes, pickup details and payment information.</Typography></Box>
+      {authLoading && <Stack gap={2}><Skeleton variant="rounded" height={55} /><Skeleton variant="rounded" height={170} /></Stack>}
+      {!authLoading && isAuthenticated && <>
+        <Stack direction="row" gap={1} alignItems="center" justifyContent="space-between"><Typography fontWeight={700}>Orders for {user?.username}</Typography><Button startIcon={<Refresh />} disabled={ordersLoading} onClick={() => setVersion(value => value + 1)}>Refresh</Button></Stack>
+        <Tabs value={tab} onChange={(_, value) => { setTab(value); setLimit(6); }} variant="fullWidth" aria-label="Order history"><Tab label={`Upcoming (${groups.upcoming.length})`} /><Tab label={`Past dates (${groups.past.length})`} /></Tabs>
+        {ordersLoading ? <Stack gap={2}><Skeleton variant="rounded" height={170} /><Skeleton variant="rounded" height={170} /></Stack> : ordersError ? <Alert severity="error" action={<Button onClick={() => setVersion(value => value + 1)}>Retry</Button>}>{ordersError}</Alert> : !currentOrders.length ? <Paper variant="outlined" sx={{ p: 3, textAlign: 'center', borderRadius: 3 }}><ReceiptLong sx={{ fontSize: 36, color: 'primary.main', mb: 1 }} /><Typography fontWeight={700}>{tab === 0 ? 'No upcoming pickups yet' : 'No past orders yet'}</Typography><Typography variant="body2" color="text.secondary" sx={{ mt: 1, mb: 2 }}>{tab === 0 ? 'Choose a delivery date and find your next favourite meal.' : 'Orders appear here after their pickup date.'}</Typography><Button variant="contained" onClick={() => navigate('/restaurants')}>Browse restaurants</Button></Paper> : <>
+          <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: 'repeat(2, 1fr)' }, gap: 2 }}>
+            {currentOrders.slice(0, limit).map(order => {
+              const day = pickupDay(order.pick_up_date);
+              const items = orderGroups(order).flatMap(([, dishes]) => dishes);
+              const itemCount = items.reduce((sum, item) => sum + Number(item.quantity || 0), 0);
+              const restaurantCount = orderGroups(order).length;
+              return <Paper component="button" type="button" key={order.id} onClick={() => setSelected(order)} variant="outlined" aria-label={`View order ${order.id}`} sx={{ p: 2.5, textAlign: 'left', font: 'inherit', cursor: 'pointer', borderRadius: 3, bgcolor: 'white', '&:hover': { borderColor: 'primary.main' }, '&:focus-visible': { outline: '3px solid #5557d9', outlineOffset: 3 } }}>
+                <Stack direction="row" justifyContent="space-between" alignItems="center" gap={1}><Typography variant="caption" color="text.secondary">ORDER #{order.id}</Typography><Chip component="span" size="small" label={pickupLabel(order)} sx={{ bgcolor: '#eeedff' }} /></Stack>
+                <Typography fontSize={20} fontWeight={800} sx={{ mt: 1.5 }}>{day ? pickupDateLabel(day) : 'Pickup date unavailable'}</Typography>
+                <Stack direction="row" gap={0.75} alignItems="center" sx={{ mt: 1 }}><LocationOnOutlined fontSize="small" color="primary" /><Typography variant="body2" fontWeight={600}>{pickupLocationDetails(order.pick_up_location).name}</Typography></Stack>
+                <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>{itemCount} {itemCount === 1 ? 'item' : 'items'} · {restaurantCount} {restaurantCount === 1 ? 'restaurant' : 'restaurants'}</Typography>
+                <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ mt: 2, pt: 1.5, borderTop: '1px solid #eeeef5' }}><Box><Typography fontWeight={800}>${Number(order.total || 0).toFixed(2)}</Typography><Typography variant="caption" color="text.secondary">{order.payment_status && order.payment_status !== 'Unpaid' ? `Payment recorded · ${order.payment_status}` : 'Payment not recorded'}</Typography></Box><Stack direction="row" gap={0.5} alignItems="center" sx={{ color: 'primary.main' }}><Typography fontSize={13} fontWeight={700}>View details</Typography><ArrowForward fontSize="small" /></Stack></Stack>
+              </Paper>;
+            })}
+          </Box>
+          {currentOrders.length > limit && <Button variant="outlined" onClick={() => setLimit(value => value + 6)}>Show more orders</Button>}
+        </>}
+        <Accordion expanded={searchOpen} onChange={(_, expanded) => setSearchOpen(expanded)} elevation={0} sx={{ border: '1px solid #e5e5ef', borderRadius: '12px !important', '&:before': { display: 'none' } }}><AccordionSummary expandIcon={<ExpandMore />}><Typography fontWeight={600}>Find an order by ID</Typography></AccordionSummary><AccordionDetails>{searchForm}</AccordionDetails></Accordion>
+      </>}
+      {!authLoading && !isAuthenticated && <>
+        <Paper variant="outlined" sx={{ p: 2.5, borderRadius: 3, bgcolor: '#eeedff' }}><Typography fontWeight={800}>All your orders, without searching.</Typography><Typography variant="body2" color="text.secondary" sx={{ mt: 0.75, mb: 2 }}>Sign in to view your upcoming pickups and order history.</Typography><Button variant="contained" onClick={() => navigate('/auth?redirect=/lookup-order')}>Log in to see my orders</Button></Paper>
+        <Paper variant="outlined" sx={{ p: 2.5, borderRadius: 3 }}><Typography fontWeight={800} sx={{ mb: 2 }}>Find a single order</Typography>{searchForm}</Paper>
+      </>}
+    </Stack>
+    <Dialog open={Boolean(selected)} onClose={() => setSelected(null)} fullScreen={mobile} fullWidth maxWidth="sm" PaperProps={{ sx: { bgcolor: '#f7f7fb' } }}>
+      <DialogTitle sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', bgcolor: 'white', borderBottom: '1px solid #e5e5ef' }}><Typography component="span" fontWeight={800}>Order details</Typography><IconButton aria-label="Close order details" onClick={() => setSelected(null)}><Close /></IconButton></DialogTitle>
+      <DialogContent sx={{ p: { xs: 2, sm: 3 }, pt: '24px !important' }}>{selected ? <OrderDetails key={selected.id} order={selected} canEdit={isAuthenticated && user?.username === selected.username} /> : <CircularProgress />}</DialogContent>
+    </Dialog>
+  </CustomerPage>;
+}

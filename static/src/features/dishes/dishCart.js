@@ -13,7 +13,8 @@ export function configuredDishPrice(dish, selectedOptions) {
 export function changeSimpleDishQuantity(addedDishes, restaurantId, dish, delta, createId) {
   const items = addedDishes[restaurantId] || [];
   const existing = items.find(item => String(item.sourceDishId) === String(dish.id));
-  const quantity = Math.max(0, Math.min(10, Number(existing?.quantity || 0) + delta));
+  const requested = Number(existing?.quantity || 0) + delta;
+  const quantity = Math.max(0, delta > 0 ? Math.min(10, requested) : requested);
   let next = items.filter(item => item !== existing);
   if (quantity) next = [...next, existing ? { ...existing, quantity } : {
     id: createId(), sourceDishId: dish.id, name: dish.name, price: dish.price,

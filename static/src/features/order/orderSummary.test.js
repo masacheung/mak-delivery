@@ -40,6 +40,14 @@ test('checkout prevents orders without a pickup location', () => {
   expect(screen.getByRole('button', { name: /Submit order/ })).toBeDisabled();
 });
 
+test('checkout quantity changes preserve dish options and other restaurant items', () => {
+  const props = renderSummary({ editMode: true });
+  fireEvent.click(screen.getByRole('button', { name: 'Increase Noodles in cart' }));
+  expect(props.updateOrderState).toHaveBeenCalledWith('addedDishes', { 1: [{ ...orderState.addedDishes[1][0], quantity: 3 }], 2: orderState.addedDishes[2] });
+  expect(screen.getByRole('button', { name: 'Save changes · $29.25' })).toBeEnabled();
+  expect(screen.getByRole('button', { name: 'Decrease Special meal in cart' })).toBeDisabled();
+});
+
 test('checkout emphasises readable date, area, full address and allows changing pickup', () => {
   const props = renderSummary({ orderState: { ...orderState, pickupLocation: '598 Central Ave, New Providence, NJ 07974' } });
   expect(screen.getByText('Fri, Oct 2, 2026')).toBeInTheDocument();

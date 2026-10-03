@@ -1,0 +1,31 @@
+import React from 'react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { MemoryRouter } from 'react-router-dom';
+import RestaurantList from './restaurantList';
+import { apiFetch } from '../../utils/apiClient';
+import { useAuth } from '../../hooks/useAuth';
+jest.mock('../../utils/apiClient');
+jest.mock('../../hooks/useAuth');
+jest.mock('../../components/PickupNotificationBell', () => () => null);
+
+test('editing preserves saved cart and notes, changes quantity and updates the same order once', async () => {
+  useAuth.mockReturnValue({ user: { username: 'alice' } });
+  const order = { id: 22, username: 'alice', pick_up_date: '2099-10-09', pick_up_location: 'Fort Lee 540 Main St', notes: 'Less salt', total: 27.25, order_details: { 1: [{ id: 'old-dish', name: '鲜肉小笼包', price: 10, quantity: 2 }] } };
+  const event = { pick_up_date: order.pick_up_date, pick_up_locations: [order.pick_up_location], restaurants: ['Tasty Moment'] };
+  let resolveSave;
+  apiFetch.mockImplementation((url, options) => options?.method === 'PUT' ? new Promise(resolve => { resolveSave = resolve; }) : Promise.resolve({ ok: true, json: async () => [event] }));
+  render(<MemoryRouter><RestaurantList editOrder={order} /></MemoryRouter>);
+  await screen.findByText('2. Choose a restaurant');
+  fireEvent.click(screen.getByRole('button', { name: 'View cart' }));
+  expect(await screen.findByText('2 × 鲜肉小笼包')).toBeInTheDocument();
+  expect(screen.getByLabelText('Order notes (optional)')).toHaveValue('Less salt');
+  fireEvent.click(screen.getByRole('button', { name: 'Increase 鲜肉小笼包 in cart' }));
+  fireEvent.click(await screen.findByRole('button', { name: 'Save changes · $37.88' }));
+  expect(screen.getByRole('button', { name: 'Saving changes…' })).toBeDisabled();
+  await waitFor(() => expect(apiFetch).toHaveBeenCalledWith('/api/orders/update/22', expect.objectContaining({ method: 'PUT', auth: 'user', body: expect.objectContaining({ username: 'alice', date: '2099-10-09', pickupLocation: order.pick_up_location, notes: 'Less salt' }) })));
+  const calls = apiFetch.mock.calls.filter(([, options]) => options?.method === 'PUT');
+  expect(calls).toHaveLength(1);
+  expect(JSON.parse(calls[0][1].body.orderDetails)[1][0]).toEqual(expect.objectContaining({ price: 10, quantity: 3, sourceDishId: 12 }));
+  resolveSave({ ok: false, json: async () => ({}) });
+  expect(await screen.findByRole('alert')).toHaveTextContent('Unable to save your changes');
+});

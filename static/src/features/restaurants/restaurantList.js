@@ -4,6 +4,8 @@ import { useAuth } from "../../hooks/useAuth";
 import { apiFetch } from "../../utils/apiClient";
 import {
   Box,
+  Alert,
+  Button,
   Typography,
   Chip,
   TextField,
@@ -23,6 +25,10 @@ import {
   AppBar,
   Toolbar,
 } from "@mui/material";
+import ReceiptLong from '@mui/icons-material/ReceiptLong';
+import Search from '@mui/icons-material/Search';
+import ArrowForward from '@mui/icons-material/ArrowForward';
+import CheckCircleOutline from '@mui/icons-material/CheckCircleOutline';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import RestaurantIcon from '@mui/icons-material/Restaurant';
@@ -34,6 +40,9 @@ import PickupNotificationBell from "../../components/PickupNotificationBell";
 import AvailablePickupDates from './AvailablePickupDates';
 import CartReviewButton from '../order/CartReviewButton';
 import { pickupLocationDetails } from '../../utils/pickupLocation';
+import { pickupDay } from '../orders/orderPresentation';
+import { cartFromOrder } from '../orders/editCart';
+import { pickupDateLabel } from './AvailablePickupDates';
 import TASTY_MOMENT from "../../constant/restaurants/tastyMoment";
 import HK_ALLEY from "../../constant/restaurants/hkAlley";
 import WONTON_GUY from "../../constant/restaurants/wontonGuy";
@@ -69,7 +78,9 @@ import newDaNoodlesImg from "../../image/newDaNoodles.webp";
 import allBlueChineseCuisineImg from "../../image/allBlueChineseCuisine.jpg";
 import chopsticksCharmImage from "../../image/chopsticksCharm.jpg";
 
-const RestaurantList = () => {
+const getUniqueOptions = (events, key) => [...new Set(events.flatMap(event => event[key]))];
+
+const RestaurantList = ({ editOrder = null }) => {
   const navigate = useNavigate();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
@@ -98,13 +109,13 @@ const RestaurantList = () => {
     selectedRestaurant: null,
     quantities: {},
     isDishFormVisible: false,
-    addedDishes: {},
-    username: "",
-    pickupLocation: "",
-    date: "",
-    notes: "",
+    addedDishes: editOrder ? cartFromOrder(editOrder, restaurants) : {},
+    username: editOrder?.username || "",
+    pickupLocation: editOrder?.pick_up_location || "",
+    date: pickupDay(editOrder?.pick_up_date),
+    notes: editOrder?.notes || "",
     errors: {},
-    total: 0,
+    total: Number(editOrder?.total || 0),
   });
   const [openEvents, setOpenEvents] = useState([]);
   const [pickupLocations, setPickupLocations] = useState([]);
@@ -128,6 +139,18 @@ const RestaurantList = () => {
     }
   }, [user]);
 
+  useEffect(() => {
+    if (!editOrder) return;
+    let cancelled = false;
+    setIsLoading(true);
+    apiFetch(`/api/adminConfig/openEvents?date=${pickupDay(editOrder.pick_up_date)}`, { auth: 'none' })
+      .then(async response => { if (!response.ok) throw new Error('Unable to load menus. Please try again.'); return response.json(); })
+      .then(data => { if (!cancelled) { setOpenEvents(data); setPickupLocations(getUniqueOptions(data, 'pick_up_locations')); setEnableLocationsDropdown(true); } })
+      .catch(err => { if (!cancelled) setError(err.message); })
+      .finally(() => { if (!cancelled) setIsLoading(false); });
+    return () => { cancelled = true; };
+  }, [editOrder]);
+
   const resetEventsState = () => {
     setOpenEvents([]);
     setPickupLocations([]);
@@ -143,10 +166,6 @@ const RestaurantList = () => {
       pickupLocation: "",
     }));
   }
-
-  const getUniqueOptions = (events, key) => {
-    return [...new Set(events.flatMap(event => event[key]))];
-  };
 
   const getAvailableRestaurants = (events) => {
     return restaurants.filter(restaurant =>
@@ -300,8 +319,8 @@ const RestaurantList = () => {
     submittingRef.current = true;
     setSubmitting(true);
     try {
-      const response = await apiFetch("/api/orders", {
-        method: "POST",
+      const response = await apiFetch(editOrder ? `/api/orders/update/${editOrder.id}` : "/api/orders", {
+        method: editOrder ? "PUT" : "POST",
         auth: "user",
         body: orderData,
       });
@@ -310,7 +329,7 @@ const RestaurantList = () => {
 
       const result = await response.json();
 
-      navigate("/ordered", { state: { order: result.order } });
+      navigate("/ordered", { state: { order: result.order, updated: Boolean(editOrder) } });
 
       setOrderState({
         selectedRestaurant: null,
@@ -324,7 +343,7 @@ const RestaurantList = () => {
         total: 0,
       });
     } catch (error) {
-      setSubmitError('Unable to submit your order. Please try again.');
+      setSubmitError(editOrder ? 'Unable to save your changes. Please try again.' : 'Unable to submit your order. Please try again.');
     } finally {
       submittingRef.current = false;
       setSubmitting(false);
@@ -392,8 +411,8 @@ const RestaurantList = () => {
           }}
         >
           <IconButton
-            aria-label="Back to home"
-            onClick={() => navigate("/")}
+            aria-label={editOrder ? 'Back to saved order' : 'Back to home'}
+            onClick={() => editOrder ? navigate('/lookup-order', { state: { orderId: editOrder.id } }) : navigate('/')}
             sx={{
               color: "primary.main",
               transition: "all 0.3s ease",
@@ -412,10 +431,11 @@ const RestaurantList = () => {
               fontWeight: 700,
             }}
           >
-            Restaurants
+            {editOrder ? `Edit order #${editOrder.id}` : 'Start your order'}
           </Typography>
 
           <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+            <IconButton aria-label="My orders" onClick={() => navigate('/lookup-order')} sx={{ color: 'primary.main' }}><ReceiptLong /></IconButton>
             <PickupNotificationBell enabled={Boolean(user)} isMobile={isMobile} />
             <IconButton
               onClick={handleOpen}
@@ -450,19 +470,28 @@ const RestaurantList = () => {
           padding: isMobile ? "80px 16px 110px" : "88px 24px 110px",
           display: "flex",
           flexDirection: "column",
-          gap: 3,
+          gap: 2,
         }}
       >
+        <Box>
+          <Typography component="h1" variant="h5" fontWeight={800}>{editOrder ? 'Update your pickup or dishes.' : 'What are you craving?'}</Typography>
+          <Typography variant="body2" color="text.secondary" sx={{ mt: 0.5 }}>{editOrder ? 'Your saved dishes are in the cart. Review before saving changes.' : 'Choose a pickup, mix your favourites, then review your order.'}</Typography>
+          <Box aria-label="Ordering steps" sx={{ display: 'flex', gap: 1, mt: 2, flexWrap: 'wrap' }}>
+            {['Pickup', 'Dishes', 'Review'].map((step, index) => <Chip key={step} size="small" label={`${index + 1} · ${step}`} sx={{ bgcolor: (orderState.pickupLocation ? 1 : 0) === index ? '#eeedff' : 'white', color: (orderState.pickupLocation ? 1 : 0) === index ? 'primary.main' : 'text.secondary' }} />)}
+          </Box>
+        </Box>
+        {editOrder && <Alert severity="info">Editing order #{editOrder.id} · {pickupDateLabel(pickupDay(editOrder.pick_up_date))}</Alert>}
         {/* Filters Section */}
         <Slide direction="down" in={true} timeout={500}>
           <Paper
             elevation={0}
             sx={{
               padding: isMobile ? "16px" : "24px",
-              marginBottom: 2,
+              marginBottom: 0,
               background: "rgba(255, 255, 255, 0.9)",
               backdropFilter: "blur(10px)",
-              border: "1px solid rgba(255, 255, 255, 0.2)",
+              border: "1px solid #e5e5ef",
+              borderRadius: 3,
             }}
           >
             <Typography
@@ -502,6 +531,7 @@ const RestaurantList = () => {
                   },
                 }}
               >
+                {editOrder && orderState.pickupLocation && !pickupLocations.includes(orderState.pickupLocation) && <MenuItem value={orderState.pickupLocation}>{pickupLocationDetails(orderState.pickupLocation).name} · Saved pickup</MenuItem>}
                 {pickupLocations.map((location) => (
                   <MenuItem key={location} value={location} sx={{ whiteSpace: 'normal', py: 1.5 }}>
                     <Box><Typography fontWeight={700}>{pickupLocationDetails(location).name}</Typography><Typography variant="body2" color="text.secondary" sx={{ overflowWrap: 'anywhere' }}>{location}</Typography></Box>
@@ -509,7 +539,7 @@ const RestaurantList = () => {
                 ))}
               </TextField>
             </Box>
-            {orderState.pickupLocation && <Typography variant="body2" color="text.secondary" sx={{ mt: 1, overflowWrap: 'anywhere' }}>{orderState.pickupLocation}</Typography>}
+            {orderState.pickupLocation && <StackPickupSummary date={orderState.date} location={orderState.pickupLocation} />}
 
             {error && (
               <Box className="error-message" sx={{ marginTop: 2 }}>
@@ -534,8 +564,9 @@ const RestaurantList = () => {
               >
                 2. Choose a restaurant
               </Typography>
-              <TextField fullWidth label="Search restaurants" value={restaurantSearch} onChange={e => setRestaurantSearch(e.target.value)} sx={{ mb: 2 }} />
-              {!visibleRestaurants.length && <Typography sx={{ mb: 2 }}>No restaurants match your search.</Typography>}
+              <Typography variant="body2" color="text.secondary" sx={{ mb: 1.5 }}>Browse {locationRestaurants.length} restaurants for this pickup. Add dishes from more than one menu.</Typography>
+              <TextField fullWidth size="small" label="Search restaurants" value={restaurantSearch} onChange={e => setRestaurantSearch(e.target.value)} InputProps={{ startAdornment: <Search sx={{ mr: 1, color: 'text.secondary' }} /> }} sx={{ mb: 2 }} />
+              {!visibleRestaurants.length && <Box sx={{ mb: 2 }}><Typography>No restaurants match your search.</Typography><Button onClick={() => setRestaurantSearch('')}>Clear search</Button></Box>}
               
               <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', sm: 'repeat(2, 1fr)', md: 'repeat(3, 1fr)' }, gap: 2, mb: 4 }}>
                 {visibleRestaurants.map((restaurant) => (
@@ -555,10 +586,8 @@ const RestaurantList = () => {
                         display: "flex",
                         flexDirection: isMobile ? "row" : "column",
                         transition: "all 0.3s ease",
-                        "&:hover": {
-                          transform: "translateY(-8px)",
-                          boxShadow: "0 12px 40px rgba(0, 0, 0, 0.2)",
-                        },
+                        "&:hover": { borderColor: 'primary.main', boxShadow: '0 4px 16px rgba(55,55,95,0.06)' },
+                        "&:focus-visible": { outline: '3px solid #5557d9', outlineOffset: 3 },
                       }}
                       onClick={() => handleSelectRestaurant(restaurant)}
                     >
@@ -631,7 +660,7 @@ const RestaurantList = () => {
                               color: "success.main",
                             }}
                           >
-                            Available
+                            View menu <ArrowForward sx={{ fontSize: 16, verticalAlign: 'middle' }} />
                           </Typography>
                         </Box>
                       </CardContent>
@@ -727,6 +756,9 @@ const RestaurantList = () => {
         PaperProps={{
           sx: {
             maxHeight: "90dvh",
+            maxWidth: 880,
+            width: '100%',
+            mx: 'auto',
             borderTopLeftRadius: 20,
             borderTopRightRadius: 20,
             overflow: "hidden",
@@ -741,6 +773,7 @@ const RestaurantList = () => {
           updateTotal={updateTotal}
           submitting={submitting}
           submitError={submitError}
+          editMode={Boolean(editOrder)}
         />
       </Drawer>
     </Box>
@@ -748,3 +781,7 @@ const RestaurantList = () => {
 };
 
 export default RestaurantList;
+
+function StackPickupSummary({ date, location }) {
+  return <Box sx={{ mt: 1.5, p: 1.5, bgcolor: '#f0efff', borderRadius: 2 }}><Typography variant="body2" fontWeight={700} color="primary.main"><CheckCircleOutline sx={{ fontSize: 18, verticalAlign: 'middle', mr: 0.5 }} />{pickupDateLabel(date)} · {pickupLocationDetails(location).name}</Typography><Typography variant="caption" color="text.secondary" sx={{ display: 'block', mt: 0.5, overflowWrap: 'anywhere' }}>{location}</Typography></Box>;
+}
