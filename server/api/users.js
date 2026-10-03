@@ -16,6 +16,21 @@ const {
 const { normalizeUsPhoneE164, normalizeVerificationCode } = require("../utils/phoneNormalize.js");
 
 const router = express.Router();
+const { createSession, revokeSession, sessionUser, accessToken, sameOrigin } = require('../services/loginSessions');
+
+router.post('/refresh', async (req, res) => {
+  if (!sameOrigin(req)) return res.status(403).json({ error: 'Invalid origin.' });
+  try {
+    const user = await sessionUser(req, getUserByUsername);
+    if (!user) return res.status(401).json({ error: 'Please sign in again.' });
+    res.set('Cache-Control', 'no-store').json({ token: accessToken(user), user: { id: user.id, username: user.username, role: user.role === 'admin' ? 'admin' : 'user', isVerified: user.is_verified } });
+  } catch { res.status(503).json({ error: 'Unable to restore your session.' }); }
+});
+router.post('/logout', async (req, res) => {
+  if (!sameOrigin(req)) return res.status(403).json({ error: 'Invalid origin.' });
+  try { await revokeSession(req, res); res.json({ success: true }); }
+  catch { res.status(503).json({ error: 'Unable to sign out. Please retry.' }); }
+});
 
 const accountSid = process.env.TWILIO_ACCOUNT_SID;
 const authToken = process.env.TWILIO_AUTH_TOKEN;
@@ -347,6 +362,15 @@ router.post("/login", async (req, res) => {
 
     const role = user.role === "admin" ? "admin" : "user";
 
+    let remembered = false;
+    try {
+      if (req.body.rememberMe === true) { await createSession(user, req, res); remembered = true; }
+      else await revokeSession(req, res);
+    } catch (error) {
+      // Ordinary 24h sign-in remains available before the migration is applied.
+      if (error.code !== '42P01') throw error;
+    }
+
     const token = jwt.sign(
       {
         userId: user.id,
@@ -361,6 +385,7 @@ router.post("/login", async (req, res) => {
     res.json({
       success: true,
       message: "Login successful",
+      remembered,
       token,
       user: {
         id: user.id,

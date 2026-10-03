@@ -12,68 +12,15 @@ const RECENT_SQL = "created_at >= NOW() - INTERVAL '1 day'";
  */
 router.post("/admin/notify-pickup", requireAdminAuth, async (req, res) => {
   try {
-    const { pickUpLocation, pickUpDate, message, etaMinutes } = req.body;
-
-    if (!pickUpLocation || typeof pickUpLocation !== "string" || !pickUpLocation.trim()) {
-      return res.status(400).json({ error: "pickUpLocation is required" });
-    }
-    if (!pickUpDate || typeof pickUpDate !== "string" || !pickUpDate.trim()) {
-      return res.status(400).json({ error: "pickUpDate is required (YYYY-MM-DD)" });
-    }
-
-    const loc = pickUpLocation.trim();
-    const dateStr = pickUpDate.trim().slice(0, 10);
-
-    const ordersResult = await pool.query(
-      `SELECT DISTINCT username FROM orders
-       WHERE pick_up_location = $1
-         AND pick_up_date::date = $2::date`,
-      [loc, dateStr]
-    );
-
-    const usernames = ordersResult.rows.map((r) => r.username).filter(Boolean);
-    if (usernames.length === 0) {
-      return res.status(200).json({
-        success: true,
-        sent: 0,
-        usernames: [],
-        message: "No orders found for that date and pickup location.",
-      });
-    }
-
-    const msg = message && String(message).trim() ? String(message).trim() : null;
-
-    let eta = null;
-    if (etaMinutes != null && etaMinutes !== "") {
-      const m = parseInt(etaMinutes, 10);
-      if (Number.isNaN(m) || m < 0 || m > 24 * 60) {
-        return res.status(400).json({
-          error: "etaMinutes must be an integer from 0 to 1440 (minutes in a day)",
-        });
-      }
-      eta = m === 0 ? "Arriving now (ETA 0 min)" : `ETA: ${m} minute${m === 1 ? "" : "s"}`;
-    }
-
-    let inserted = 0;
-    for (const username of usernames) {
-      await pool.query(
-        `INSERT INTO delivery_notifications
-         (username, pick_up_location, pick_up_date, message, eta_summary, distance_km, admin_lat, admin_lng)
-         VALUES ($1, $2, $3::date, $4, $5, NULL, NULL, NULL)`,
-        [username, loc, dateStr, msg, eta]
-      );
-      inserted += 1;
-    }
-
-    res.json({
-      success: true,
-      sent: inserted,
-      usernames,
-      message: `Notification sent to ${inserted} user(s).`,
-    });
+    const { pickUpLocation, pickUpDate, message = '', etaMinutes } = req.body;
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(pickUpDate || '') || typeof pickUpLocation !== 'string' || !pickUpLocation.trim() || typeof message !== 'string' || message.length > 500) return res.status(400).json({ error: 'Choose a date, location and message under 500 characters.' });
+    const eta = etaMinutes == null || etaMinutes === '' ? null : Number(etaMinutes);
+    if (eta !== null && (!Number.isInteger(eta) || eta < 0 || eta > 1440)) return res.status(400).json({ error: 'ETA must be 0–1440 whole minutes.' });
+    const notice = message.trim() || (eta === null ? '請留意取餐安排。' : eta === 0 ? '即將到達，請準備取餐。' : '預計 '+eta+' 分鐘後到達，請準備取餐。');
+    await pool.query(`INSERT INTO notification_jobs(dedupe_key,kind,pick_up_date,pick_up_location,send_at,message,created_by) VALUES($1,'pickup',$2,$3,NOW(),$4,$5)`, ['manual:'+require('crypto').randomUUID(),pickUpDate,pickUpLocation.trim(),notice,req.authUser.username]);
+    res.json({ success: true, message: 'Notification queued for customers at this pickup. Delivery requires the notification worker.' });
   } catch (e) {
-    console.error("admin notify-pickup:", e);
-    res.status(500).json({ error: "Failed to send notifications" });
+    res.status(e.code === '42P01' ? 503 : 500).json({ error: e.code === '42P01' ? 'Apply notification migration 003 first.' : 'Unable to queue notification.' });
   }
 });
 

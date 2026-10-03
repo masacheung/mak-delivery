@@ -7,6 +7,7 @@ import { useAuth } from "../../hooks/useAuth";
 import { useHomeEvents } from "./useHomeEvents";
 import HomePageHeader from "./HomePageHeader";
 import HomeLandingContent from "./HomeLandingContent";
+import PushNotificationSettings from '../../components/PushNotificationSettings';
 
 const HomePage = () => {
   const navigate = useNavigate();
@@ -103,6 +104,7 @@ const HomePage = () => {
         onTrackOrder={() => navigate("/lookup-order")}
         error={error}
       />
+      {isAuthenticated && <Box sx={{ p: 2, textAlign: 'center' }}><PushNotificationSettings /></Box>}
     </Box>
   );
 };

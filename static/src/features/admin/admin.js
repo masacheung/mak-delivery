@@ -34,7 +34,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import AdminDeliveryEvent from "../adminConfig/adminDeliveryEvent";
 import AdminOrdersLookup from "../adminOrdersLookup/adminOrdersLookup";
-import AdminPickupNotify from "./AdminPickupNotify";
+import AdminArrivalTimes from './AdminArrivalTimes';
 import UpcomingEvent from "../headerSection/upcomingEvent/upcomingEvent";
 import { getAdminSessionFromToken } from "../../utils/apiAuth";
 import { apiFetch } from "../../utils/apiClient";
@@ -394,7 +394,7 @@ const Admin = () => {
             <Box sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', alignItems: 'center', gap: 1, mb: 2 }}>
               <Box>
                 <Typography variant="h5" component="h1" fontWeight={800}>Manage deliveries</Typography>
-                <Typography variant="body2" color="text.secondary">Orders, delivery dates and customer notices.</Typography>
+                <Typography variant="body2" color="text.secondary">Orders, delivery dates and arrival times.</Typography>
               </Box>
               <Chip variant="outlined" label={`Signed in as ${adminUsername || 'admin'}`} />
             </Box>
@@ -440,11 +440,7 @@ const Admin = () => {
                   icon={<EventIcon />}
                   iconPosition="start"
                 />
-                <Tab
-                  label="Customer notices"
-                  icon={<NotifyIcon />}
-                  iconPosition="start"
-                />
+                <Tab label="Arrival times" icon={<NotifyIcon />} iconPosition="start" />
               </Tabs>
             </Paper>
 
@@ -474,15 +470,7 @@ const Admin = () => {
                 <AdminOrdersLookup />
               )}
 
-              {activeTab === 2 && (
-                <Box>
-                  <Typography variant="h6" sx={{ fontWeight: "bold", color: "#5557d9", mb: 3 }}>
-                    Notify customers at pickup
-                  </Typography>
-                  <Divider sx={{ mb: 3 }} />
-                  <AdminPickupNotify />
-                </Box>
-              )}
+              {activeTab === 2 && <AdminArrivalTimes />}
             </Paper>
 
           </Box>

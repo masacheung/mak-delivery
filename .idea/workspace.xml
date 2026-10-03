@@ -5,7 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f1fd87b3-22bf-4469-bc34-46a90dadddb5" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/api/adminConfig.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/api/adminConfig.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/api/notifications.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/api/notifications.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/api/users.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/api/users.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/middleware/authMiddleware.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/middleware/authMiddleware.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/server/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/server/package.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -42,7 +49,7 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "feature/mobile-ui-improvements",
+    "git-widget-placeholder": "feature/rewrite",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "C:/Users/cheun/Documents/mak-delivery",
     "settings.editor.selected.configurable": "project.propVCSSupport.DirectoryMappings"

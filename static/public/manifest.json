@@ -1,6 +1,6 @@
 {
   "short_name": "Mak Delivery",
-  "name": "Create React App Sample",
+  "name": "Mak Delivery",
   "icons": [
     {
       "src": "favicon.ico",
@@ -8,9 +8,10 @@
       "type": "image/x-icon"
     },
     {
-      "src": "delivery-truck.png",
-      "type": "image/png",
-      "sizes": "192x192"
+      "src": "pwa-icon.svg",
+      "type": "image/svg+xml",
+      "sizes": "any",
+      "purpose": "any"
     },
     {
       "src": "delivery-truck.png",
@@ -18,8 +19,10 @@
       "sizes": "512x512"
     }
   ],
-  "start_url": ".",
+  "id": "/",
+  "scope": "/",
+  "start_url": "/",
   "display": "standalone",
-  "theme_color": "#000000",
+  "theme_color": "#5557d9",
   "background_color": "#ffffff"
 }

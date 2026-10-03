@@ -15,3 +15,5 @@ root.render(
     <ThemeProvider theme={theme}><CssBaseline /><App /></ThemeProvider>
   </Provider>
 );
+
+if ('serviceWorker' in navigator) navigator.serviceWorker.register('/service-worker.js').catch(() => {});

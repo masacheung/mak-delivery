@@ -7,6 +7,8 @@
     "install:all": "cd server && npm install && cd ../static && npm install",
     "build": "cd static && npm run build",
     "start": "node server/index.js",
+    "notifications:worker": "node server/notificationWorker.js",
+    "migrate:notifications": "node server/scripts/migrateNotifications.js",
     "render-build": "npm run install:all && npm run build"
   },
   "engines": {
