@@ -1,20 +1,25 @@
 import { useState, useEffect, useCallback } from 'react';
-import { apiFetch } from '../utils/apiClient';
+import { apiFetch, refreshSession } from '../utils/apiClient';
+import { stopPushNotifications } from '../utils/pushNotifications';
 
 export const useAuth = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  const logout = useCallback(() => {
+  const logout = useCallback(async () => {
+    localStorage.setItem('makSignedOut', '1');
+    await Promise.allSettled([stopPushNotifications(), apiFetch('/api/users/logout', { method: 'POST' })]);
     localStorage.removeItem('authToken');
     localStorage.removeItem('userData');
+    sessionStorage.removeItem('makAdminToken');
     setUser(null);
     setIsAuthenticated(false);
   }, []);
 
   const validateWithServer = useCallback(async () => {
-    const token = localStorage.getItem('authToken');
+    let token = localStorage.getItem('authToken');
+    if (!token) { try { if (await refreshSession()) token = localStorage.getItem('authToken'); } catch { /* Sign-in remains available offline. */ } }
     if (!token) {
       setUser(null);
       setIsAuthenticated(false);
@@ -72,6 +77,7 @@ export const useAuth = () => {
   }, [validateWithServer]);
 
   const login = (token, userData) => {
+    localStorage.removeItem('makSignedOut');
     localStorage.setItem('authToken', token);
     localStorage.setItem('userData', JSON.stringify(userData));
     setUser(userData);

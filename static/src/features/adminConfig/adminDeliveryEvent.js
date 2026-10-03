@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import {
   Box, TextField, Button, Typography, Card, CardContent,
-  FormControl, FormControlLabel, Checkbox, FormGroup
+  FormControl, FormControlLabel, Checkbox, FormGroup, Alert
 } from "@mui/material";
 import {PICK_UP_LOCATION, RESTAURANT_NAME} from "../../constant/constant";
 import { apiFetch } from "../../utils/apiClient";
@@ -11,6 +11,9 @@ const AdminDeliveryEvent = () => {
   const [selectedRestaurants, setSelectedRestaurants] = useState([]);
   const [deliveryEvent, setDeliveryEvent] = useState([]);
   const [isFieldsVisible, setIsFieldsVisible] = useState(false);
+  const [notifySubscribers, setNotifySubscribers] = useState(false);
+  const [status, setStatus] = useState(null);
+  const [saving, setSaving] = useState(false);
 
   const handleTitleClick = () => {
     setIsFieldsVisible(!isFieldsVisible); // Toggle the visibility of the form fields
@@ -41,10 +44,13 @@ const AdminDeliveryEvent = () => {
   };
 
   const handleSubmit = async () => {
+    if (saving) return;
+    setSaving(true); setStatus(null);
     const eventDate = {
       date: deliveryEvent,
       restaurants: selectedRestaurants,
-      locations: selectedLocations
+      locations: selectedLocations,
+      notifySubscribers
     }
     try {
       const response = await apiFetch("/api/adminConfig", {
@@ -54,22 +60,25 @@ const AdminDeliveryEvent = () => {
       });
 
       if (!response.ok) {
-        throw new Error("Failed to submit delivery event");
+        const error = await response.json(); throw new Error(error.error || "Failed to submit delivery event");
       }
 
       const data = await response.json();
-      console.log("Delivery event submitted:", data);
+      setStatus({ severity: 'success', text: data.message });
       setSelectedLocations([]);
       setSelectedRestaurants([]);
       setDeliveryEvent([]);
+      setNotifySubscribers(false);
+      setIsFieldsVisible(false);
     } catch (error) {
-      console.error("Error submit delivery event:", error);
+      setStatus({ severity: 'error', text: error.message });
     }
-    handleTitleClick();
+    setSaving(false);
   };
 
   return (
     <>
+      {status && <Alert severity={status.severity}>{status.text}</Alert>}
       <Box
         sx={{
           width: "100%",
@@ -104,6 +113,7 @@ const AdminDeliveryEvent = () => {
 
         {isFieldsVisible && (
         <>
+          <FormControlLabel control={<Checkbox checked={notifySubscribers} onChange={event => setNotifySubscribers(event.target.checked)} />} label="Notify users subscribed to new delivery events" />
           <TextField
             type="date"
             label="Delivery Date"
@@ -225,8 +235,8 @@ const AdminDeliveryEvent = () => {
             </FormControl>
           </Box>
 
-          <Button variant="contained" color="primary" onClick={handleSubmit}>
-          Submit Delievery Event
+          <Button variant="contained" color="primary" onClick={handleSubmit} disabled={saving || !deliveryEvent || !selectedLocations.length || !selectedRestaurants.length}>
+          {saving ? 'Saving…' : 'Open delivery event'}
           </Button>
         </>)}
       </Box>

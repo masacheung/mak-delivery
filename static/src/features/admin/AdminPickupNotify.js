@@ -46,8 +46,8 @@ const AdminPickupNotify = () => {
       if (trimmedEta === "") {
         etaPayload = undefined;
       } else {
-        const n = parseInt(trimmedEta, 10);
-        if (Number.isNaN(n) || n < 0 || n > 1440) {
+        const n = Number(trimmedEta);
+        if (!Number.isInteger(n) || n < 0 || n > 1440) {
           setSendStatus({
             type: "error",
             text: "ETA must be a whole number of minutes between 0 and 1440, or leave blank.",

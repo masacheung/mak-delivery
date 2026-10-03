@@ -16,6 +16,7 @@ const initialFormData = () => ({
  * @param {(token: string, user: object) => void} onLoginSuccess
  */
 export function useAuthForm(onLoginSuccess) {
+  const [rememberMe, setRememberMe] = useState(true);
   const onLoginSuccessRef = useRef(onLoginSuccess);
   useEffect(() => {
     onLoginSuccessRef.current = onLoginSuccess;
@@ -204,6 +205,7 @@ export function useAuthForm(onLoginSuccess) {
         body: {
           username: formData.username,
           password: formData.password,
+          rememberMe,
         },
       });
 
@@ -211,7 +213,7 @@ export function useAuthForm(onLoginSuccess) {
 
       if (data.success) {
         onLoginSuccessRef.current(data.token, data.user);
-        showMessage(data.message, 'success');
+        showMessage(rememberMe && data.remembered === false ? 'Signed in for 24 hours. Keep-login is not available yet.' : data.message, 'success');
       } else {
         showMessage(data.message, 'error');
       }
@@ -350,6 +352,7 @@ export function useAuthForm(onLoginSuccess) {
   };
 
   return {
+    rememberMe, setRememberMe,
     activeTab,
     formData,
     message,

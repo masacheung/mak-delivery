@@ -7,6 +7,8 @@ import {
   Tab,
   Tabs,
   Alert,
+  Checkbox,
+  FormControlLabel,
 } from "@mui/material";
 
 /** All auth step UIs (find username, reset password, register/login, verify). `f` is from `useAuthForm`. */
@@ -226,6 +228,7 @@ const AuthFormBody = ({ f, variant }) => {
                     margin="normal"
                     required
                   />
+                  <FormControlLabel control={<Checkbox checked={f.rememberMe} onChange={event => f.setRememberMe(event.target.checked)} />} label="Keep me signed in for 30 days" />
                   <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
                     Login
                   </Button>

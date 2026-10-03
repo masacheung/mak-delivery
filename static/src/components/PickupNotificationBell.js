@@ -14,6 +14,7 @@ import {
 } from "@mui/material";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import { usePickupNotifications } from "../hooks/usePickupNotifications";
+import PushNotificationSettings from './PushNotificationSettings';
 
 function formatWhen(iso) {
   if (!iso) return "";
@@ -117,6 +118,7 @@ export default function PickupNotificationBell({ enabled, isMobile }) {
           <Typography variant="subtitle2" fontWeight="bold">
             Pickup notices
           </Typography>
+          <PushNotificationSettings />
           <Typography variant="caption" color="text.secondary">
             Newest first — updates from delivery for your pickup
           </Typography>
