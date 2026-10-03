@@ -45,7 +45,7 @@ const HomePage = () => {
       <Box
         sx={{
           minHeight: "100vh",
-          background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+          background: "#f7f7fb",
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
@@ -61,8 +61,8 @@ const HomePage = () => {
       sx={{
         minHeight: "100vh",
         background: isMobile
-          ? "linear-gradient(135deg, #667eea 0%, #764ba2 100%)"
-          : "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+          ? "#f7f7fb"
+          : "#f7f7fb",
         display: "flex",
         flexDirection: "column",
         position: "relative",

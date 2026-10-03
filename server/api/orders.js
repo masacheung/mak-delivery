@@ -160,6 +160,8 @@ router.get("/search", requireAdminAuth, async (req, res) => {
     const orders = result.rows.map((order) => ({
       id: order.id,
       username: order.username,
+      pick_up_location: order.pick_up_location,
+      pick_up_date: order.pick_up_date,
       order_details:
         typeof order.order_details === "string" ? JSON.parse(order.order_details) : order.order_details,
       total: order.total,
