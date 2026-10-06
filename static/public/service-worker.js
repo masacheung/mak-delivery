@@ -12,7 +12,18 @@ self.addEventListener('notificationclick', event => {
   event.notification.close();
   event.waitUntil(self.clients.openWindow(new URL(event.notification.data?.url || '/', self.location.origin).href));
 });
-// Keep orders/auth/API responses off the offline cache.
+// Keep orders/auth/API responses off the offline cache. The shared worker keeps
+// existing push subscriptions while each installed app has its own manifest.
 self.addEventListener('fetch', event => {
-  if (event.request.mode === 'navigate') event.respondWith(fetch(event.request).catch(() => new Response('<!doctype html><meta name="viewport" content="width=device-width"><title>Mak Delivery</title><h1>You are offline</h1><p>Connect to the internet to view menus and place orders.</p><a href="/">Try again</a>', { headers: { 'Content-Type': 'text/html; charset=utf-8' } })));
+  if (event.request.mode !== 'navigate') return;
+  const admin = /^\/admin(?:\/|$)/.test(new URL(event.request.url).pathname);
+  const title = admin ? 'Mak Delivery Admin' : 'Mak Delivery';
+  const retry = admin ? '/admin/' : '/';
+  const message = admin
+    ? 'Connect to the internet to sign in and manage deliveries.'
+    : 'Connect to the internet to view menus and place orders.';
+  event.respondWith(fetch(event.request).catch(() => new Response(
+    `<!doctype html><meta name="viewport" content="width=device-width"><title>${title}</title><h1>You are offline</h1><p>${message}</p><a href="${retry}">Try again</a>`,
+    { headers: { 'Content-Type': 'text/html; charset=utf-8' } },
+  )));
 });

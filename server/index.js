@@ -24,7 +24,9 @@ const clientBuild = path.join(__dirname, "..", "static", "build");
 app.use(express.json());
 app.use(cors());
 
-app.use(express.static(clientBuild, { setHeaders(res, file) { if (file.endsWith('service-worker.js')) res.set('Cache-Control', 'no-cache'); } }));
+require("./utils/pwaPages").registerAdminPwaPage(app, clientBuild);
+
+app.use(express.static(clientBuild, { setHeaders(res, file) { if (file.endsWith('service-worker.js') || file.endsWith('manifest.json')) res.set('Cache-Control', 'no-cache'); } }));
 
 app.use("/api/orders", ordersRoute);
 app.use("/api/adminConfig", adminRoute);
@@ -32,10 +34,6 @@ app.use("/api/users", usersRoute);
 app.use("/api/notifications", notificationsRoute);
 app.use('/api/arrival-schedules', require('./api/arrivalSchedules'));
 app.use('/api/push', require('./api/push'));
-
-app.get("/admin", (req, res) => {
-  res.sendFile(path.join(clientBuild, "index.html"));
-});
 
 app.get("*", (req, res) => {
   res.sendFile(path.join(clientBuild, "index.html"));

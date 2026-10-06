@@ -133,7 +133,7 @@ const Admin = () => {
                     border: '1px solid #e5e5ef',
                   }}
                 >
-                  <img src="/delivery-truck.png" alt="Logo" style={{ width: 50, height: 50 }} />
+                  <img src="/admin/icon-192.png" alt="Logo" style={{ width: 50, height: 50 }} />
                 </Box>
                 <Typography
                   variant="h4"
@@ -143,7 +143,7 @@ const Admin = () => {
                     fontFamily: 'Poppins, sans-serif',
                   }}
                 >
-                  Mak Delivery
+                  Mak Delivery Admin
                 </Typography>
                 <Typography
                   variant="h6"
@@ -153,6 +153,9 @@ const Admin = () => {
                   }}
                 >
                   Admin Panel
+                </Typography>
+                <Typography variant="body2" color="text.secondary" sx={{ mt: 1.5 }}>
+                  Add this page to your phone’s Home Screen as Mak Delivery Admin to open the dashboard directly.
                 </Typography>
               </Box>
 
@@ -298,7 +301,7 @@ const Admin = () => {
         <Toolbar>
           <Box sx={{ display: 'flex', alignItems: 'center', mr: 2 }}>
             <img
-              src="/delivery-truck.png"
+              src="/admin/icon-192.png"
               alt="Logo"
               style={{ width: isMobile ? 30 : 40, height: isMobile ? 30 : 40 }}
             />
@@ -324,7 +327,7 @@ const Admin = () => {
             }}
             onClick={() => navigate("/")}
           >
-            {isMobile ? "Admin Panel" : "Mak Delivery - Admin Panel"}
+            {isMobile ? "Mak Admin" : "Mak Delivery Admin"}
           </Typography>
 
           <Box sx={{ display: 'flex', gap: 1 }}>

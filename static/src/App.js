@@ -1,5 +1,5 @@
-import React from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import React, { useLayoutEffect } from "react";
+import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
 import HomePage from "./features/home/homePage.js";
 import RestaurantList from "./features/restaurants/restaurantList.js";
 import Admin from "./features/admin/admin.js";
@@ -12,9 +12,18 @@ import AuthPage from "./features/auth/AuthPage.js";
 import ProtectedRoute from "./components/ProtectedRoute.js";
 import InstallGuide from "./features/Information/InstallGuide.js";
 
+import { applyPwaMetadata } from './pwa';
+
+function PwaMetadata() {
+  const { pathname } = useLocation();
+  useLayoutEffect(() => { applyPwaMetadata(pathname); }, [pathname]);
+  return null;
+}
+
 const App = () => {
   return (
     <Router>
+      <PwaMetadata />
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/auth" element={<AuthPage />} />

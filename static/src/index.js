@@ -7,6 +7,9 @@ import store from './redux/store'; // Import the Redux store
 import { ThemeProvider, CssBaseline } from '@mui/material';
 import theme from './theme';
 import './index.css';
+import { applyPwaMetadata } from './pwa';
+
+applyPwaMetadata(window.location.pathname);
 
 // For React 18+
 const root = ReactDOM.createRoot(document.getElementById('root'));  // Create root using ReactDOM.createRoot

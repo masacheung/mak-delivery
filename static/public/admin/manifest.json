@@ -1,0 +1,16 @@
+{
+  "id": "/admin/",
+  "name": "Mak Delivery Admin",
+  "short_name": "Mak Delivery Admin",
+  "description": "Mak Delivery management dashboard",
+  "start_url": "/admin/",
+  "scope": "/admin/",
+  "display": "standalone",
+  "theme_color": "#173b6b",
+  "background_color": "#ffffff",
+  "icons": [
+    { "src": "/admin/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" },
+    { "src": "/admin/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
+    { "src": "/admin/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ]
+}
