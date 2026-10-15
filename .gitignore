@@ -3,10 +3,27 @@ node_modules/
 
 # Environment / local secrets — never commit
 .env
-.env.local
+.env.*
+!.env.example
+!.env.*.example
+backups/
 
 # Local AI project notes (accumulates knowledge per session; keep local-only)
 docs/ai-project-notes.md
 
 # Build output
 static/build/
+
+# Private runtime files and generated review artifacts
+secrets/
+output/
+tmp/
+.idea/
+docs/previews/
+*.log
+*.dump
+*.backup
+*.pem
+*.key
+*.p12
+*.pfx

@@ -34,34 +34,18 @@ const getUserByUsernameAndPhone = async (username, phoneNumber) => {
   return result.rows[0];
 };
 
-const verifyUser = async (phoneNumber, verificationCode) => {
-  if (verificationCode === "twilio-verified") {
-    const result = await pool.query(
-      "UPDATE users SET is_verified = TRUE, verification_code = NULL, verification_expires_at = NULL WHERE phone_number = $1 RETURNING id, username, phone_number, is_verified",
-      [phoneNumber]
-    );
-    return result.rows[0];
-  }
-
+const verifyUserByPhone = async (phoneNumber, userId) => {
   const result = await pool.query(
-    "UPDATE users SET is_verified = TRUE, verification_code = NULL, verification_expires_at = NULL WHERE phone_number = $1 AND verification_code = $2 AND verification_expires_at > NOW() RETURNING id, username, phone_number, is_verified",
-    [phoneNumber, verificationCode]
+    "UPDATE users SET is_verified = TRUE, verification_code = NULL, verification_expires_at = NULL WHERE phone_number = $1 AND id = $2 RETURNING id, username, phone_number, is_verified",
+    [phoneNumber, userId]
   );
   return result.rows[0];
 };
 
-const verifyUserByPhone = async (phoneNumber) => {
+const changeUnverifiedUserPhone = async (userId, currentPhoneNumber, phoneNumber) => {
   const result = await pool.query(
-    "UPDATE users SET is_verified = TRUE, verification_code = NULL, verification_expires_at = NULL WHERE phone_number = $1 RETURNING id, username, phone_number, is_verified",
-    [phoneNumber]
-  );
-  return result.rows[0];
-};
-
-const updateVerificationCode = async (phoneNumber, verificationCode, verificationExpiresAt) => {
-  const result = await pool.query(
-    "UPDATE users SET verification_code = $1, verification_expires_at = $2 WHERE phone_number = $3 RETURNING id",
-    [verificationCode, verificationExpiresAt, phoneNumber]
+    "UPDATE users SET phone_number = $3, verification_code = NULL, verification_expires_at = NULL WHERE id = $1 AND phone_number = $2 AND is_verified = FALSE RETURNING id, username, phone_number, is_verified, role",
+    [userId, currentPhoneNumber, phoneNumber]
   );
   return result.rows[0];
 };
@@ -100,9 +84,8 @@ module.exports = {
   getUserByUsername,
   getUserByPhoneNumber,
   getUserByUsernameAndPhone,
-  verifyUser,
   verifyUserByPhone,
-  updateVerificationCode,
+  changeUnverifiedUserPhone,
   setPasswordResetToken,
   updatePassword,
   verifyPasswordResetToken,

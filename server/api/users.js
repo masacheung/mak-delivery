@@ -1,21 +1,22 @@
 const express = require("express");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const twilio = require("twilio");
 const { getJwtSecret, requireUserAuth } = require("../middleware/authMiddleware.js");
 const {
   createUser,
   getUserByUsername,
   getUserByPhoneNumber,
   getUserByUsernameAndPhone,
-  verifyUser,
   verifyUserByPhone,
-  updateVerificationCode,
+  changeUnverifiedUserPhone,
   updatePassword,
 } = require("../db/queries.js");
 const { normalizeUsPhoneE164, normalizeVerificationCode } = require("../utils/phoneNormalize.js");
+const { issueVerificationToken, acceptsVerificationToken } = require('../services/verificationSession');
+const { prepareSmsSend, sendReservedSms, checkSmsCode, recordResult } = require('../services/smsVerification');
 
 const router = express.Router();
+router.use((req, res, next) => { res.set('Cache-Control', 'no-store'); next(); });
 const { createSession, revokeSession, sessionUser, accessToken, sameOrigin } = require('../services/loginSessions');
 
 router.post('/refresh', async (req, res) => {
@@ -32,300 +33,156 @@ router.post('/logout', async (req, res) => {
   catch { res.status(503).json({ error: 'Unable to sign out. Please retry.' }); }
 });
 
-const accountSid = process.env.TWILIO_ACCOUNT_SID;
-const authToken = process.env.TWILIO_AUTH_TOKEN;
-const verifyServiceSid = process.env.TWILIO_VERIFY_SERVICE_SID;
+// Only return verification details after an account password has been checked.
+const verificationDetails = user => ({
+  username: user.username,
+  phoneNumber: normalizeUsPhoneE164(user.phone_number),
+  verificationToken: issueVerificationToken(user),
+});
+const pendingVerificationResponse = user => ({
+  success: false,
+  requiresVerification: true,
+  verification: verificationDetails(user),
+  message: 'Your account is not verified yet. Continue phone verification to finish signing up.',
+});
 
-let client;
-let verifyService;
-if (accountSid && authToken) {
-  client = twilio(accountSid, authToken);
-  if (verifyServiceSid) {
-    verifyService = client.verify.v2.services(verifyServiceSid);
-  }
+function smsResponse(res, result, extra = {}) {
+  if (result.retryAfterSeconds) res.set('Retry-After', String(result.retryAfterSeconds));
+  return res.status(result.httpStatus || 200).json({
+    ...extra,
+    success: result.success,
+    message: result.message,
+    ...(result.code ? { code: result.code } : {}),
+    ...(result.resendAvailableAt ? { resendAvailableAt: result.resendAvailableAt, retryAfterSeconds: result.retryAfterSeconds } : {}),
+  });
 }
+const reserveFor = (req, phoneNumber, username) => prepareSmsSend({
+  phoneNumber, username,
+  // Never trust a caller-supplied X-Forwarded-For header for paid SMS limits.
+  ip: req.socket.remoteAddress,
+});
 
-const generateVerificationCode = () => {
-  return Math.floor(100000 + Math.random() * 900000).toString();
-};
-
-const sendVerificationSMS = async (phoneNumber) => {
-  if (!verifyService) {
-    console.log("Twilio Verify not configured, using fallback");
-    const code = generateVerificationCode();
-    console.log("SMS would be sent to:", phoneNumber, "Code:", code);
-    return { success: true, code: code, message: "Twilio Verify not configured, using mock" };
-  }
-
-  try {
-    const verification = await verifyService.verifications.create({
-      to: phoneNumber,
-      channel: "sms",
-    });
-
-    console.log("Verification sent:", verification.status);
-    return { success: true, sid: verification.sid, status: verification.status };
-  } catch (error) {
-    console.error("SMS verification sending error:", error);
-    return { success: false, error: error.message };
-  }
-};
-
-const verifyVerificationCode = async (phoneNumber, code) => {
-  if (!verifyService) {
-    console.log("Twilio Verify not configured, using fallback verification");
-    return null;
-  }
-
-  try {
-    const verification = await verifyService.verificationChecks.create({
-      to: phoneNumber,
-      code: code,
-    });
-
-    console.log("Verification check result:", verification.status);
-    return { success: verification.status === "approved", status: verification.status };
-  } catch (error) {
-    console.error("SMS verification check error:", error);
-    return { success: false, error: error.message };
-  }
-};
-
-router.post("/register", async (req, res) => {
+router.post('/register', async (req, res) => {
   try {
     const { username, password } = req.body;
     const phoneNumber = normalizeUsPhoneE164(req.body.phoneNumber);
-
-    if (!username || !password || !req.body.phoneNumber) {
-      return res.status(400).json({
-        success: false,
-        message: "Username, password, and phone number are required",
-      });
+    if (typeof username !== 'string' || !username.trim() || typeof password !== 'string' || !password || !phoneNumber) {
+      return res.status(400).json({ success: false, message: 'Username, password, and a valid US phone number are required.' });
     }
-
-    if (!phoneNumber) {
-      return res.status(400).json({
-        success: false,
-        message: "Invalid US phone number. Use +1 followed by 10 digits.",
-      });
-    }
-
     const existingUser = await getUserByUsername(username);
     if (existingUser) {
-      return res.status(409).json({
-        success: false,
-        message: "Username already exists",
-      });
+      if (!existingUser.is_verified && normalizeUsPhoneE164(existingUser.phone_number) === phoneNumber &&
+          await bcrypt.compare(password, existingUser.password_hash)) {
+        return res.status(409).json(pendingVerificationResponse(existingUser));
+      }
+      return res.status(409).json({ success: false, message: 'Username already exists' });
     }
-
-    const existingPhone = await getUserByPhoneNumber(phoneNumber);
-    if (existingPhone) {
-      return res.status(409).json({
-        success: false,
-        message: "Phone number already registered",
-      });
+    if (await getUserByPhoneNumber(phoneNumber)) {
+      return res.status(409).json({ success: false, message: 'Phone number already registered' });
     }
+    const passwordHash = await bcrypt.hash(password, 10);
+    const reservation = await reserveFor(req, phoneNumber, username);
+    if (!reservation.success) return smsResponse(res, reservation);
 
-    const saltRounds = 10;
-    const passwordHash = await bcrypt.hash(password, saltRounds);
-
-    const smsResult = await sendVerificationSMS(phoneNumber);
-
-    if (!smsResult.success) {
-      return res.status(500).json({
-        success: false,
-        message: "Failed to send verification code. Please try again.",
-      });
+    let newUser;
+    try {
+      // Keep the pending account recoverable even if the provider times out after accepting a text.
+      newUser = await createUser(username, passwordHash, phoneNumber, null, null);
+    } catch (error) {
+      await recordResult(reservation, { status: 'canceled' });
+      throw error;
     }
-
-    let verificationCode = null;
-    let verificationExpiresAt = null;
-
-    if (smsResult.code) {
-      verificationCode = smsResult.code;
-      verificationExpiresAt = new Date(Date.now() + 10 * 60 * 1000);
-    }
-
-    const newUser = await createUser(
-      username,
-      passwordHash,
-      phoneNumber,
-      verificationCode,
-      verificationExpiresAt
-    );
-
-    res.status(201).json({
-      success: true,
-      message: "User registered successfully. Please verify your phone number.",
-      user: {
-        id: newUser.id,
-        username: newUser.username,
-        phoneNumber: newUser.phone_number,
-        isVerified: newUser.is_verified,
-        role: newUser.role || "user",
-      },
+    const user = { ...newUser, password_hash: passwordHash };
+    const result = await sendReservedSms(reservation, phoneNumber);
+    if (!result.success) return smsResponse(res, result, pendingVerificationResponse(user));
+    return smsResponse(res, { ...result, httpStatus: 201,
+      message: 'Your account is saved. A verification text has been requested.' }, {
+      verification: verificationDetails(user),
+      user: { id: user.id, username: user.username, phoneNumber: user.phone_number, isVerified: user.is_verified, role: user.role || 'user' },
     });
   } catch (error) {
-    console.error("Registration error:", error);
-    res.status(500).json({
-      success: false,
-      message: "Internal server error",
-    });
+    console.error('[signup] registration failed', { code: error.code || 'unknown' });
+    return res.status(error.code === '23505' ? 409 : 503).json({ success: false,
+      message: error.code === '23505' ? 'This username or phone number is already registered. Please sign in.' : 'Unable to create your account. Please try again later.' });
   }
 });
 
-router.post("/verify", async (req, res) => {
+router.post('/verify', async (req, res) => {
   try {
     const phoneNumber = normalizeUsPhoneE164(req.body.phoneNumber);
     const verificationCode = normalizeVerificationCode(req.body.verificationCode);
-
-    if (!req.body.phoneNumber || !req.body.verificationCode) {
-      return res.status(400).json({
-        success: false,
-        message: "Phone number and verification code are required",
-      });
+    if (!phoneNumber || !/^\d{6}$/.test(verificationCode)) {
+      return res.status(400).json({ success: false, message: 'Enter a valid phone number and the 6-digit verification code.' });
     }
-
-    if (!phoneNumber) {
-      return res.status(400).json({
-        success: false,
-        message: "Invalid US phone number. Use +1 followed by 10 digits.",
-      });
-    }
-
-    if (!verificationCode) {
-      return res.status(400).json({
-        success: false,
-        message: "Please enter the verification code",
-      });
-    }
-
     const user = await getUserByPhoneNumber(phoneNumber);
-    if (!user) {
-      return res.status(404).json({
-        success: false,
-        message: "User not found",
-      });
-    }
-
-    const twilioResult = await verifyVerificationCode(phoneNumber, verificationCode);
-
-    if (twilioResult && twilioResult.success) {
-      const verifiedUser = await verifyUserByPhone(phoneNumber);
-      if (verifiedUser) {
-        return res.json({
-          success: true,
-          message: "Phone number verified successfully",
-          user: {
-            id: verifiedUser.id,
-            username: verifiedUser.username,
-            phoneNumber: verifiedUser.phone_number,
-            isVerified: verifiedUser.is_verified,
-          },
-        });
-      }
-      console.error("Twilio approved verification but DB update returned no row", {
-        phoneSuffix: phoneNumber.slice(-4),
-      });
-      return res.status(500).json({
-        success: false,
-        message: "Verification succeeded but the account could not be updated. Please try again or contact support.",
-      });
-    } else if (twilioResult && !twilioResult.success) {
-      return res.status(400).json({
-        success: false,
-        message: "Invalid or expired verification code",
-      });
-    }
-
-    const verifiedUser = await verifyUser(phoneNumber, verificationCode);
-
-    if (!verifiedUser) {
-      return res.status(400).json({
-        success: false,
-        message: "Invalid or expired verification code",
-      });
-    }
-
-    res.json({
-      success: true,
-      message: "Phone number verified successfully",
-      user: {
-        id: verifiedUser.id,
-        username: verifiedUser.username,
-        phoneNumber: verifiedUser.phone_number,
-        isVerified: verifiedUser.is_verified,
-      },
-    });
+    if (!user) return res.status(400).json({ success: false, message: 'Invalid or expired verification code' });
+    const result = await checkSmsCode(phoneNumber, verificationCode);
+    if (!result.success) return smsResponse(res, result);
+    const verifiedUser = await verifyUserByPhone(phoneNumber, user.id);
+    if (!verifiedUser) return res.status(409).json({ success: false, message: 'Your account changed. Please sign in and verify your current phone number.' });
+    return res.json({ success: true, message: 'Phone number verified successfully',
+      user: { id: verifiedUser.id, username: verifiedUser.username, phoneNumber: verifiedUser.phone_number, isVerified: verifiedUser.is_verified } });
   } catch (error) {
-    console.error("Verification error:", error);
-    res.status(500).json({
-      success: false,
-      message: "Internal server error",
-    });
+    console.error('[signup] verification failed', { code: error.code || 'unknown' });
+    return res.status(503).json({ success: false, message: 'Unable to verify your phone number. Please try again later.' });
   }
 });
 
-router.post("/resend-verification", async (req, res) => {
+router.post('/resend-verification', async (req, res) => {
   try {
     const phoneNumber = normalizeUsPhoneE164(req.body.phoneNumber);
-
-    if (!req.body.phoneNumber) {
-      return res.status(400).json({
-        success: false,
-        message: "Phone number is required",
-      });
+    const user = phoneNumber && await getUserByPhoneNumber(phoneNumber);
+    if (!acceptsVerificationToken(req.body.verificationToken, user)) {
+      return res.status(401).json({ success: false, code: 'VERIFICATION_SESSION_EXPIRED',
+        message: 'Please sign in again to request another code.' });
     }
-
-    if (!phoneNumber) {
-      return res.status(400).json({
-        success: false,
-        message: "Invalid US phone number. Use +1 followed by 10 digits.",
-      });
-    }
-
-    const user = await getUserByPhoneNumber(phoneNumber);
-    if (!user) {
-      return res.status(404).json({
-        success: false,
-        message: "User not found",
-      });
-    }
-
-    if (user.is_verified) {
-      return res.status(400).json({
-        success: false,
-        message: "Phone number is already verified",
-      });
-    }
-
-    const smsResult = await sendVerificationSMS(phoneNumber);
-
-    if (!smsResult.success) {
-      return res.status(500).json({
-        success: false,
-        message: "Failed to send verification code",
-      });
-    }
-
-    if (smsResult.code) {
-      const verificationExpiresAt = new Date(Date.now() + 10 * 60 * 1000);
-      await updateVerificationCode(phoneNumber, smsResult.code, verificationExpiresAt);
-    }
-
-    res.json({
-      success: true,
-      message: "Verification code resent successfully",
-    });
+    const reservation = await reserveFor(req, phoneNumber, user.username);
+    if (!reservation.success) return smsResponse(res, reservation);
+    const result = await sendReservedSms(reservation, phoneNumber);
+    return smsResponse(res, { ...result, message: result.success ? 'A verification text has been requested. Please check your phone.' : result.message });
   } catch (error) {
-    console.error("Resend verification error:", error);
-    res.status(500).json({
-      success: false,
-      message: "Internal server error",
-    });
+    console.error('[signup] resend failed', { code: error.code || 'unknown' });
+    return res.status(503).json({ success: false, message: 'Unable to request a verification text. Please try again later.' });
   }
 });
 
+router.post('/change-verification-phone', async (req, res) => {
+  try {
+    const { username, password } = req.body;
+    const currentPhone = normalizeUsPhoneE164(req.body.currentPhoneNumber);
+    const phoneNumber = normalizeUsPhoneE164(req.body.phoneNumber);
+    if (typeof username !== 'string' || typeof password !== 'string' || !password || !currentPhone || !phoneNumber) {
+      return res.status(400).json({ success: false, message: 'Enter your account password and a valid new phone number.' });
+    }
+    const user = await getUserByUsername(username);
+    if (!user || !await bcrypt.compare(password, user.password_hash)) {
+      return res.status(401).json({ success: false, message: 'Incorrect username or password. Your phone number has not changed.' });
+    }
+    if (user.is_verified) return res.status(403).json({ success: false, message: 'This account is already verified. Please sign in.' });
+    if (normalizeUsPhoneE164(user.phone_number) !== currentPhone) {
+      return res.status(409).json({ ...pendingVerificationResponse(user), message: 'Your phone number changed elsewhere. Please check the current number.' });
+    }
+    if (phoneNumber === currentPhone) return res.status(400).json({ success: false, message: 'Enter a different phone number, or use Resend code.' });
+    if (await getUserByPhoneNumber(phoneNumber)) return res.status(409).json({ success: false, message: 'That phone number is already registered.' });
+    const reservation = await reserveFor(req, phoneNumber, user.username);
+    if (!reservation.success) return smsResponse(res, reservation);
+    let updated;
+    try { updated = await changeUnverifiedUserPhone(user.id, user.phone_number, phoneNumber); }
+    catch (error) { await recordResult(reservation, { status: 'canceled' }); throw error; }
+    if (!updated) {
+      await recordResult(reservation, { status: 'canceled' });
+      return res.status(409).json({ success: false, message: 'Your account changed elsewhere. Please sign in again.' });
+    }
+    const nextUser = { ...user, ...updated };
+    const result = await sendReservedSms(reservation, phoneNumber);
+    if (!result.success) return smsResponse(res, result, pendingVerificationResponse(nextUser));
+    return smsResponse(res, { ...result, message: 'Phone number updated. A verification text has been requested.' }, { verification: verificationDetails(nextUser) });
+  } catch (error) {
+    console.error('[signup] phone correction failed', { code: error.code || 'unknown' });
+    return res.status(error.code === '23505' ? 409 : 503).json({ success: false,
+      message: error.code === '23505' ? 'That phone number is already registered.' : 'Unable to change your phone number. Please try again later.' });
+  }
+});
 router.post("/login", async (req, res) => {
   try {
     const { username, password } = req.body;
@@ -345,19 +202,16 @@ router.post("/login", async (req, res) => {
       });
     }
 
-    if (!user.is_verified) {
-      return res.status(403).json({
-        success: false,
-        message: "Please verify your phone number before logging in",
-      });
-    }
-
     const isValidPassword = await bcrypt.compare(password, user.password_hash);
     if (!isValidPassword) {
       return res.status(401).json({
         success: false,
         message: "Invalid credentials",
       });
+    }
+
+    if (!user.is_verified) {
+      return res.status(403).json(pendingVerificationResponse(user));
     }
 
     const role = user.role === "admin" ? "admin" : "user";
@@ -455,11 +309,6 @@ router.post("/reset-password-update", async (req, res) => {
   try {
     const { username, newPassword } = req.body;
     const phoneNumber = normalizeUsPhoneE164(req.body.phoneNumber);
-    console.log("Password reset update request:", {
-      username,
-      phoneNumber: phoneNumber ? `${phoneNumber.slice(0, 4)}…` : null,
-      newPasswordLength: newPassword && newPassword.length,
-    });
 
     if (!username || !req.body.phoneNumber || !newPassword) {
       return res.status(400).json({
@@ -476,7 +325,6 @@ router.post("/reset-password-update", async (req, res) => {
     }
 
     const verifiedUser = await getUserByUsernameAndPhone(username, phoneNumber);
-    console.log("User verification result:", verifiedUser);
 
     if (!verifiedUser) {
       return res.status(400).json({
@@ -485,11 +333,16 @@ router.post("/reset-password-update", async (req, res) => {
       });
     }
 
+    // An unfinished account must not acquire a new password/resend capability
+    // through this legacy recovery flow without proving phone ownership.
+    if (!verifiedUser.is_verified) {
+      return res.status(403).json({ success: false, message: 'Please verify your phone number first' });
+    }
+
     const saltRounds = 10;
     const passwordHash = await bcrypt.hash(newPassword, saltRounds);
 
     const updatedUser = await updatePassword(phoneNumber, passwordHash);
-    console.log("Password update result:", updatedUser);
 
     if (updatedUser) {
       return res.json({

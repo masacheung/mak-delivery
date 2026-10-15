@@ -5,7 +5,7 @@ import { ArrowBack, Apple, Android, AddToHomeScreen, NotificationsActive, IosSha
 import { useAuth } from '../../hooks/useAuth';
 import PushNotificationSettings from '../../components/PushNotificationSettings';
 
-const siteUrl = 'https://mak-delivery.onrender.com/';
+const siteUrl = `${window.location.origin}/`;
 
 function Step({ number, title, children, icon }) {
   return <Stack direction="row" gap={1.5} sx={{ py: 1.5 }}>

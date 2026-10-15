@@ -9,6 +9,7 @@
     "start": "node server/index.js",
     "notifications:worker": "node server/notificationWorker.js",
     "migrate:notifications": "node server/scripts/migrateNotifications.js",
+    "migrate:sms-safety": "node server/scripts/migrateSmsSafety.js",
     "render-build": "npm run install:all && npm run build"
   },
   "engines": {

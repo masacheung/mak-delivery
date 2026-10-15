@@ -23,6 +23,14 @@ const clientBuild = path.join(__dirname, "..", "static", "build");
 
 app.use(express.json());
 app.use(cors());
+app.get('/healthz', async (_req, res) => {
+  try {
+    await require('./db/connection').query('SELECT 1');
+    res.json({ status: 'ok' });
+  } catch (_) {
+    res.status(503).json({ status: 'unavailable' });
+  }
+});
 
 require("./utils/pwaPages").registerAdminPwaPage(app, clientBuild);
 

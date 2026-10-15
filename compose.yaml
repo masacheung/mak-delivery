@@ -1,0 +1,54 @@
+name: mak-delivery-local
+services:
+  db:
+    image: postgres:18-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: mak_delivery
+      POSTGRES_USER: mak_delivery
+      POSTGRES_PASSWORD: ${LOCAL_DB_PASSWORD:?Run node scripts/local-docker.cjs setup first}
+    volumes:
+      - postgres_data:/var/lib/postgresql
+    ports:
+      - "127.0.0.1:54331:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U mak_delivery -d mak_delivery"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+  delivery-app:
+    build: .
+    restart: unless-stopped
+    init: true
+    environment:
+      NODE_ENV: production
+      PORT: "3000"
+      DB_HOST: db
+      DB_PORT: "5432"
+      DB_USER: mak_delivery
+      DB_DATABASE: mak_delivery
+      DB_PASSWORD: ${LOCAL_DB_PASSWORD:?Run setup first}
+      DB_SSL: "false"
+      JWT_SECRET: ${LOCAL_JWT_SECRET:?Run setup first}
+      SMS_ENABLED: "false"
+    ports:
+      - "127.0.0.1:3010:3000"
+    networks:
+      default:
+      hub_ingress:
+        aliases: [delivery-app]
+    depends_on:
+      db:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:3000/healthz', {signal: AbortSignal.timeout(4000)}).then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 15s
+      timeout: 5s
+      start_period: 30s
+      retries: 5
+volumes:
+  postgres_data:
+networks:
+  hub_ingress:
+    external: true
+    name: cheung-hub-ingress
