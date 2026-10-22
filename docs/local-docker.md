@@ -81,3 +81,8 @@ The snapshot does not sync with Render. Before a later production cutover, take 
 fresh backup and plan the final write freeze, restore, public HTTPS/domain routing,
 SMS, and notification worker configuration. Do not reuse pending push deliveries
 without reviewing them.
+
+
+## Node.js runtime
+
+Docker uses Node.js 22.23.4 (security release, 2026-10-21). The root .nvmrc records the same version for local development. Build with docker compose --env-file .env.docker build --pull delivery-app, then restart delivery-app and verify /healthz.
