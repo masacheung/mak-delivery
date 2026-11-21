@@ -2,7 +2,14 @@ const CHEF_GE = {
     id: 6,
     name: '葛师傅',
     dishes: [
-        { id: 6118, name: '豆花全魚', price:38.99  },
+        { id: 692, name: '感恩節限定 Party Tray', price:65.00,
+         options: {
+               option1: {
+                  name: "Types", choices: ["卤味拼盘： 猪耳朵,猪皮冻,卤豆腐,牛腱,金钱肚", "红烧排骨","葛师傅小炒","菠萝咕咾肉","干锅千页豆腐"], selectedOptions: [], limit: 1
+               }
+        }},
+        { id: 689, name: '感恩節特价樟茶鸭', price:48.99 },
+         { id: 6118, name: '豆花全魚', price:38.99  },
         { id: 6118, name: '小炒牛三樣', price:28.99  },
         { id: 6119, name: '青花椒就三樣', price:28.99  },
         { id: 6117, name: '羊杂汤 Signature Lamb Offal Soup', price:13.99  },
@@ -43,7 +50,6 @@ const CHEF_GE = {
         { id: 691, name: '韭菜豬肉水餃 Chives & Pork Dumplings(12pc)', price:11.99  },
         { id: 693, name: '肉三鮮水餃 Pork,Shrimp and Chives Dumplings(12pc)', price:13.99  },
         { id: 624, name: '白菜豬肉鍋貼 Pork and Cabbage Potstickers(6pc)', price:7.99  },
-        { id: 692, name: '韭菜豬肉鍋貼 Chives and Pork Potstickers(6pc)', price:7.99  },
         { id: 627, name: '特色大盤雞 Spicy Chicken with Potatoes', price:19.99  },
         { id: 635, name: '藕椒雞丁 Diced Chicken With Lotus', price:17.99},
         { id: 6118, name: '蜜汁铁板鸡(去骨鸡) Honey teppanyaki chicken(boneless)', price:22.99 },
@@ -65,8 +71,8 @@ const CHEF_GE = {
         { id: 643, name: '菠蘿咕嚕肉 Pineapple and sweet and sour sauce', price:16.99  },
         { id: 636, name: '乾煸拆骨肉 Dry Stir Fry Pork', price:18.99},
         { id: 644, name: '紅燒肉 Braised Pork Belly Cube', price:17.99  },
-        { id: 6102, name: "农家小炒肉 Chef Ge's Special Pork", price:17.99 },
-        { id: 645, name: "葛师傅小炒 Chef Ge's Special Mix Veggie", price:17.99  },
+        { id: 6102, name: '农家小炒肉 Chef Ge's Special Pork", price:17.99 },
+        { id: 645, name: '葛师傅小炒 Chef Ge's Special Mix Veggie", price:17.99  },
         { id: 646, name: '笋尖肉絲 Stir Fried Bamboo Shoots and Pork', price:16.99  },
         { id: 640, name: '乾鍋干葉豆腐 Chiba Tofu Dry Pot', price:17.99  },
         { id: 673, name: '乾煸四季豆 Stir-Fried String Bean', price:14.99  },
@@ -81,7 +87,6 @@ const CHEF_GE = {
         { id: 684, name: '蒜蓉小龍蝦蓋飯 Garlic Crawfish over Rice', price:15.99  },
         { id: 685, name: '藕椒雞丁蓋飯 Lotus root and pepper diced chicken over rice', price:11.99  },
         { id: 687, name: '魚香肉絲蓋飯 sweet and sour pork with veg over rice', price:11.99  },
-        { id: 689, name: '蛋炒飯 Scallion%Egg Fried Rice', price:9.99  },
         { id: 690, name: '蕃茄雞蛋蓋飯 Scrambled egg with Tomato over Rice', price:11.99  }
     ]
 }
