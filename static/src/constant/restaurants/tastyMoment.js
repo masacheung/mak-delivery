@@ -211,7 +211,6 @@ const TASTY_MOMENT = {
     { id: 1185, name: '重庆小面', price:12.95 },
     { id: 1186, name: '黑椒牛柳饭', price:16.95 },
     { id: 1187, name: '扬州炒饭', price:12.95 },
-    { id: 1188, name: '舍得（只取上海菜菜心）', price: "SP" },
   ],
 };
 
