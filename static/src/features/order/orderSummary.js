@@ -5,6 +5,7 @@ import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import Add from '@mui/icons-material/Add';
 import Remove from '@mui/icons-material/Remove';
 import { RESTAURANT_NAME } from '../../constant/constant';
+import MISS_FLOWER_HOTPOT from '../../constant/restaurants/missFlowerHotpot';
 import { dishDescription } from '../adminOrdersLookup/orderGroups';
 import { cartPricing, TAX_RATE } from './cartPricing';
 import { pickupLocationDetails } from '../../utils/pickupLocation';
@@ -16,6 +17,9 @@ export default function OrderSummary({ orderState, updateOrderState, onClose, on
   const addedDishes = orderState?.addedDishes || {};
   const { entries, deliveryFee, subtotal, tax, total, specialPrice } = cartPricing(addedDishes);
   const pickup = pickupLocationDetails(orderState.pickupLocation);
+  const includedItemsFor = (restaurantId, dish) => String(restaurantId) === '11'
+    ? MISS_FLOWER_HOTPOT.dishes.find(item => String(item.id) === String(dish.sourceDishId ?? dish.id) || item.name === dish.name)?.includedItems || []
+    : [];
 
   useEffect(() => {
     if (orderState.total !== total) updateTotal(total);
@@ -52,14 +56,18 @@ export default function OrderSummary({ orderState, updateOrderState, onClose, on
         </Card>
         {entries.map(([id, dishes]) => <Card key={id} variant="outlined" sx={{ p: 2, borderRadius: 3 }}>
           <Typography fontWeight={700} sx={{ mb: 1 }}>{RESTAURANT_NAME[id] || `Restaurant ${id}`}</Typography>
-          {dishes.map(dish => <Stack key={dish.id} gap={0.5} sx={{ py: 1, borderTop: '1px solid #eeeef5' }}>
+          {dishes.map(dish => {
+            const includedItems = includedItemsFor(id, dish);
+            return <Stack key={dish.id} gap={0.5} sx={{ py: 1, borderTop: '1px solid #eeeef5' }}>
             <Stack direction="row" alignItems="center" gap={1}>
             <Box sx={{ flex: 1, minWidth: 0 }}><Typography sx={{ overflowWrap: 'anywhere' }}>{dishDescription(dish)}</Typography>
+              {includedItems.length > 0 && <Box sx={{ mt: 0.75 }}><Typography variant="body2" fontWeight={700}>套餐包含{Number(dish.quantity) > 1 ? '（每份）' : ''}</Typography>{includedItems.map((item, itemIndex) => <Typography key={itemIndex} variant="body2" color="text.secondary">• {item}</Typography>)}</Box>}
               {dish.price === 'SP' ? <Chip size="small" label="Price confirmed by restaurant" /> : <Typography color="text.secondary" variant="body2">${(Number(dish.price) * dish.quantity).toFixed(2)}</Typography>}</Box>
             <IconButton aria-label={`Remove ${dish.name}`} disabled={submitting} onClick={() => removeDish(id, dish.id)} sx={{ width: 44, height: 44 }}><DeleteOutlineIcon /></IconButton>
             </Stack>
             <Stack direction="row" alignItems="center" justifyContent="space-between"><Typography variant="caption" color="text.secondary">Quantity</Typography><Stack direction="row" alignItems="center"><IconButton aria-label={`Decrease ${dish.name} in cart`} disabled={submitting || dish.quantity <= 1} onClick={() => changeQuantity(id, dish.id, -1)}><Remove fontSize="small" /></IconButton><Typography fontSize={14} fontWeight={700} sx={{ minWidth: 24, textAlign: 'center' }}>{dish.quantity}</Typography><IconButton aria-label={`Increase ${dish.name} in cart`} disabled={submitting || dish.quantity >= 10} onClick={() => changeQuantity(id, dish.id, 1)}><Add fontSize="small" /></IconButton></Stack></Stack>
-          </Stack>)}
+          </Stack>;
+          })}
         </Card>)}
         <TextField label="Order notes (optional)" multiline minRows={2} value={orderState.notes || ''} disabled={submitting} onChange={e => updateOrderState('notes', e.target.value)} placeholder="Special requests for your order" />
         <Card variant="outlined" sx={{ p: 2, borderRadius: 3 }}>

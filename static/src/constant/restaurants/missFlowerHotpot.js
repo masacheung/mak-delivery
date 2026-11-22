@@ -2,31 +2,35 @@ const MISS_FLOWER_HOTPOT = {
     id: 11,
     name: '花小娇金汤花胶鸡',
     dishes: [
-          {id: 11110,name: "感恩節套餐 4-5人份",price: 198,
-    options: {
-        option1: {
-            name: "Choose 锅底 BROTH",
-            choices: [
-                "花胶鸡金汤锅 Golden Chicken Soup",
-                "猪肚鸡汤锅 Pork Tripe Chicken Soup",
-                "五指毛桃汤锅 Herbal chicken"
-            ],
-            selectedOptions: [],
-            limit: 1
-        },
-        option2: {
-            name: "Choose 鸡肉 chicken",
-            choices: [
-                "去骨走地鸡 Boneless Chicken 350g",
-                "走地鸡 Bone-In Chicken 700g",
-          ],
-            selectedOptions: [],
-            limit: 1
-        },
-       includedItems: [
-         "A5和牛拼盤， 鮮活波士頓龍蝦， 撈汁貴妃雞， 竹笙蝦滑，鮮菇拼盘"
-        ]
-        }
+          {id: 11115,name: "感恩節套餐 4-5人份",price: 198,
+            options: {
+                option1: {
+                    name: "Choose 锅底 BROTH",
+                    choices: [
+                        "花胶鸡金汤锅 Golden Chicken Soup",
+                        "猪肚鸡汤锅 Pork Tripe Chicken Soup",
+                        "五指毛桃汤锅 Herbal chicken"
+                    ],
+                    selectedOptions: [],
+                    limit: 1
+                },
+                option2: {
+                    name: "Choose 鸡肉 chicken",
+                    choices: [
+                        "去骨走地鸡 Boneless Chicken 350g",
+                        "走地鸡 Bone-In Chicken 700g"
+                  ],
+                    selectedOptions: [],
+                    limit: 1
+                },
+                },
+                includedItems: [
+                                 "A5和牛拼盤",
+                                 "鮮活波士頓龍蝦",
+                                 "撈汁貴妃雞",
+                                 "竹笙蝦滑",
+                                 "鮮菇拼盘"
+                                ]
        },
         { id: 11109, name: "花小嬌午市套餐 Lunch Set", price: 19.99,
             options: {

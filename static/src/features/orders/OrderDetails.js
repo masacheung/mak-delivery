@@ -7,6 +7,7 @@ import LocationOnOutlined from '@mui/icons-material/LocationOnOutlined';
 import OpenInNew from '@mui/icons-material/OpenInNew';
 import PaymentsOutlined from '@mui/icons-material/PaymentsOutlined';
 import { RESTAURANT_NAME } from '../../constant/constant';
+import MISS_FLOWER_HOTPOT from '../../constant/restaurants/missFlowerHotpot';
 import { pickupLocationDetails } from '../../utils/pickupLocation';
 import { pickupDateLabel } from '../restaurants/AvailablePickupDates';
 import { orderGroups, pickupDay, pickupLabel, todayInNewJersey } from './orderPresentation';
@@ -19,6 +20,9 @@ export default function OrderDetails({ order, canEdit = false }) {
   const groups = orderGroups(order);
   const paymentRecorded = Boolean(order.payment_status && order.payment_status !== 'Unpaid');
   const editAvailable = canEdit && Boolean(day) && day >= todayInNewJersey();
+  const includedItemsFor = (restaurantId, dish) => String(restaurantId) === '11'
+    ? MISS_FLOWER_HOTPOT.dishes.find(item => String(item.id) === String(dish.sourceDishId ?? dish.id) || item.name === dish.name)?.includedItems || []
+    : [];
   return <Stack gap={2}>
     <Paper variant="outlined" sx={{ p: 2.5, borderColor: '#deddf5', bgcolor: '#f0efff', borderRadius: 3 }}>
       <Stack direction="row" alignItems="center" justifyContent="space-between" gap={1} sx={{ mb: 2 }}><Typography component="h2" variant="h6" fontWeight={800}>Order #{order.id}</Typography><Chip size="small" label={pickupLabel(order)} sx={{ bgcolor: 'white' }} /></Stack>
@@ -36,11 +40,14 @@ export default function OrderDetails({ order, canEdit = false }) {
       {!groups.length && <Alert severity="info">No dish details available for this order.</Alert>}
       {groups.map(([id, dishes], index) => <Box key={id} sx={{ mt: index ? 2 : 0 }}>
         <Typography fontWeight={700} color="primary.main" sx={{ mb: 1 }}>{dishes[0]?.restaurantName || RESTAURANT_NAME[id] || `Restaurant ${id}`}</Typography>
-        {dishes.map((dish, i) => <Stack key={`${dish.id}-${i}`} direction="row" gap={1.5} sx={{ py: 1, borderTop: '1px solid #eeeef5' }}>
+        {dishes.map((dish, i) => {
+          const includedItems = includedItemsFor(id, dish);
+          return <Stack key={`${dish.id}-${i}`} direction="row" gap={1.5} sx={{ py: 1, borderTop: '1px solid #eeeef5' }}>
           <Box sx={{ minWidth: 30, pt: 0.2 }}><Typography fontSize={13} fontWeight={800} color="primary.main">{dish.quantity}×</Typography></Box>
-          <Box sx={{ minWidth: 0, flex: 1 }}><Typography fontSize={14} fontWeight={600} sx={{ overflowWrap: 'anywhere' }}>{dish.name}</Typography>{Object.values(dish.selectedOptions || {}).flat().filter(Boolean).length > 0 && <Typography variant="body2" color="text.secondary" sx={{ mt: 0.25 }}>{Object.values(dish.selectedOptions).flat().filter(Boolean).join(', ')}</Typography>}</Box>
+          <Box sx={{ minWidth: 0, flex: 1 }}><Typography fontSize={14} fontWeight={600} sx={{ overflowWrap: 'anywhere' }}>{dish.name}</Typography>{Object.values(dish.selectedOptions || {}).flat().filter(Boolean).length > 0 && <Typography variant="body2" color="text.secondary" sx={{ mt: 0.25 }}>{Object.values(dish.selectedOptions).flat().filter(Boolean).join(', ')}</Typography>}{includedItems.length > 0 && <Box sx={{ mt: 0.75 }}><Typography variant="body2" fontWeight={700}>套餐包含{Number(dish.quantity) > 1 ? '（每份）' : ''}</Typography>{includedItems.map((item, itemIndex) => <Typography key={itemIndex} variant="body2" color="text.secondary">• {item}</Typography>)}</Box>}</Box>
           <Typography variant="body2" sx={{ flexShrink: 0 }}>{dish.price === 'SP' ? 'Special price' : `$${(Number(dish.price || 0) * Number(dish.quantity || 0)).toFixed(2)}`}</Typography>
-        </Stack>)}
+        </Stack>;
+        })}
       </Box>)}
       {order.notes && <><Divider sx={{ my: 2 }} /><Typography variant="body2" fontWeight={700}>Order notes</Typography><Typography variant="body2" color="text.secondary" sx={{ mt: 0.5, whiteSpace: 'pre-wrap', overflowWrap: 'anywhere' }}>{order.notes}</Typography></>}
       <Typography variant="caption" color="text.secondary" sx={{ display: 'block', mt: 2 }}>Ordered by {order.username}</Typography>
