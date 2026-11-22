@@ -23,7 +23,7 @@ const ALL_BLUE_CHINESE_CUISINE = {
         { id: 157, name: "肝腰合炒 Pork Kidney Liver Stir Fry", price: "19.99",},
         { id: 158, name: '沙薑炒豬肚 Pork Tripe with Sand Ginger', price:26.99 },
         { id: 159, name: '甜皮鸭 Sweet Skin Duck ', price:24.99 },
-        { id: 1510, name: '泡椒美蛙 Sichuan Pickled Pepper Frog', price:70.99,
+        { id: 1510, name: '泡椒美蛙 Sichuan Pickled Pepper Frog', price:70.99},
         { id: 1511, name: '孜然牛肉 Spicy Cumin Beef', price:19.99 },
         { id: 1512, name: '尖椒牛肉 Shredded Beef w. Pepper', price:19.99 },
         { id: 1513, name: '水煮牛肉 Sichuan Boil Beef', price:24.99 },

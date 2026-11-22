@@ -25,8 +25,9 @@ const MISS_FLOWER_HOTPOT = {
         },
        includedItems: [
          "A5和牛拼盤， 鮮活波士頓龍蝦， 撈汁貴妃雞， 竹笙蝦滑，鮮菇拼盘"
-    ]
-},
+        ]
+        }
+       },
         { id: 11109, name: "花小嬌午市套餐 Lunch Set", price: 19.99,
             options: {
                 option1: {
