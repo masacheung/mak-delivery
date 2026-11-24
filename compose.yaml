@@ -30,7 +30,11 @@ services:
       DB_PASSWORD: ${LOCAL_DB_PASSWORD:?Run setup first}
       DB_SSL: "false"
       JWT_SECRET: ${LOCAL_JWT_SECRET:?Run setup first}
-      SMS_ENABLED: "false"
+      SMS_ENABLED: ${LOCAL_SMS_ENABLED:-false}
+      TWILIO_ACCOUNT_SID: ${TWILIO_ACCOUNT_SID:-}
+      TWILIO_AUTH_TOKEN: ${TWILIO_AUTH_TOKEN:-}
+      TWILIO_VERIFY_SERVICE_SID: ${TWILIO_VERIFY_SERVICE_SID:-}
+      SMS_DAILY_LIMIT: ${SMS_DAILY_LIMIT:-200}
     ports:
       - "127.0.0.1:3010:3000"
     networks:
