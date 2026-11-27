@@ -2,13 +2,6 @@ const CHEF_GE = {
     id: 6,
     name: '葛师傅',
     dishes: [
-        { id: 692, name: '感恩節限定 Party Tray', price:65.00,
-         options: {
-               option1: {
-                  name: "Types", choices: ["卤味拼盘： 猪耳朵,猪皮冻,卤豆腐,牛腱,金钱肚", "红烧排骨","葛师傅小炒","菠萝咕咾肉","干锅千页豆腐"], selectedOptions: [], limit: 1
-               }
-        }},
-        { id: 689, name: '感恩節特价樟茶鸭', price:48.99 },
          { id: 6118, name: '豆花全魚', price:38.99  },
         { id: 6118, name: '小炒牛三樣', price:28.99  },
         { id: 6119, name: '青花椒就三樣', price:28.99  },
