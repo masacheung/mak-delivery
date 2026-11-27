@@ -2,10 +2,10 @@ const ALL_BLUE_CHINESE_CUISINE = {
     id: 15,
     name: '四海 All Blue Chinese Cuisine',
     dishes: [
-        { id: 151, name: '辣子雞軟骨 Chill Chicken Wings', price:21.99},
+        { id: 151, name: '辣子雞軟骨 Chill Chicken Wings', price:24.99},
         { id: 152, name: '鮮椒燉牛肉 Braised Beef with Fresh Chili Green Peppers', price:32.99 },
         { id: 1562, name: '鮮椒兔 ', price:45 },
-        { id: 153, name: '香酥鴨 Cripsy Mala Duck ', price:24.99 },
+        { id: 153, name: '香酥鴨 Cripsy Mala Duck ', price:27.99 },
         { id: 154, name: '烤乳鴿 Roast Pigeon', price:23.50  },
         { id: 155, name: "烤鴨 Roast Duck", price:"SP",
                 options: {
@@ -37,7 +37,7 @@ const ALL_BLUE_CHINESE_CUISINE = {
         { id: 1519, name: '鱼香肉丝 Shredded Pork in Spicy Garlic', price:18.99 },
         { id: 1520, name: '水煮鱼 Sichuan Boil Fish', price:18.99 },
         { id: 1521, name: '酸菜鱼 Fish w. Pickled Veg Soup', price:18.99 },
-        { id: 1522, name: '宫保鸡丁 Kung Pao Chicken', price:15.99 },
+        { id: 1522, name: '宫保鸡丁 Kung Pao Chicken', price:16.99 },
         { id: 1523, name: '泡椒鸡杂 Chicken Giblets w. Pickled Pepper', price:19.99 },
         { id: 1525, name: '麻婆豆腐 Ma Po Tofu', price:15.99 },
         { id: 1526, name: '家常豆腐 Fried Tofu w. Pork Slices', price:15.99 },
